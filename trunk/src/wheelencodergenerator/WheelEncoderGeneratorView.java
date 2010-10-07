@@ -17,6 +17,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SpinnerModel;
 import java.awt.event.*;
 import java.awt.print.*;
+import java.awt.*;
 
 /**
  * The application's main frame.
@@ -35,7 +36,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setWheelEncoder(encoder);
 
         // Simulate "preview" click to generate initial image
-        previewButton.doClick();
+        showPreview();
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -125,6 +126,8 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveButton = new javax.swing.JButton();
         exportButton = new javax.swing.JButton();
         encoderPanel = new wheelencodergenerator.EncoderPanel();
+        quadratureCheckBox = new javax.swing.JCheckBox();
+        indexCheckBox = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         printMenuItem = new javax.swing.JMenuItem();
@@ -146,6 +149,11 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         resolutionSpinner.setModel((SpinnerModel) sm);
         resolutionSpinner.setName("resolutionSpinner"); // NOI18N
+        resolutionSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                resolutionSpinnerStateChanged(evt);
+            }
+        });
 
         jLabel1.setLabelFor(resolutionSpinner);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getResourceMap(WheelEncoderGeneratorView.class);
@@ -155,6 +163,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         outerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         outerDiameter.setText(resourceMap.getString("outerDiameter.text")); // NOI18N
         outerDiameter.setName("outerDiameter"); // NOI18N
+        outerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                outerDiameterFocusLost(evt);
+            }
+        });
 
         jLabel2.setLabelFor(outerDiameter);
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
@@ -163,6 +176,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         innerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         innerDiameter.setText(resourceMap.getString("innerDiameter.text")); // NOI18N
         innerDiameter.setName("innerDiameter"); // NOI18N
+        innerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                innerDiameterFocusLost(evt);
+            }
+        });
 
         jLabel3.setLabelFor(innerDiameter);
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
@@ -195,6 +213,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         exportButton.setName("exportButton"); // NOI18N
 
         encoderPanel.setBackground(resourceMap.getColor("encoderPanel.background")); // NOI18N
+        encoderPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder(resourceMap.getColor("encoderPanel.border.highlightColor"), null)); // NOI18N
         encoderPanel.setMaximumSize(new java.awt.Dimension(200, 200));
         encoderPanel.setMinimumSize(new java.awt.Dimension(200, 200));
         encoderPanel.setName("encoderPanel"); // NOI18N
@@ -204,12 +223,28 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+            .addGap(0, 245, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 219, Short.MAX_VALUE)
+            .addGap(0, 233, Short.MAX_VALUE)
         );
+
+        quadratureCheckBox.setText(resourceMap.getString("quadratureCheckBox.text")); // NOI18N
+        quadratureCheckBox.setName("quadratureCheckBox"); // NOI18N
+        quadratureCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                quadratureCheckBoxItemStateChanged(evt);
+            }
+        });
+
+        indexCheckBox.setText(resourceMap.getString("indexCheckBox.text")); // NOI18N
+        indexCheckBox.setName("indexCheckBox"); // NOI18N
+        indexCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                indexCheckBoxItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -217,9 +252,9 @@ public class WheelEncoderGeneratorView extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
@@ -234,10 +269,17 @@ public class WheelEncoderGeneratorView extends FrameView {
                         .addComponent(mmButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(inchButton))
-                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(printButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(previewButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(printButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(previewButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(indexCheckBox)
+                        .addComponent(quadratureCheckBox)))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -245,7 +287,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(resolutionSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -263,13 +305,19 @@ public class WheelEncoderGeneratorView extends FrameView {
                             .addComponent(mmButton)
                             .addComponent(inchButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(previewButton)
+                        .addComponent(quadratureCheckBox)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(printButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(exportButton)))
+                        .addComponent(indexCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(previewButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(printButton))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(saveButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(exportButton)))))
                 .addContainerGap())
         );
 
@@ -317,11 +365,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 259, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -343,6 +391,44 @@ public class WheelEncoderGeneratorView extends FrameView {
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void quadratureCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_quadratureCheckBoxItemStateChanged
+        encoder.setQuadratureTrack(evt.getStateChange() == ItemEvent.SELECTED);
+        showPreview();
+    }//GEN-LAST:event_quadratureCheckBoxItemStateChanged
+
+    private void resolutionSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_resolutionSpinnerStateChanged
+        showPreview();
+    }//GEN-LAST:event_resolutionSpinnerStateChanged
+
+    private void outerDiameterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_outerDiameterFocusLost
+        if ( Integer.parseInt(innerDiameter.getText()) >= Integer.parseInt(outerDiameter.getText()) ) {
+            outerDiameter.setForeground(Color.red);
+            innerDiameter.setForeground(Color.red);
+        }
+        else {
+            outerDiameter.setForeground(Color.black);
+            innerDiameter.setForeground(Color.black);
+        }
+        showPreview();
+    }//GEN-LAST:event_outerDiameterFocusLost
+
+    private void innerDiameterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_innerDiameterFocusLost
+        if ( Integer.parseInt(innerDiameter.getText()) >= Integer.parseInt(outerDiameter.getText()) ) {
+            outerDiameter.setForeground(Color.red);
+            innerDiameter.setForeground(Color.red);
+        }
+        else {
+            outerDiameter.setForeground(Color.black);
+            innerDiameter.setForeground(Color.black);
+        }
+        showPreview();
+    }//GEN-LAST:event_innerDiameterFocusLost
+
+    private void indexCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_indexCheckBoxItemStateChanged
+        encoder.setIndexTrack(evt.getStateChange() == ItemEvent.SELECTED);
+        showPreview();
+    }//GEN-LAST:event_indexCheckBoxItemStateChanged
 
     @Action
     public void showPreview() {
@@ -367,11 +453,17 @@ public class WheelEncoderGeneratorView extends FrameView {
         
     }
 
+    @Action
+    public void selectQuadrature() {
+
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private wheelencodergenerator.EncoderPanel encoderPanel;
     private javax.swing.JButton exportButton;
     private javax.swing.JRadioButton inchButton;
+    private javax.swing.JCheckBox indexCheckBox;
     private javax.swing.JTextField innerDiameter;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -385,6 +477,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JButton printButton;
     private javax.swing.JMenuItem printMenuItem;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JCheckBox quadratureCheckBox;
     private javax.swing.JSpinner resolutionSpinner;
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel statusAnimationLabel;

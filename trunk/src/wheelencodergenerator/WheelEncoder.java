@@ -15,7 +15,19 @@ public class WheelEncoder {
     private double degree;
     private int innerDiameter;
     private int outerDiameter;
+    private boolean indexTrack;
+    private boolean quadratureTrack;
 
+    public int getTracks()
+    {
+        int tracks = 1;
+
+        if (indexTrack) tracks++;
+        if (quadratureTrack) tracks++;
+
+        return tracks;
+    }
+    
     public double getDegree()
     {
         return degree;
@@ -50,5 +62,25 @@ public class WheelEncoder {
     public int getOuterDiameter()
     {
         return outerDiameter;
+    }
+
+    public void setQuadratureTrack(boolean q)
+    {
+        quadratureTrack = q;
+    }
+
+    public boolean getQuadratureTrack()
+    {
+        return quadratureTrack;
+    }
+
+    public void setIndexTrack(boolean i)
+    {
+        indexTrack = i;
+    }
+
+    public boolean getIndexTrack()
+    {
+        return indexTrack;
     }
 }
