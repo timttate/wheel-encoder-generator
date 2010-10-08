@@ -60,7 +60,7 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
         // (the canvas may have been resized externally...)
         Graphics2D g2D = (Graphics2D) g;
 
-        if (e != null && e.getDegree() > 0.0 && e.getOuterDiameter() > 0 && e.getInnerDiameter() < e.getOuterDiameter()) {
+        if (e != null && e.getOuterDiameter() > 0 && e.getInnerDiameter() < e.getOuterDiameter()) {
 
             Dimension size = getSize();
             double d = (double) Math.min(size.width, size.height); // diameter
@@ -69,6 +69,11 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
             double x = (size.width - d)/2;
             double y = (size.height - d)/2;
             double trackWidth = (d - id)/2;
+            double offset = 0;
+            int maxTrack = 0;
+
+            /*
+             *
             // Calculate 1/2 diameter
             double d2 = id + trackWidth;
             double x2 = x + trackWidth/2;
@@ -81,59 +86,73 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
             double d3b = id + 2*trackWidth/3;
             double x3b = x + 2*trackWidth/3;
             double y3b = y + 2*trackWidth/3;
+             *
+             */
+            
+            maxTrack = e.getTrackCount();
 
-            // Draw first track
-            for (double i=0; i < 360.0; i += 2 * e.getDegree()) {
-                g2D.setColor( Color.white );
-                g2D.fill( new Arc2D.Double(x, y, d, d, i, e.getDegree(), Arc2D.PIE) );
-                g2D.setColor( Color.black );
-                g2D.fill( new Arc2D.Double(x, y, d, d, i + e.getDegree(), e.getDegree(), Arc2D.PIE) );
-            }
-            g2D.setColor(Color.black);
-            g2D.drawOval((int) Math.round(x), (int) Math.round(y), (int) Math.round(d), (int) Math.round(d));
+            if (e.getType() == e.ABSOLUTE) {
 
-            // Draw quadrature track
-            if (e.getQuadratureTrack() == true) {
+                for (int track = 0; track < maxTrack; track++) {
+                    //System.out.println("Absolute: Track " + Integer.toString(track) + " of " + Integer.toString(maxTrack));
+                    double degree = e.getDegree(track);
+                    // gray code = degree/2, binary = 0
+                    if (e.getNumbering() == e.GRAY)
+                        offset = degree/2;
+                    else if (e.getNumbering() == e.BINARY)
+                        offset = 0;
 
-                double dQ = d2;
-                double xQ = x2;
-                double yQ = y2;
-
-                if (e.getTracks() == 3) {
-                    dQ = d3a;
-                    xQ = x3a;
-                    yQ = y3a;
+                    double dA = id + (maxTrack-track) * (d - id) / maxTrack;
+                    double xA = x + track * trackWidth / maxTrack;
+                    double yA = y + track * trackWidth / maxTrack;
+                    //System.out.println("entering loop 2");
+                    for (double i=offset; degree > 0 && i < (360.0+offset); i += 2 * degree) {
+                        // always start with white (0)
+                        g2D.setColor( Color.white );
+                        g2D.fill( new Arc2D.Double(xA, yA, dA, dA, i, degree, Arc2D.PIE) );
+                        g2D.setColor( Color.black );
+                        g2D.fill( new Arc2D.Double(xA, yA, dA, dA, i + degree, degree, Arc2D.PIE) );
+                    }
+                    g2D.setColor(Color.black);
+                    g2D.drawOval((int) Math.round(xA), (int) Math.round(yA), (int) Math.round(dA), (int) Math.round(dA));
                 }
 
-                // draw another set of arcs offset by 1/2 of "degree"
-                // with a diameter halfway between id and d
-                for (double i=e.getDegree()/2; i < (360.0+e.getDegree()/2); i += 2 * e.getDegree()) {
-                    g2D.setColor( Color.white );
-                    g2D.fill( new Arc2D.Double(xQ, yQ, dQ, dQ, i, e.getDegree(), Arc2D.PIE) );
-                    g2D.setColor( Color.black );
-                    g2D.fill( new Arc2D.Double(xQ, yQ, dQ, dQ, i + e.getDegree(), e.getDegree(), Arc2D.PIE) );
+            }
+            else if (e.getType() == e.STANDARD) {
+
+                for (int track = 0; track < maxTrack; track++) {
+
+                    double degree = e.getDegree(track);
+                    double dA = id + (maxTrack-track) * (d - id) / maxTrack;
+                    double xA = x + track * trackWidth / maxTrack;
+                    double yA = y + track * trackWidth / maxTrack;
+
+                    if (track == e.getIndexTrack()) {
+                        g2D.setColor( Color.black );
+                        g2D.fill( new Arc2D.Double(xA, yA, dA, dA, 0, degree, Arc2D.PIE) );
+                        g2D.setColor( Color.white );
+                        g2D.fill( new Arc2D.Double(xA, yA, dA, dA, degree, 360-degree, Arc2D.PIE) );
+                    } else {
+                        // Quadrature
+                        if (track == e.getQuadratureTrack()) {
+                            offset = degree/2;
+                        }
+
+                        for (double i=offset; degree > 0 && i < (360.0+offset); i += 2 * degree) {
+                            // always start with white (0)
+                            g2D.setColor( Color.white );
+                            g2D.fill( new Arc2D.Double(xA, yA, dA, dA, i, degree, Arc2D.PIE) );
+                            g2D.setColor( Color.black );
+                            g2D.fill( new Arc2D.Double(xA, yA, dA, dA, i + degree, degree, Arc2D.PIE) );
+                        }
+                    }
+                    g2D.setColor(Color.black);
+                    g2D.drawOval((int) Math.round(xA), (int) Math.round(yA), (int) Math.round(dA), (int) Math.round(dA));
+
                 }
-                g2D.setColor(Color.black);
-                g2D.drawOval((int) Math.round(xQ), (int) Math.round(yQ), (int) Math.round(dQ), (int) Math.round(dQ));
+
             }
 
-            if (e.getIndexTrack() == true) {
-                System.out.println("printing index track");
-                double dI = d2;
-                double xI = x2;
-                double yI = y2;
-                if (e.getTracks() == 3) {
-                    dI = d3b;
-                    xI = x3b;
-                    yI = y3b;
-                }
-                g2D.setColor( Color.black );
-                g2D.fill( new Arc2D.Double(xI, yI, dI, dI, 0, e.getDegree(), Arc2D.PIE) );
-                g2D.setColor( Color.white );
-                g2D.fill( new Arc2D.Double(xI, yI, dI, dI, e.getDegree(), 360-e.getDegree(), Arc2D.PIE) );
-                g2D.setColor(Color.black);
-                g2D.drawOval((int) Math.round(xI), (int) Math.round(yI), (int) Math.round(dI), (int) Math.round(dI));
-            }
 
             // Draw inner circle
             g2D.setColor(Color.white);
