@@ -39,6 +39,10 @@ public class WheelEncoderGeneratorApp extends SingleFrameApplication {
      * Main method launching the application.
      */
     public static void main(String[] args) {
+        // Mac Specific stuff
+        System.setProperty("apple.laf.useScreenMenuBar","true");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "WheelEncoderGenerator");
+        System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
         launch(WheelEncoderGeneratorApp.class, args);
     }
 }
