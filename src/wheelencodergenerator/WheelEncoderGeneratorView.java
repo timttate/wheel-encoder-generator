@@ -5,17 +5,12 @@
 package wheelencodergenerator;
 
 import org.jdesktop.application.Action;
-import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
-import org.jdesktop.application.TaskMonitor;
-import javax.swing.Timer;
-import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpinnerModel;
-import javax.swing.border.*;
 import java.awt.event.*;
 import java.awt.print.*;
 import java.awt.*;
@@ -39,59 +34,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         // Simulate "preview" click to generate initial image
         showPreview();
 
-        // status bar initialization - message timeout, idle icon and busy animation, etc
-        ResourceMap resourceMap = getResourceMap();
-        int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
-        messageTimer = new Timer(messageTimeout, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                statusMessageLabel.setText("");
-            }
-        });
-        messageTimer.setRepeats(false);
-        int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
-        for (int i = 0; i < busyIcons.length; i++) {
-            busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
-        }
-        busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
-                statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
-            }
-        });
-        idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
-        statusAnimationLabel.setIcon(idleIcon);
-        progressBar.setVisible(false);
-
-        // connecting action tasks to status bar via TaskMonitor
-        TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
-        taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                String propertyName = evt.getPropertyName();
-                if ("started".equals(propertyName)) {
-                    if (!busyIconTimer.isRunning()) {
-                        statusAnimationLabel.setIcon(busyIcons[0]);
-                        busyIconIndex = 0;
-                        busyIconTimer.start();
-                    }
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(true);
-                } else if ("done".equals(propertyName)) {
-                    busyIconTimer.stop();
-                    statusAnimationLabel.setIcon(idleIcon);
-                    progressBar.setVisible(false);
-                    progressBar.setValue(0);
-                } else if ("message".equals(propertyName)) {
-                    String text = (String)(evt.getNewValue());
-                    statusMessageLabel.setText((text == null) ? "" : text);
-                    messageTimer.restart();
-                } else if ("progress".equals(propertyName)) {
-                    int value = (Integer)(evt.getNewValue());
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setValue(value);
-                }
-            }
-        });
     }
 
     @Action
@@ -112,47 +54,49 @@ public class WheelEncoderGeneratorView extends FrameView {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         mainPanel = new javax.swing.JPanel();
         encoderPanel = new wheelencodergenerator.EncoderPanel();
+        controlPanel = new javax.swing.JPanel();
+        diameterPanel = new javax.swing.JPanel();
+        innerDiameterLabel = new javax.swing.JLabel();
+        innerDiameter = new javax.swing.JTextField();
+        outerDiameterLabel = new javax.swing.JLabel();
+        outerDiameter = new javax.swing.JTextField();
+        mmButton = new javax.swing.JRadioButton();
+        inchButton = new javax.swing.JRadioButton();
         encoderTabbedPane = new javax.swing.JTabbedPane();
         standardPanel = new javax.swing.JPanel();
-        quadratureCheckBox = new javax.swing.JCheckBox();
-        indexCheckBox = new javax.swing.JCheckBox();
         resolutionLabel1 = new javax.swing.JLabel();
         resolutionSpinner = new javax.swing.JSpinner();
+        quadratureCheckBox = new javax.swing.JCheckBox();
+        indexCheckBox = new javax.swing.JCheckBox();
         absolutePanel = new javax.swing.JPanel();
         grayCodeRadioButton = new javax.swing.JRadioButton();
         binaryCodeRadioButton = new javax.swing.JRadioButton();
         resolutionLabel2 = new javax.swing.JLabel();
         absoluteResolutionComboBox = new javax.swing.JComboBox();
-        diameterPanel = new javax.swing.JPanel();
-        mmButton = new javax.swing.JRadioButton();
-        innerDiameter = new javax.swing.JTextField();
-        innerDiameterLabel = new javax.swing.JLabel();
-        inchButton = new javax.swing.JRadioButton();
-        outerDiameter = new javax.swing.JTextField();
-        outerDiameterLabel = new javax.swing.JLabel();
         buttonPanel = new javax.swing.JPanel();
         printButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         exportButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         printMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
-        statusPanel = new javax.swing.JPanel();
-        javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
-        statusMessageLabel = new javax.swing.JLabel();
-        statusAnimationLabel = new javax.swing.JLabel();
-        progressBar = new javax.swing.JProgressBar();
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
 
-        mainPanel.setBounds(new java.awt.Rectangle(0, 0, 760, 600));
         mainPanel.setMinimumSize(new java.awt.Dimension(760, 600));
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setPreferredSize(new java.awt.Dimension(760, 600));
@@ -179,163 +123,29 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 458, Short.MAX_VALUE)
+            .addGap(0, 560, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 536, Short.MAX_VALUE)
+            .addGap(0, 586, Short.MAX_VALUE)
         );
 
-        encoderTabbedPane.setMinimumSize(new java.awt.Dimension(198, 177));
-        encoderTabbedPane.setName("encoderTabbedPane"); // NOI18N
-        encoderTabbedPane.setSize(new java.awt.Dimension(198, 177));
-        encoderTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                encoderTabbedPaneMouseClicked(evt);
-            }
-        });
-
-        standardPanel.setName("standardPanel"); // NOI18N
-
-        quadratureCheckBox.setText(resourceMap.getString("quadratureCheckBox.text")); // NOI18N
-        quadratureCheckBox.setName("quadratureCheckBox"); // NOI18N
-        quadratureCheckBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                quadratureCheckBoxItemStateChanged(evt);
-            }
-        });
-
-        indexCheckBox.setText(resourceMap.getString("indexCheckBox.text")); // NOI18N
-        indexCheckBox.setName("indexCheckBox"); // NOI18N
-        indexCheckBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                indexCheckBoxItemStateChanged(evt);
-            }
-        });
-
-        resolutionLabel1.setLabelFor(resolutionSpinner);
-        resolutionLabel1.setText(resourceMap.getString("resolutionLabel1.text")); // NOI18N
-        resolutionLabel1.setName("resolutionLabel1"); // NOI18N
-
-        resolutionSpinner.setModel((SpinnerModel) resolutionSpinnerModel);
-        resolutionSpinner.setMinimumSize(new java.awt.Dimension(30, 20));
-        resolutionSpinner.setName("resolutionSpinner"); // NOI18N
-        resolutionSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                resolutionSpinnerStateChanged(evt);
-            }
-        });
-
-        javax.swing.GroupLayout standardPanelLayout = new javax.swing.GroupLayout(standardPanel);
-        standardPanel.setLayout(standardPanelLayout);
-        standardPanelLayout.setHorizontalGroup(
-            standardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(standardPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(standardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(indexCheckBox)
-                    .addComponent(quadratureCheckBox)
-                    .addGroup(standardPanelLayout.createSequentialGroup()
-                        .addComponent(resolutionLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resolutionSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(56, Short.MAX_VALUE))
-        );
-        standardPanelLayout.setVerticalGroup(
-            standardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(standardPanelLayout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(standardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(resolutionLabel1)
-                    .addComponent(resolutionSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addComponent(quadratureCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(indexCheckBox)
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
-
-        encoderTabbedPane.addTab(resourceMap.getString("standardPanel.TabConstraints.tabTitle"), standardPanel); // NOI18N
-
-        absolutePanel.setName("absolutePanel"); // NOI18N
-
-        buttonGroup2.add(grayCodeRadioButton);
-        grayCodeRadioButton.setSelected(true);
-        grayCodeRadioButton.setText(resourceMap.getString("grayCodeRadioButton.text")); // NOI18N
-        grayCodeRadioButton.setName("grayCodeRadioButton"); // NOI18N
-        grayCodeRadioButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                grayCodeRadioButtonMouseReleased(evt);
-            }
-        });
-
-        buttonGroup2.add(binaryCodeRadioButton);
-        binaryCodeRadioButton.setText(resourceMap.getString("binaryCodeRadioButton.text")); // NOI18N
-        binaryCodeRadioButton.setName("binaryCodeRadioButton"); // NOI18N
-        binaryCodeRadioButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                binaryCodeRadioButtonMouseReleased(evt);
-            }
-        });
-
-        resolutionLabel2.setLabelFor(absoluteResolutionComboBox);
-        resolutionLabel2.setText(resourceMap.getString("resolutionLabel2.text")); // NOI18N
-        resolutionLabel2.setName("resolutionLabel2"); // NOI18N
-
-        absoluteResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "4", "8", "16", "32", "64", "128", "256", "512", "1024" }));
-        absoluteResolutionComboBox.setSelectedIndex(3);
-        absoluteResolutionComboBox.setMinimumSize(new java.awt.Dimension(44, 18));
-        absoluteResolutionComboBox.setName("absoluteResolutionComboBox"); // NOI18N
-        absoluteResolutionComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                absoluteResolutionComboBoxItemStateChanged(evt);
-            }
-        });
-
-        javax.swing.GroupLayout absolutePanelLayout = new javax.swing.GroupLayout(absolutePanel);
-        absolutePanel.setLayout(absolutePanelLayout);
-        absolutePanelLayout.setHorizontalGroup(
-            absolutePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(absolutePanelLayout.createSequentialGroup()
-                .addGroup(absolutePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(absolutePanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(resolutionLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(absoluteResolutionComboBox, 0, 108, Short.MAX_VALUE))
-                    .addGroup(absolutePanelLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(absolutePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(binaryCodeRadioButton)
-                            .addComponent(grayCodeRadioButton))))
-                .addContainerGap())
-        );
-
-        absolutePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {binaryCodeRadioButton, grayCodeRadioButton});
-
-        absolutePanelLayout.setVerticalGroup(
-            absolutePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(absolutePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(absolutePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(resolutionLabel2)
-                    .addComponent(absoluteResolutionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(grayCodeRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(binaryCodeRadioButton)
-                .addContainerGap(24, Short.MAX_VALUE))
-        );
-
-        encoderTabbedPane.addTab(resourceMap.getString("absolutePanel.TabConstraints.tabTitle"), absolutePanel); // NOI18N
+        controlPanel.setName("controlPanel"); // NOI18N
+        controlPanel.setLayout(new java.awt.BorderLayout(0, 8));
 
         diameterPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         diameterPanel.setName("diameterPanel"); // NOI18N
+        diameterPanel.setLayout(new java.awt.GridBagLayout());
 
-        buttonGroup1.add(mmButton);
-        mmButton.setSelected(true);
-        mmButton.setText(resourceMap.getString("mmButton.text")); // NOI18N
-        mmButton.setName("mmButton"); // NOI18N
+        innerDiameterLabel.setLabelFor(innerDiameter);
+        innerDiameterLabel.setText(resourceMap.getString("innerDiameterLabel.text")); // NOI18N
+        innerDiameterLabel.setName("innerDiameterLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        diameterPanel.add(innerDiameterLabel, gridBagConstraints);
 
         innerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         innerDiameter.setText(resourceMap.getString("innerDiameter.text")); // NOI18N
@@ -345,15 +155,23 @@ public class WheelEncoderGeneratorView extends FrameView {
                 innerDiameterFocusLost(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 44;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        diameterPanel.add(innerDiameter, gridBagConstraints);
 
-        innerDiameterLabel.setLabelFor(innerDiameter);
-        innerDiameterLabel.setText(resourceMap.getString("innerDiameterLabel.text")); // NOI18N
-        innerDiameterLabel.setName("innerDiameterLabel"); // NOI18N
-
-        buttonGroup1.add(inchButton);
-        inchButton.setText(resourceMap.getString("inchButton.text")); // NOI18N
-        inchButton.setEnabled(false);
-        inchButton.setName("inchButton"); // NOI18N
+        outerDiameterLabel.setLabelFor(outerDiameter);
+        outerDiameterLabel.setText(resourceMap.getString("outerDiameterLabel.text")); // NOI18N
+        outerDiameterLabel.setName("outerDiameterLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
+        diameterPanel.add(outerDiameterLabel, gridBagConstraints);
 
         outerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         outerDiameter.setText(resourceMap.getString("outerDiameter.text")); // NOI18N
@@ -364,49 +182,170 @@ public class WheelEncoderGeneratorView extends FrameView {
                 outerDiameterFocusLost(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
+        diameterPanel.add(outerDiameter, gridBagConstraints);
 
-        outerDiameterLabel.setLabelFor(outerDiameter);
-        outerDiameterLabel.setText(resourceMap.getString("outerDiameterLabel.text")); // NOI18N
-        outerDiameterLabel.setName("outerDiameterLabel"); // NOI18N
+        buttonGroup1.add(mmButton);
+        mmButton.setSelected(true);
+        mmButton.setText(resourceMap.getString("mmButton.text")); // NOI18N
+        mmButton.setName("mmButton"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 10, 0);
+        diameterPanel.add(mmButton, gridBagConstraints);
 
-        javax.swing.GroupLayout diameterPanelLayout = new javax.swing.GroupLayout(diameterPanel);
-        diameterPanel.setLayout(diameterPanelLayout);
-        diameterPanelLayout.setHorizontalGroup(
-            diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, diameterPanelLayout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addGroup(diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(outerDiameterLabel)
-                    .addGroup(diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(diameterPanelLayout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addComponent(inchButton))
-                        .addComponent(innerDiameterLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(innerDiameter, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(outerDiameter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(mmButton))
-                .addGap(42, 42, 42))
-        );
-        diameterPanelLayout.setVerticalGroup(
-            diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, diameterPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(outerDiameterLabel)
-                    .addComponent(outerDiameter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(innerDiameter, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(innerDiameterLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(diameterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(inchButton)
-                    .addComponent(mmButton))
-                .addContainerGap())
-        );
+        buttonGroup1.add(inchButton);
+        inchButton.setText(resourceMap.getString("inchButton.text")); // NOI18N
+        inchButton.setEnabled(false);
+        inchButton.setName("inchButton"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 10, 0);
+        diameterPanel.add(inchButton, gridBagConstraints);
+
+        controlPanel.add(diameterPanel, java.awt.BorderLayout.CENTER);
+
+        encoderTabbedPane.setMinimumSize(new java.awt.Dimension(198, 177));
+        encoderTabbedPane.setName("encoderTabbedPane"); // NOI18N
+        encoderTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encoderTabbedPaneMouseClicked(evt);
+            }
+        });
+
+        standardPanel.setName("standardPanel"); // NOI18N
+        standardPanel.setLayout(new java.awt.GridBagLayout());
+
+        resolutionLabel1.setLabelFor(resolutionSpinner);
+        resolutionLabel1.setText(resourceMap.getString("resolutionLabel1.text")); // NOI18N
+        resolutionLabel1.setName("resolutionLabel1"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        standardPanel.add(resolutionLabel1, gridBagConstraints);
+
+        resolutionSpinner.setModel((SpinnerModel) resolutionSpinnerModel);
+        resolutionSpinner.setMinimumSize(new java.awt.Dimension(30, 20));
+        resolutionSpinner.setName("resolutionSpinner"); // NOI18N
+        resolutionSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                resolutionSpinnerStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 23;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        standardPanel.add(resolutionSpinner, gridBagConstraints);
+
+        quadratureCheckBox.setText(resourceMap.getString("quadratureCheckBox.text")); // NOI18N
+        quadratureCheckBox.setName("quadratureCheckBox"); // NOI18N
+        quadratureCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                quadratureCheckBoxItemStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        standardPanel.add(quadratureCheckBox, gridBagConstraints);
+
+        indexCheckBox.setText(resourceMap.getString("indexCheckBox.text")); // NOI18N
+        indexCheckBox.setName("indexCheckBox"); // NOI18N
+        indexCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                indexCheckBoxItemStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        standardPanel.add(indexCheckBox, gridBagConstraints);
+
+        encoderTabbedPane.addTab(resourceMap.getString("standardPanel.TabConstraints.tabTitle"), standardPanel); // NOI18N
+
+        absolutePanel.setName("absolutePanel"); // NOI18N
+        absolutePanel.setLayout(new java.awt.GridBagLayout());
+
+        buttonGroup2.add(grayCodeRadioButton);
+        grayCodeRadioButton.setSelected(true);
+        grayCodeRadioButton.setText(resourceMap.getString("grayCodeRadioButton.text")); // NOI18N
+        grayCodeRadioButton.setName("grayCodeRadioButton"); // NOI18N
+        grayCodeRadioButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                grayCodeRadioButtonMouseReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 6;
+        absolutePanel.add(grayCodeRadioButton, gridBagConstraints);
+
+        buttonGroup2.add(binaryCodeRadioButton);
+        binaryCodeRadioButton.setText(resourceMap.getString("binaryCodeRadioButton.text")); // NOI18N
+        binaryCodeRadioButton.setName("binaryCodeRadioButton"); // NOI18N
+        binaryCodeRadioButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                binaryCodeRadioButtonMouseReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        absolutePanel.add(binaryCodeRadioButton, gridBagConstraints);
+
+        resolutionLabel2.setLabelFor(absoluteResolutionComboBox);
+        resolutionLabel2.setText(resourceMap.getString("resolutionLabel2.text")); // NOI18N
+        resolutionLabel2.setName("resolutionLabel2"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 8);
+        absolutePanel.add(resolutionLabel2, gridBagConstraints);
+
+        absoluteResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096" }));
+        absoluteResolutionComboBox.setSelectedIndex(3);
+        absoluteResolutionComboBox.setName("absoluteResolutionComboBox"); // NOI18N
+        absoluteResolutionComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                absoluteResolutionComboBoxItemStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 35;
+        gridBagConstraints.ipady = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 10);
+        absolutePanel.add(absoluteResolutionComboBox, gridBagConstraints);
+
+        encoderTabbedPane.addTab(resourceMap.getString("absolutePanel.TabConstraints.tabTitle"), absolutePanel); // NOI18N
+
+        controlPanel.add(encoderTabbedPane, java.awt.BorderLayout.PAGE_START);
 
         buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         buttonPanel.setName("buttonPanel"); // NOI18N
@@ -436,9 +375,9 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(printButton, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE))
+                    .addComponent(printButton, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
                 .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
@@ -453,18 +392,17 @@ public class WheelEncoderGeneratorView extends FrameView {
                 .addContainerGap())
         );
 
+        controlPanel.add(buttonPanel, java.awt.BorderLayout.PAGE_END);
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(encoderTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(diameterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -472,13 +410,8 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(encoderTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(diameterPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
+                    .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -491,6 +424,32 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
+
+        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+        jMenuItem1.setEnabled(false);
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        fileMenu.add(jMenuItem1);
+
+        jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
+        jMenuItem2.setEnabled(false);
+        jMenuItem2.setName("jMenuItem2"); // NOI18N
+        fileMenu.add(jMenuItem2);
+
+        jSeparator3.setName("jSeparator3"); // NOI18N
+        fileMenu.add(jSeparator3);
+
+        jMenuItem3.setText(resourceMap.getString("jMenuItem3.text")); // NOI18N
+        jMenuItem3.setEnabled(false);
+        jMenuItem3.setName("jMenuItem3"); // NOI18N
+        fileMenu.add(jMenuItem3);
+
+        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
+        jMenuItem4.setEnabled(false);
+        jMenuItem4.setName("jMenuItem4"); // NOI18N
+        fileMenu.add(jMenuItem4);
+
+        jSeparator1.setName("jSeparator1"); // NOI18N
+        fileMenu.add(jSeparator1);
 
         printMenuItem.setAction(actionMap.get("printEncoder")); // NOI18N
         printMenuItem.setText(resourceMap.getString("printMenuItem.text")); // NOI18N
@@ -515,51 +474,8 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         menuBar.add(helpMenu);
 
-        statusPanel.setName("statusPanel"); // NOI18N
-        statusPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                statusPanelMouseClicked(evt);
-            }
-        });
-
-        statusPanelSeparator.setName("statusPanelSeparator"); // NOI18N
-
-        statusMessageLabel.setName("statusMessageLabel"); // NOI18N
-
-        statusAnimationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        statusAnimationLabel.setName("statusAnimationLabel"); // NOI18N
-
-        progressBar.setName("progressBar"); // NOI18N
-
-        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
-        statusPanel.setLayout(statusPanelLayout);
-        statusPanelLayout.setHorizontalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 564, Short.MAX_VALUE)
-                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statusAnimationLabel)
-                .addContainerGap())
-        );
-        statusPanelLayout.setVerticalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addComponent(statusPanelSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(statusMessageLabel)
-                    .addComponent(statusAnimationLabel)
-                    .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3))
-        );
-
         setComponent(mainPanel);
         setMenuBar(menuBar);
-        setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
     private void quadratureCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_quadratureCheckBoxItemStateChanged
@@ -587,10 +503,6 @@ public class WheelEncoderGeneratorView extends FrameView {
     private void mainPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainPanelMouseClicked
         showPreview();
     }//GEN-LAST:event_mainPanelMouseClicked
-
-    private void statusPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statusPanelMouseClicked
-        showPreview();
-    }//GEN-LAST:event_statusPanelMouseClicked
 
     private void menuBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuBarMouseClicked
         showPreview();
@@ -696,6 +608,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JPanel buttonPanel;
+    private javax.swing.JPanel controlPanel;
     private javax.swing.JPanel diameterPanel;
     private wheelencodergenerator.EncoderPanel encoderPanel;
     private javax.swing.JTabbedPane encoderTabbedPane;
@@ -705,7 +618,13 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JCheckBox indexCheckBox;
     private javax.swing.JTextField innerDiameter;
     private javax.swing.JLabel innerDiameterLabel;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JRadioButton mmButton;
@@ -713,23 +632,14 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JLabel outerDiameterLabel;
     private javax.swing.JButton printButton;
     private javax.swing.JMenuItem printMenuItem;
-    private javax.swing.JProgressBar progressBar;
     private javax.swing.JCheckBox quadratureCheckBox;
     private javax.swing.JLabel resolutionLabel1;
     private javax.swing.JLabel resolutionLabel2;
     private javax.swing.JSpinner resolutionSpinner;
     private javax.swing.JButton saveButton;
     private javax.swing.JPanel standardPanel;
-    private javax.swing.JLabel statusAnimationLabel;
-    private javax.swing.JLabel statusMessageLabel;
-    private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
 
-    private final Timer messageTimer;
-    private final Timer busyIconTimer;
-    private final Icon idleIcon;
-    private final Icon[] busyIcons = new Icon[15];
-    private int busyIconIndex = 0;
     private SpinnerNumberModel resolutionSpinnerModel = new SpinnerNumberModel(16, 4, 36000, 2);
     private SpinnerNumberModel absoluteSpinnerModel = new SpinnerNumberModel(4, 2, 8, 1);
     private JDialog aboutBox;
