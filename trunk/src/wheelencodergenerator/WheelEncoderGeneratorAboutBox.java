@@ -13,7 +13,7 @@ public class WheelEncoderGeneratorAboutBox extends javax.swing.JDialog {
         initComponents();
         getRootPane().setDefaultButton(closeButton);
     }
-
+    // TODO: splash screen and about image
     @Action public void closeAboutBox() {
         dispose();
     }
