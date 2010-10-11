@@ -109,6 +109,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getResourceMap(WheelEncoderGeneratorView.class);
         encoderPanel.setBackground(resourceMap.getColor("encoderPanel.background")); // NOI18N
         encoderPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder(resourceMap.getColor("encoderPanel.border.highlightColor"), null)); // NOI18N
+        encoderPanel.setToolTipText(resourceMap.getString("encoderPanel.toolTipText")); // NOI18N
         encoderPanel.setMaximumSize(new java.awt.Dimension(200, 200));
         encoderPanel.setMinimumSize(new java.awt.Dimension(200, 200));
         encoderPanel.setName("encoderPanel"); // NOI18N
@@ -149,6 +150,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         innerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         innerDiameter.setText(resourceMap.getString("innerDiameter.text")); // NOI18N
+        innerDiameter.setToolTipText(resourceMap.getString("innerDiameter.toolTipText")); // NOI18N
         innerDiameter.setName("innerDiameter"); // NOI18N
         innerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -175,6 +177,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         outerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         outerDiameter.setText(resourceMap.getString("outerDiameter.text")); // NOI18N
+        outerDiameter.setToolTipText(resourceMap.getString("outerDiameter.toolTipText")); // NOI18N
         outerDiameter.setMinimumSize(new java.awt.Dimension(20, 20));
         outerDiameter.setName("outerDiameter"); // NOI18N
         outerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -193,6 +196,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         buttonGroup1.add(mmButton);
         mmButton.setSelected(true);
         mmButton.setText(resourceMap.getString("mmButton.text")); // NOI18N
+        mmButton.setToolTipText(resourceMap.getString("mmButton.toolTipText")); // NOI18N
         mmButton.setName("mmButton"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -202,6 +206,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         buttonGroup1.add(inchButton);
         inchButton.setText(resourceMap.getString("inchButton.text")); // NOI18N
+        inchButton.setToolTipText(resourceMap.getString("inchButton.toolTipText")); // NOI18N
         inchButton.setEnabled(false);
         inchButton.setName("inchButton"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -213,6 +218,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         controlPanel.add(diameterPanel, java.awt.BorderLayout.CENTER);
 
+        encoderTabbedPane.setToolTipText(resourceMap.getString("encoderTabbedPane.toolTipText")); // NOI18N
         encoderTabbedPane.setMinimumSize(new java.awt.Dimension(198, 177));
         encoderTabbedPane.setName("encoderTabbedPane"); // NOI18N
         encoderTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -235,6 +241,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         standardPanel.add(resolutionLabel1, gridBagConstraints);
 
         resolutionSpinner.setModel((SpinnerModel) resolutionSpinnerModel);
+        resolutionSpinner.setToolTipText(resourceMap.getString("resolutionSpinner.toolTipText")); // NOI18N
         resolutionSpinner.setMinimumSize(new java.awt.Dimension(30, 20));
         resolutionSpinner.setName("resolutionSpinner"); // NOI18N
         resolutionSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -251,6 +258,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         standardPanel.add(resolutionSpinner, gridBagConstraints);
 
         quadratureCheckBox.setText(resourceMap.getString("quadratureCheckBox.text")); // NOI18N
+        quadratureCheckBox.setToolTipText(resourceMap.getString("quadratureCheckBox.toolTipText")); // NOI18N
         quadratureCheckBox.setName("quadratureCheckBox"); // NOI18N
         quadratureCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -266,6 +274,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         standardPanel.add(quadratureCheckBox, gridBagConstraints);
 
         indexCheckBox.setText(resourceMap.getString("indexCheckBox.text")); // NOI18N
+        indexCheckBox.setToolTipText(resourceMap.getString("indexCheckBox.toolTipText")); // NOI18N
         indexCheckBox.setName("indexCheckBox"); // NOI18N
         indexCheckBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -287,6 +296,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         buttonGroup2.add(grayCodeRadioButton);
         grayCodeRadioButton.setSelected(true);
         grayCodeRadioButton.setText(resourceMap.getString("grayCodeRadioButton.text")); // NOI18N
+        grayCodeRadioButton.setToolTipText(resourceMap.getString("grayCodeRadioButton.toolTipText")); // NOI18N
         grayCodeRadioButton.setName("grayCodeRadioButton"); // NOI18N
         grayCodeRadioButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -302,6 +312,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         buttonGroup2.add(binaryCodeRadioButton);
         binaryCodeRadioButton.setText(resourceMap.getString("binaryCodeRadioButton.text")); // NOI18N
+        binaryCodeRadioButton.setToolTipText(resourceMap.getString("binaryCodeRadioButton.toolTipText")); // NOI18N
         binaryCodeRadioButton.setName("binaryCodeRadioButton"); // NOI18N
         binaryCodeRadioButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -328,6 +339,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         absoluteResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096" }));
         absoluteResolutionComboBox.setSelectedIndex(3);
+        absoluteResolutionComboBox.setToolTipText(resourceMap.getString("absoluteResolutionComboBox.toolTipText")); // NOI18N
         absoluteResolutionComboBox.setName("absoluteResolutionComboBox"); // NOI18N
         absoluteResolutionComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -353,6 +365,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getActionMap(WheelEncoderGeneratorView.class, this);
         printButton.setAction(actionMap.get("printEncoder")); // NOI18N
         printButton.setText(resourceMap.getString("printButton.text")); // NOI18N
+        printButton.setToolTipText(resourceMap.getString("printButton.toolTipText")); // NOI18N
         printButton.setName("printButton"); // NOI18N
         printButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
