@@ -9,6 +9,8 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpinnerModel;
 import java.awt.event.*;
@@ -21,12 +23,40 @@ import java.awt.*;
 public class WheelEncoderGeneratorView extends FrameView {
 
     private WheelEncoder encoder;
+    public static boolean MAC_OS_X = (System.getProperty("os.name").toLowerCase().startsWith("mac os x"));
+    public static int MENU_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
     public WheelEncoderGeneratorView(SingleFrameApplication app) {
         super(app);
 
         initComponents();
 
+        // Mac OS X vs Windows specific stuff
+        //
+
+        /*
+        if(System.getProperty("mrj.version") == null)
+        {
+
+        }
+        else
+        {
+           MRJApplicationUtils.registerQuitHandler(new MRJQuitHandler()
+           {
+              public void handleQuit()
+              {
+                 SwingUtilities.invokeLater(new Runnable() {
+                    public void run()
+                    {
+                       if(promptTheUser())
+                          System.exit(0);
+                    }
+                 });
+                 throw new IllegalStateException("Stop Pending User Confirmation");
+              }
+           });
+        }
+*/
         encoder = new WheelEncoder();
 
         encoderPanel.setWheelEncoder(encoder);
@@ -82,16 +112,16 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveButton = new javax.swing.JButton();
         exportButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
-        javax.swing.JMenu fileMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        fileMenu = new javax.swing.JMenu();
+        newMenuItem = new javax.swing.JMenuItem();
+        openMenuItem = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
+        saveAsMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         printMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        quitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         buttonGroup1 = new javax.swing.ButtonGroup();
@@ -429,6 +459,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         );
 
         menuBar.setName("menuBar"); // NOI18N
+        int keyModifier = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
         menuBar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 menuBarMouseClicked(evt);
@@ -438,28 +469,27 @@ public class WheelEncoderGeneratorView extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
-        jMenuItem1.setEnabled(false);
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        fileMenu.add(jMenuItem1);
+        newMenuItem.setText(resourceMap.getString("newMenuItem.text")); // NOI18N
+        newMenuItem.setName("newMenuItem"); // NOI18N
+        fileMenu.add(newMenuItem);
+        newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,keyModifier));
 
-        jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
-        jMenuItem2.setEnabled(false);
-        jMenuItem2.setName("jMenuItem2"); // NOI18N
-        fileMenu.add(jMenuItem2);
+        openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
+        openMenuItem.setName("openMenuItem"); // NOI18N
+        fileMenu.add(openMenuItem);
+        openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,keyModifier));
 
         jSeparator3.setName("jSeparator3"); // NOI18N
         fileMenu.add(jSeparator3);
 
-        jMenuItem3.setText(resourceMap.getString("jMenuItem3.text")); // NOI18N
-        jMenuItem3.setEnabled(false);
-        jMenuItem3.setName("jMenuItem3"); // NOI18N
-        fileMenu.add(jMenuItem3);
+        saveMenuItem.setText(resourceMap.getString("saveMenuItem.text")); // NOI18N
+        saveMenuItem.setName("saveMenuItem"); // NOI18N
+        fileMenu.add(saveMenuItem);
+        saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,keyModifier));
 
-        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
-        jMenuItem4.setEnabled(false);
-        jMenuItem4.setName("jMenuItem4"); // NOI18N
-        fileMenu.add(jMenuItem4);
+        saveAsMenuItem.setText(resourceMap.getString("saveAsMenuItem.text")); // NOI18N
+        saveAsMenuItem.setName("saveAsMenuItem"); // NOI18N
+        fileMenu.add(saveAsMenuItem);
 
         jSeparator1.setName("jSeparator1"); // NOI18N
         fileMenu.add(jSeparator1);
@@ -468,13 +498,21 @@ public class WheelEncoderGeneratorView extends FrameView {
         printMenuItem.setText(resourceMap.getString("printMenuItem.text")); // NOI18N
         printMenuItem.setName("printMenuItem"); // NOI18N
         fileMenu.add(printMenuItem);
+        printMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,keyModifier));
 
         jSeparator2.setName("jSeparator2"); // NOI18N
-        fileMenu.add(jSeparator2);
+        if (!MAC_OS_X) {
+            fileMenu.add(jSeparator2);
 
-        exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
-        exitMenuItem.setName("exitMenuItem"); // NOI18N
-        fileMenu.add(exitMenuItem);
+            quitMenuItem.setText(resourceMap.getString("quitMenuItem.text")); // NOI18N
+            quitMenuItem.setName("quitMenuItem"); // NOI18N
+            quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    quitMenuItemActionPerformed(evt);
+                }
+            });
+            fileMenu.add(quitMenuItem);
+        }
 
         menuBar.add(fileMenu);
 
@@ -485,7 +523,9 @@ public class WheelEncoderGeneratorView extends FrameView {
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
-        menuBar.add(helpMenu);
+        if(!MAC_OS_X) {
+            menuBar.add(helpMenu);
+        }
 
         setComponent(mainPanel);
         setMenuBar(menuBar);
@@ -544,6 +584,11 @@ public class WheelEncoderGeneratorView extends FrameView {
     private void encoderTabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encoderTabbedPaneMouseClicked
         showPreview();
     }//GEN-LAST:event_encoderTabbedPaneMouseClicked
+
+    private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
+        //if(promptTheUser())
+            System.exit(0);
+    }//GEN-LAST:event_quitMenuItemActionPerformed
 
     // TODO: Deal with improperly formatted numbers
     private boolean errorCheck()
@@ -626,30 +671,32 @@ public class WheelEncoderGeneratorView extends FrameView {
     private wheelencodergenerator.EncoderPanel encoderPanel;
     private javax.swing.JTabbedPane encoderTabbedPane;
     private javax.swing.JButton exportButton;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.JRadioButton grayCodeRadioButton;
     private javax.swing.JRadioButton inchButton;
     private javax.swing.JCheckBox indexCheckBox;
     private javax.swing.JTextField innerDiameter;
     private javax.swing.JLabel innerDiameterLabel;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JRadioButton mmButton;
+    private javax.swing.JMenuItem newMenuItem;
+    private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JTextField outerDiameter;
     private javax.swing.JLabel outerDiameterLabel;
     private javax.swing.JButton printButton;
     private javax.swing.JMenuItem printMenuItem;
     private javax.swing.JCheckBox quadratureCheckBox;
+    private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JLabel resolutionLabel1;
     private javax.swing.JLabel resolutionLabel2;
     private javax.swing.JSpinner resolutionSpinner;
+    private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JButton saveButton;
+    private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JPanel standardPanel;
     // End of variables declaration//GEN-END:variables
 
