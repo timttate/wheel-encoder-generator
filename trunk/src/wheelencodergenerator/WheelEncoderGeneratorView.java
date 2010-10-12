@@ -154,11 +154,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 484, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 586, Short.MAX_VALUE)
+            .addGap(0, 567, Short.MAX_VALUE)
         );
 
         controlPanel.setName("controlPanel"); // NOI18N
@@ -181,7 +181,9 @@ public class WheelEncoderGeneratorView extends FrameView {
         innerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         innerDiameter.setText(resourceMap.getString("innerDiameter.text")); // NOI18N
         innerDiameter.setToolTipText(resourceMap.getString("innerDiameter.toolTipText")); // NOI18N
+        innerDiameter.setMinimumSize(new java.awt.Dimension(30, 28));
         innerDiameter.setName("innerDiameter"); // NOI18N
+        innerDiameter.setPreferredSize(new java.awt.Dimension(40, 28));
         innerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 innerDiameterFocusLost(evt);
@@ -190,7 +192,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 44;
+        gridBagConstraints.ipadx = 30;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         diameterPanel.add(innerDiameter, gridBagConstraints);
@@ -208,8 +210,9 @@ public class WheelEncoderGeneratorView extends FrameView {
         outerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         outerDiameter.setText(resourceMap.getString("outerDiameter.text")); // NOI18N
         outerDiameter.setToolTipText(resourceMap.getString("outerDiameter.toolTipText")); // NOI18N
-        outerDiameter.setMinimumSize(new java.awt.Dimension(20, 20));
+        outerDiameter.setMinimumSize(new java.awt.Dimension(30, 28));
         outerDiameter.setName("outerDiameter"); // NOI18N
+        outerDiameter.setPreferredSize(new java.awt.Dimension(40, 28));
         outerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 outerDiameterFocusLost(evt);
@@ -338,6 +341,8 @@ public class WheelEncoderGeneratorView extends FrameView {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.ipadx = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         absolutePanel.add(grayCodeRadioButton, gridBagConstraints);
 
         buttonGroup2.add(binaryCodeRadioButton);
@@ -353,7 +358,8 @@ public class WheelEncoderGeneratorView extends FrameView {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 10, 0);
         absolutePanel.add(binaryCodeRadioButton, gridBagConstraints);
 
         resolutionLabel2.setLabelFor(absoluteResolutionComboBox);
@@ -370,7 +376,9 @@ public class WheelEncoderGeneratorView extends FrameView {
         absoluteResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096" }));
         absoluteResolutionComboBox.setSelectedIndex(3);
         absoluteResolutionComboBox.setToolTipText(resourceMap.getString("absoluteResolutionComboBox.toolTipText")); // NOI18N
+        absoluteResolutionComboBox.setMinimumSize(null);
         absoluteResolutionComboBox.setName("absoluteResolutionComboBox"); // NOI18N
+        absoluteResolutionComboBox.setPreferredSize(new java.awt.Dimension(54, 27));
         absoluteResolutionComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 absoluteResolutionComboBoxItemStateChanged(evt);
@@ -418,9 +426,9 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(printButton, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+                    .addComponent(printButton, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
                 .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
@@ -443,9 +451,9 @@ public class WheelEncoderGeneratorView extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -453,7 +461,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
                     .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
