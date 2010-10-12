@@ -67,7 +67,7 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
             double ratio = (double) e.getInnerDiameter() / (double) e.getOuterDiameter();
             double id = d * ratio;
             double x = (size.width - d)/2;
-            double y = (size.height - d)/2;
+            double y = 0; // align top
             double trackWidth = (d - id)/2;
             double offset = 0;
             int maxTrack = 0;

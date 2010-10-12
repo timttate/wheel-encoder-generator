@@ -127,7 +127,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
 
-        mainPanel.setMinimumSize(null);
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -139,7 +138,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setBackground(resourceMap.getColor("encoderPanel.background")); // NOI18N
         encoderPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder(resourceMap.getColor("encoderPanel.border.highlightColor"), null)); // NOI18N
         encoderPanel.setToolTipText(resourceMap.getString("encoderPanel.toolTipText")); // NOI18N
-        encoderPanel.setMaximumSize(null);
         encoderPanel.setMinimumSize(new java.awt.Dimension(300, 300));
         encoderPanel.setName("encoderPanel"); // NOI18N
         encoderPanel.setPreferredSize(new java.awt.Dimension(400, 400));
@@ -153,20 +151,18 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
+            .addGap(0, 501, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
+            .addGap(0, 453, Short.MAX_VALUE)
         );
 
         controlPanel.setName("controlPanel"); // NOI18N
         controlPanel.setLayout(new java.awt.BorderLayout(0, 8));
 
         diameterPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        diameterPanel.setMinimumSize(null);
         diameterPanel.setName("diameterPanel"); // NOI18N
-        diameterPanel.setPreferredSize(null);
         diameterPanel.setLayout(new java.awt.GridBagLayout());
 
         innerDiameterLabel.setLabelFor(innerDiameter);
@@ -253,9 +249,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         controlPanel.add(diameterPanel, java.awt.BorderLayout.CENTER);
 
         encoderTabbedPane.setToolTipText(resourceMap.getString("encoderTabbedPane.toolTipText")); // NOI18N
-        encoderTabbedPane.setMinimumSize(null);
         encoderTabbedPane.setName("encoderTabbedPane"); // NOI18N
-        encoderTabbedPane.setPreferredSize(null);
         encoderTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 encoderTabbedPaneMouseClicked(evt);
@@ -400,7 +394,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         controlPanel.add(encoderTabbedPane, java.awt.BorderLayout.PAGE_START);
 
         buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        buttonPanel.setMinimumSize(null);
         buttonPanel.setName("buttonPanel"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getActionMap(WheelEncoderGeneratorView.class, this);
@@ -460,7 +453,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -470,9 +463,9 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
                     .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         menuBar.setName("menuBar"); // NOI18N
