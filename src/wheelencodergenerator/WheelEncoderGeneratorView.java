@@ -4,6 +4,7 @@
 
 package wheelencodergenerator;
 
+import com.botthoughts.JFileFilter;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
