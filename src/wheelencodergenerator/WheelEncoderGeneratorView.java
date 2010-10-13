@@ -36,6 +36,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     public static int MENU_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
     // TODO: Low: implement mm/inch functionality
+    // TODO: Med: implement image export
 
     public WheelEncoderGeneratorView(SingleFrameApplication app) {
         super(app);
@@ -99,6 +100,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
+        exportMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         printMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -450,6 +452,10 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveAsMenuItem.setName("saveAsMenuItem"); // NOI18N
         fileMenu.add(saveAsMenuItem);
 
+        exportMenuItem.setText(resourceMap.getString("exportMenuItem.text")); // NOI18N
+        exportMenuItem.setName("exportMenuItem"); // NOI18N
+        fileMenu.add(exportMenuItem);
+
         jSeparator1.setName("jSeparator1"); // NOI18N
         fileMenu.add(jSeparator1);
 
@@ -677,6 +683,8 @@ public class WheelEncoderGeneratorView extends FrameView {
                 input.setForeground(Color.red);
             else
                 input.setForeground(Color.black);
+
+            guiErrorController(outcome);
             
             return outcome;
         }
@@ -725,13 +733,11 @@ public class WheelEncoderGeneratorView extends FrameView {
                 outerDiameter.setForeground(Color.black);
                 innerDiameter.setForeground(Color.black);
             }
-
             // Is resolution even (ok), or odd (not ok) ?
             int i = Integer.parseInt(resolutionSpinner.getModel().getValue().toString());
             if ( (i % 2) > 0 ) {
                 i++; // just fix it (note that we can never get Maximum+1 so we can get away with increment
                 resolutionSpinner.getModel().setValue(i);
-                result = false;
             }
         } catch (NumberFormatException e) {
             result = false;
@@ -742,10 +748,30 @@ public class WheelEncoderGeneratorView extends FrameView {
         }
 
         // Disable functionality (print, etc) if something is jacked up
-        // TODO: handle input errors and menu/toolbar disable more globally to prevent override on Save items
+        guiErrorController(result);
+
+        return result;
+    }
+
+    /* guiErrorController
+     * 
+     * If there's an error this can be used to disable a bunch of interface
+     * elements (save, save as, etc.  Or re-enable if error is gone.
+     */
+    private void guiErrorController(boolean result)
+    {
         printMenuItem.setEnabled(result);
         printButton.setEnabled(result);
-        return result;
+        saveAsMenuItem.setEnabled(result);
+        saveAsButton.setEnabled(result);
+        saveMenuItem.setEnabled(result);
+        saveButton.setEnabled(result);
+        exportMenuItem.setEnabled(result);
+        exportButton.setEnabled(result);
+        newMenuItem.setEnabled(result);
+        newButton.setEnabled(result);
+        openMenuItem.setEnabled(result);
+        openButton.setEnabled(result);
     }
 
     @Action
@@ -772,17 +798,19 @@ public class WheelEncoderGeneratorView extends FrameView {
                 encoder.setResolution(Integer.parseInt(resolutionSpinner.getModel().getValue().toString()));
             }
             encoderPanel.repaint();
+
+            // Since showPreview() gets called anytime there's a change to the
+            // encoder--load, save, modify, etc.--why not enable/disable the save
+            // menu items here?
+            if (encoder.isChanged()) {
+                saveMenuItem.setEnabled(true);
+                saveButton.setEnabled(true);
+            } else {
+                saveMenuItem.setEnabled(false);
+                saveButton.setEnabled(false);
+            }
         }
-        // Since showPreview() gets called anytime there's a change to the
-        // encoder--load, save, modify, etc.--why not enable/disable the save
-        // menu items here?
-        if (encoder.isChanged()) {
-            saveMenuItem.setEnabled(true);
-            saveButton.setEnabled(true);
-        } else {
-            saveMenuItem.setEnabled(false);
-            saveButton.setEnabled(false);
-        }
+
     }
 
    
@@ -823,7 +851,6 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         if (encoder != null) { // null if first time through
             if (encoder.isChanged()) {
-                // TODO: identify the filename / untitled
                 int response = JOptionPane.showConfirmDialog(getFrame(),
                     "The encoder " + getFilename() + " has changed. Save the changes?", "Save?",
                     JOptionPane.YES_NO_CANCEL_OPTION,
@@ -869,7 +896,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             }
             if (f.exists()) {
                 int response = JOptionPane.showConfirmDialog(getFrame(),
-                    "Replace existing file "+f.getName()+"?", "Replace?",
+                    "Replace existing file " + f.getName() + "?", "Replace?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE );
                 if (response == JOptionPane.YES_OPTION) {
@@ -977,6 +1004,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     private wheelencodergenerator.EncoderPanel encoderPanel;
     private javax.swing.JTabbedPane encoderTabbedPane;
     private javax.swing.JButton exportButton;
+    private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JRadioButton grayCodeRadioButton;
     private javax.swing.JRadioButton inchButton;
