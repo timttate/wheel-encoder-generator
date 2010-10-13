@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package wheelencodergenerator;
+package com.botthoughts;
 
 
 /*
@@ -57,6 +57,14 @@ public class JFileFilter extends javax.swing.filechooser.FileFilter {
 
   public void addType(String s) {
     exts.add(s);
+  }
+
+  public String getExtension() {
+      return getExtension(0);
+  }
+
+  public String getExtension(int index) {
+     return exts.get(index).toString();
   }
 
   /** Return true if the given file is accepted by this filter. */
