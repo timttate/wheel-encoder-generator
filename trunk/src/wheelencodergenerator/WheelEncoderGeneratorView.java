@@ -25,7 +25,7 @@ import java.io.*;
 public class WheelEncoderGeneratorView extends FrameView {
 
     private WheelEncoder encoder;
-    private File encoderFile; // TODO: encapsulate in encoder?
+    private File encoderFile; // TODO: Med: encapsulate in encoder?
     private JFileFilter wegFileFilter = new JFileFilter();
     public static boolean MAC_OS_X = (System.getProperty("os.name").toLowerCase().startsWith("mac os x"));
     public static int MENU_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
@@ -38,38 +38,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         wegFileFilter.setDescription("Wheel Encoder Generator files");
         wegFileFilter.addType(".weg");
 
-        // Mac OS X vs Windows specific stuff
-        //
+        // Mac OS X vs Windows specific stuff here
 
-        /*
-        if(System.getProperty("mrj.version") == null)
-        {
-
-        }
-        else
-        {
-           MRJApplicationUtils.registerQuitHandler(new MRJQuitHandler()
-           {
-              public void handleQuit()
-              {
-                 SwingUtilities.invokeLater(new Runnable() {
-                    public void run()
-                    {
-                       if(promptTheUser())
-                          System.exit(0);
-                    }
-                 });
-                 throw new IllegalStateException("Stop Pending User Confirmation");
-              }
-           });
-        }
-*/
         // Initial "load" of new encoder
         newEncoder();
     }
-
-    // TODO: Error indicator for odd, or use input validator
-    // new -> fails to select tab
 
     @Action
     public void showAboutBox() {
@@ -663,30 +636,37 @@ public class WheelEncoderGeneratorView extends FrameView {
         }
     }
 
-    // TODO: disable save if saved
-
-    // TODO: Deal with improperly formatted numbers
     private boolean errorCheck()
     {
         boolean result=true;
-        if ( Integer.parseInt(innerDiameter.getText()) >= Integer.parseInt(outerDiameter.getText()) ) {
-            outerDiameterLabel.setForeground(Color.red);
-            innerDiameterLabel.setForeground(Color.red);
+        
+        try {
+            if ( Integer.parseInt(innerDiameter.getText()) >= Integer.parseInt(outerDiameter.getText()) ) {
+                outerDiameterLabel.setForeground(Color.red);
+                innerDiameterLabel.setForeground(Color.red);
+                result = false;
+            }
+            else {
+                outerDiameterLabel.setForeground(Color.black);
+                innerDiameterLabel.setForeground(Color.black);
+            }
+
+            // Is resolution even (ok), or odd (not ok) ?
+            if ( (Integer.parseInt(resolutionSpinner.getModel().getValue().toString()) % 2) > 0 ) {
+                resolutionLabel1.setForeground(Color.red);
+                result = false;
+            }
+            else {
+                resolutionLabel2.setForeground(Color.black);
+            }
+        } catch (NumberFormatException e) {
             result = false;
-        }
-        else {
-            outerDiameterLabel.setForeground(Color.black);
-            innerDiameterLabel.setForeground(Color.black);
+            // TODO: Med: input validator for numbers instead
+            JOptionPane.showMessageDialog(getFrame(),
+                    "Numbers must be non-zero", "Error",
+                    JOptionPane.ERROR_MESSAGE );
         }
 
-        // Is resolution even (ok), or odd (not ok) ?
-        if ( (Integer.parseInt(resolutionSpinner.getModel().getValue().toString()) % 2) > 0 ) {
-            resolutionLabel2.setForeground(Color.red);
-            result = false;
-        }
-        else {
-            resolutionLabel2.setForeground(Color.black);
-        }
         // Disable functionality (print, etc) if something is jacked up
         printMenuItem.setEnabled(result);
         printButton.setEnabled(result);
@@ -696,32 +676,42 @@ public class WheelEncoderGeneratorView extends FrameView {
     @Action
     public void showPreview()
     {
-        encoder.setInnerDiameter(Integer.parseInt(innerDiameter.getText()));
-        encoder.setOuterDiameter(Integer.parseInt(outerDiameter.getText()));
+        if (errorCheck()) {
+            encoder.setInnerDiameter(Integer.parseInt(innerDiameter.getText()));
+            encoder.setOuterDiameter(Integer.parseInt(outerDiameter.getText()));
 
-        // Absolute Encoder
-        if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Absolute")) {
-            encoder.setType(WheelEncoder.ABSOLUTE);
-            if (grayCodeRadioButton.isSelected() == true)
-                encoder.setNumbering(WheelEncoder.GRAY);
-            else if (binaryCodeRadioButton.isSelected() == true)
-                encoder.setNumbering(WheelEncoder.BINARY);
+            // Absolute Encoder
+            if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Absolute")) {
+                encoder.setType(WheelEncoder.ABSOLUTE);
+                if (grayCodeRadioButton.isSelected() == true)
+                    encoder.setNumbering(WheelEncoder.GRAY);
+                else if (binaryCodeRadioButton.isSelected() == true)
+                    encoder.setNumbering(WheelEncoder.BINARY);
 
-            // ComboBox menu is set up so that # of tracks corresponds to selected index + 1
-            encoder.setResolution(absoluteResolutionComboBox.getSelectedIndex()+1);
-            //System.out.println("Track count: " + Integer.toString(encoder.getResolution()) + "\n");
-        }
-        else if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Standard")) {
-            encoder.setType(WheelEncoder.STANDARD);
-            encoder.setResolution(Integer.parseInt(resolutionSpinner.getModel().getValue().toString()));
-        }
-        if (errorCheck())
+                // ComboBox menu is set up so that # of tracks corresponds to selected index + 1
+                encoder.setResolution(absoluteResolutionComboBox.getSelectedIndex()+1);
+                //System.out.println("Track count: " + Integer.toString(encoder.getResolution()) + "\n");
+            }
+            else if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Standard")) {
+                encoder.setType(WheelEncoder.STANDARD);
+                encoder.setResolution(Integer.parseInt(resolutionSpinner.getModel().getValue().toString()));
+            }
             encoderPanel.repaint();
+        }
+        // Since showPreview() gets called anytime there's a change to the
+        // encoder--load, save, modify, etc.--why not enable/disable the save
+        // menu items here?
+        if (encoder.isChanged()) {
+            saveMenuItem.setEnabled(true);
+            saveButton.setEnabled(true);
+        } else {
+            saveMenuItem.setEnabled(false);
+            saveButton.setEnabled(false);
+        }
     }
 
    
 
-    // TODO: make sure there are no errors before printing
     @Action
     public void printEncoder() {
         PrinterJob job = PrinterJob.getPrinterJob();
@@ -772,7 +762,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             setWheelEncoder(new WheelEncoder());
             encoderPanel.setWheelEncoder(encoder);
             showPreview();
-            // TODO: encapsulate encoderFile setting and title bar in one method
+            // TODO: Low: Encapsulate encoderFile setting and title bar in one method
             encoderFile = null;
             getFrame().setTitle("Untitled - " + appTitle);
         }
