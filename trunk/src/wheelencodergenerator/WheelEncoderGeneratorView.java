@@ -13,7 +13,10 @@ import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpinnerModel;
+import javax.swing.InputVerifier;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JComponent;
 import java.awt.event.*;
 import java.awt.print.*;
 import java.awt.*;
@@ -27,8 +30,11 @@ public class WheelEncoderGeneratorView extends FrameView {
     private WheelEncoder encoder;
     private File encoderFile; // TODO: Med: encapsulate in encoder?
     private JFileFilter wegFileFilter = new JFileFilter();
+    private DiameterInputVerifier numVerifier = new DiameterInputVerifier();
     public static boolean MAC_OS_X = (System.getProperty("os.name").toLowerCase().startsWith("mac os x"));
     public static int MENU_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+
+    // TODO: Low: implement mm/inch functionality
 
     public WheelEncoderGeneratorView(SingleFrameApplication app) {
         super(app);
@@ -109,6 +115,9 @@ public class WheelEncoderGeneratorView extends FrameView {
         exportButton = new javax.swing.JButton();
         toolBar2 = new javax.swing.JToolBar();
         printButton = new javax.swing.JButton();
+        statusPanel = new javax.swing.JPanel();
+        statusMessage = new javax.swing.JLabel();
+        statusIcon = new java.awt.Panel();
 
         mainPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         mainPanel.setName("mainPanel"); // NOI18N
@@ -163,6 +172,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         innerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         innerDiameter.setText(resourceMap.getString("innerDiameter.text")); // NOI18N
         innerDiameter.setToolTipText(resourceMap.getString("innerDiameter.toolTipText")); // NOI18N
+        innerDiameter.setInputVerifier(numVerifier);
         innerDiameter.setMinimumSize(null);
         innerDiameter.setName("innerDiameter"); // NOI18N
         innerDiameter.setPreferredSize(null);
@@ -192,6 +202,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         outerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         outerDiameter.setText(resourceMap.getString("outerDiameter.text")); // NOI18N
         outerDiameter.setToolTipText(resourceMap.getString("outerDiameter.toolTipText")); // NOI18N
+        outerDiameter.setInputVerifier(numVerifier);
         outerDiameter.setMinimumSize(null);
         outerDiameter.setName("outerDiameter"); // NOI18N
         outerDiameter.setPreferredSize(null);
@@ -268,6 +279,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 10);
         standardPanel.add(resolutionSpinner, gridBagConstraints);
@@ -545,6 +557,45 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         toolBar0.add(toolBar2);
 
+        statusPanel.setName("statusPanel"); // NOI18N
+
+        statusMessage.setText(resourceMap.getString("statusMessage.text")); // NOI18N
+        statusMessage.setName("statusMessage"); // NOI18N
+
+        statusIcon.setName("statusIcon"); // NOI18N
+
+        javax.swing.GroupLayout statusIconLayout = new javax.swing.GroupLayout(statusIcon);
+        statusIcon.setLayout(statusIconLayout);
+        statusIconLayout.setHorizontalGroup(
+            statusIconLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 16, Short.MAX_VALUE)
+        );
+        statusIconLayout.setVerticalGroup(
+            statusIconLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 16, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
+        statusPanel.setLayout(statusPanelLayout);
+        statusPanelLayout.setHorizontalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
+                .addContainerGap(539, Short.MAX_VALUE)
+                .addComponent(statusMessage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(statusIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        statusPanelLayout.setVerticalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(statusIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(statusMessage))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
         setComponent(mainPanel);
         setMenuBar(menuBar);
         setToolBar(toolBar0);
@@ -606,6 +657,30 @@ public class WheelEncoderGeneratorView extends FrameView {
         }
     }//GEN-LAST:event_quitMenuItemActionPerformed
 
+    private class DiameterInputVerifier extends InputVerifier {
+        public boolean verify(JComponent input) {
+            boolean outcome = false;
+            JTextField textField = (JTextField) input;
+            try {
+                int i = Integer.parseInt(textField.getText());
+                if (i > 0) {
+                    outcome = true;
+                } else {
+                    outcome = false;
+                }
+            } catch (Exception e) {
+                outcome = false;
+            }
+
+            if (outcome == false)
+                input.setForeground(Color.red);
+            else
+                input.setForeground(Color.black);
+            
+            return outcome;
+        }
+    }
+
     /* setWheelEncoder
      *
      * Set up the GUI to reflect the settings in the WheelEncoder object
@@ -642,32 +717,31 @@ public class WheelEncoderGeneratorView extends FrameView {
         
         try {
             if ( Integer.parseInt(innerDiameter.getText()) >= Integer.parseInt(outerDiameter.getText()) ) {
-                outerDiameterLabel.setForeground(Color.red);
-                innerDiameterLabel.setForeground(Color.red);
+                outerDiameter.setForeground(Color.red);
+                innerDiameter.setForeground(Color.red);
                 result = false;
-            }
-            else {
-                outerDiameterLabel.setForeground(Color.black);
-                innerDiameterLabel.setForeground(Color.black);
+            } else {
+                outerDiameter.setForeground(Color.black);
+                innerDiameter.setForeground(Color.black);
             }
 
             // Is resolution even (ok), or odd (not ok) ?
-            if ( (Integer.parseInt(resolutionSpinner.getModel().getValue().toString()) % 2) > 0 ) {
-                resolutionLabel1.setForeground(Color.red);
+            int i = Integer.parseInt(resolutionSpinner.getModel().getValue().toString());
+            if ( (i % 2) > 0 ) {
+                i++; // just fix it (note that we can never get Maximum+1 so we can get away with increment
+                resolutionSpinner.getModel().setValue(i);
                 result = false;
-            }
-            else {
-                resolutionLabel2.setForeground(Color.black);
             }
         } catch (NumberFormatException e) {
             result = false;
-            // TODO: Med: input validator for numbers instead
+            // Already covered by an InputVerifier, but what the heck.
             JOptionPane.showMessageDialog(getFrame(),
-                    "Numbers must be non-zero", "Error",
+                    "Error parsing numeric input", "Error",
                     JOptionPane.ERROR_MESSAGE );
         }
 
         // Disable functionality (print, etc) if something is jacked up
+        // TODO: handle input errors and menu/toolbar disable more globally to prevent override on Save items
         printMenuItem.setEnabled(result);
         printButton.setEnabled(result);
         return result;
@@ -727,6 +801,15 @@ public class WheelEncoderGeneratorView extends FrameView {
         
     }
 
+    private String getFilename()
+    {
+        String filename= new String("Untitled");
+        if (encoderFile != null) {
+            filename = encoderFile.getName();
+        }
+        return filename;
+    }
+
      /* checkSaveFirst
      *
      * Check to see if encoder has been saved. If not, save it.
@@ -739,8 +822,9 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         if (encoder != null) { // null if first time through
             if (encoder.isChanged()) {
+                // TODO: identify the filename / untitled
                 int response = JOptionPane.showConfirmDialog(getFrame(),
-                    "This encoder has changed. Save?", "Save?",
+                    "The encoder " + getFilename() + " has changed. Save the changes?", "Save?",
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE );
                 if (response == JOptionPane.YES_OPTION) {
@@ -917,13 +1001,15 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JButton saveButton;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JPanel standardPanel;
+    private java.awt.Panel statusIcon;
+    private javax.swing.JLabel statusMessage;
+    private javax.swing.JPanel statusPanel;
     private javax.swing.JToolBar toolBar0;
     private javax.swing.JToolBar toolBar1;
     private javax.swing.JToolBar toolBar2;
     // End of variables declaration//GEN-END:variables
 
     private SpinnerNumberModel resolutionSpinnerModel = new SpinnerNumberModel(16, 4, 36000, 2);
-    private SpinnerNumberModel absoluteSpinnerModel = new SpinnerNumberModel(4, 2, 8, 1);
     private String appTitle = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getResourceMap(WheelEncoderGeneratorApp.class).getString("Application.title");
     private JDialog aboutBox;
 }
