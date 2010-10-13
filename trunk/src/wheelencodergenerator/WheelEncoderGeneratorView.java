@@ -861,9 +861,14 @@ public class WheelEncoderGeneratorView extends FrameView {
         int option = fc.showSaveDialog(getFrame());
         if (option == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
+            // Auto append extension
+            if (wegFileFilter.accept(f) == false) {
+                f = new File(f.getParent(), f.getName() + wegFileFilter.getExtension());
+                System.out.println("Auto append extension, now: "+ f.getName());
+            }
             if (f.exists()) {
                 int response = JOptionPane.showConfirmDialog(getFrame(),
-                    "Replace existing file?", "Replace?",
+                    "Replace existing file "+f.getName()+"?", "Replace?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE );
                 if (response == JOptionPane.YES_OPTION) {
