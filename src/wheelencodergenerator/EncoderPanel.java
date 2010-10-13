@@ -71,23 +71,6 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
             double trackWidth = (d - id)/2;
             double offset = 0;
             int maxTrack = 0;
-
-            /*
-             *
-            // Calculate 1/2 diameter
-            double d2 = id + trackWidth;
-            double x2 = x + trackWidth/2;
-            double y2 = y + trackWidth/2;
-            // Calculate 1/3 diameter
-            double d3a = id + 4*trackWidth/3;
-            double x3a = x + trackWidth/3;
-            double y3a = y + trackWidth/3;
-            // Calculate 2/3 diameter
-            double d3b = id + 2*trackWidth/3;
-            double x3b = x + 2*trackWidth/3;
-            double y3b = y + 2*trackWidth/3;
-             *
-             */
             
             maxTrack = e.getTrackCount();
 

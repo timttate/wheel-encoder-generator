@@ -5,6 +5,9 @@
 
 package wheelencodergenerator;
 
+import java.util.*;
+import java.io.*;
+
 /**
  *
  * @author Michael Shimniok
@@ -18,11 +21,57 @@ public class WheelEncoder {
     private int outerDiameter;
     private boolean indexTrack;
     private boolean quadratureTrack;
+    private File file;
 
     public static int ABSOLUTE=0;
     public static int STANDARD=1;
     public static int GRAY=0;
     public static int BINARY=1;
+
+    private Properties p;
+
+    public WheelEncoder() {
+        type = STANDARD;
+        resolution = 32;
+        innerDiameter = 20;
+        outerDiameter = 50;
+        indexTrack = false;
+        quadratureTrack = false;
+        p = new Properties();
+        file = null;
+    }
+
+    /* loadEncoder
+     *
+     * Loads encoder data as a properties file just cuz it's easy to do
+     */
+    public WheelEncoder(File file) throws IOException
+    {
+        p = new Properties();
+        this.file = file;
+        try {
+            p.load(new FileInputStream(file));
+            loadProperties();
+        } catch (Exception e) {
+            throw new IOException(e.getMessage());
+        }
+    }
+
+    /* save
+     *
+     * Saves encoder data as a properties file just cuz it's easy to do.
+     */
+    public void save(File file) throws IOException
+    {
+        storeProperties();
+        try {
+            p.store(new FileOutputStream(file), "Wheel Encoder Settings");
+            this.file = file;
+        } catch (Exception e) {
+            p = new Properties(); // Mark as unsaved
+            throw new IOException(e.getMessage());
+        }
+    }
 
     public void setType(int t)
     {
@@ -169,5 +218,72 @@ public class WheelEncoder {
         }
 
         return track;
+    }
+
+    // TODO: Would be nice to do this more flexibly as Enumeration
+    /* isChanged
+     * 
+     * Check every parameter against the property list, which represents
+     * what has been saved to disk.  If they match, then there's no change
+     * If there are any differences, then the data in memory is different
+     * than the data on disk.
+     *
+     * The try-catch block does error checking on the file load
+     */
+    public boolean isChanged()
+    {
+        boolean outcome = false;
+
+        try {
+            if (type == Integer.parseInt(p.getProperty("encoder.type")) &&
+                numbering == Integer.parseInt(p.getProperty("encoder.numbering")) &&
+                resolution == Integer.parseInt(p.getProperty("encoder.resolution")) &&
+                innerDiameter == Integer.parseInt(p.getProperty("encoder.innerDiameter")) &&
+                outerDiameter == Integer.parseInt(p.getProperty("encoder.outerDiameter")) &&
+                indexTrack == Boolean.parseBoolean(p.getProperty("encoder.indexTrack")) &&
+                quadratureTrack == Boolean.parseBoolean(p.getProperty("encoder.quadratureTrack")))
+            {
+                outcome = false;
+            }
+        } catch (Exception e) {
+            // If p == null or any of the properties are blank, then the encoder
+            // hasn't been saved yet
+            outcome = true;
+        }
+
+        return outcome;
+    }
+
+    /* storeProperties()
+     *
+     * The properties object represents what is stored on disk. It's only called from
+     * the routine used to save the object's data to disk.
+     */
+    private void storeProperties()
+    {
+        p.setProperty("encoder.type", Integer.toString(type));
+        p.setProperty("encoder.numbering", Integer.toString(numbering));
+        p.setProperty("encoder.resolution", Integer.toString(resolution));
+        p.setProperty("encoder.innerDiameter", Integer.toString(innerDiameter));
+        p.setProperty("encoder.outerDiameter", Integer.toString(outerDiameter));
+        p.setProperty("encoder.indexTrack", Boolean.toString(indexTrack));
+        p.setProperty("encoder.quadratureTrack", Boolean.toString(quadratureTrack));
+    }
+
+    /* loadProperties()
+     *
+     * The properties object represents what is stored on disk. Load the properties
+     * file into the properties object, then immediately set the object's attributes
+     * to the corresponding properties.
+     */
+    private void loadProperties()
+    {
+        type = Integer.parseInt(p.getProperty("encoder.type"));
+        numbering = Integer.parseInt(p.getProperty("encoder.numbering"));
+        resolution = Integer.parseInt(p.getProperty("encoder.resolution"));
+        innerDiameter = Integer.parseInt(p.getProperty("encoder.innerDiameter"));
+        outerDiameter = Integer.parseInt(p.getProperty("encoder.outerDiameter"));
+        indexTrack = Boolean.parseBoolean(p.getProperty("encoder.indexTrack"));
+        quadratureTrack = Boolean.parseBoolean(p.getProperty("encoder.quadratureTrack"));
     }
 }
