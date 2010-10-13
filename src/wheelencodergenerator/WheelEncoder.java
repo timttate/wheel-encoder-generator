@@ -119,7 +119,6 @@ public class WheelEncoder {
             // The standard encoder has one track and
             // the resolution specifies the number of stripes
             // directly
-            // TODO: fix this to give degrees for index track? Quad track?
             d = 360.0 / resolution; 
         }
         return d;
@@ -138,6 +137,7 @@ public class WheelEncoder {
             d = 360.0 / Math.pow(2, resolution - whichTrack);
         }
         else if (type == STANDARD) {
+            // TODO: Low: fix this to give degrees for index track? Quad track?
             d = getDegree();
         }
         return d;
@@ -220,7 +220,7 @@ public class WheelEncoder {
         return track;
     }
 
-    // TODO: Would be nice to do this more flexibly as Enumeration
+    // TODO: Low: Would be nice to do this more flexibly as Enumeration
     /* isChanged
      * 
      * Check every parameter against the property list, which represents
@@ -235,19 +235,28 @@ public class WheelEncoder {
         boolean outcome = false;
 
         try {
-            if (type == Integer.parseInt(p.getProperty("encoder.type")) &&
-                numbering == Integer.parseInt(p.getProperty("encoder.numbering")) &&
-                resolution == Integer.parseInt(p.getProperty("encoder.resolution")) &&
-                innerDiameter == Integer.parseInt(p.getProperty("encoder.innerDiameter")) &&
-                outerDiameter == Integer.parseInt(p.getProperty("encoder.outerDiameter")) &&
-                indexTrack == Boolean.parseBoolean(p.getProperty("encoder.indexTrack")) &&
-                quadratureTrack == Boolean.parseBoolean(p.getProperty("encoder.quadratureTrack")))
-            {
-                outcome = false;
-            }
+            outcome =
+            !(
+                // type has to match, as well as the common attributes
+                (type == Integer.parseInt(p.getProperty("encoder.type")) &&
+                 resolution == Integer.parseInt(p.getProperty("encoder.resolution")) &&
+                 innerDiameter == Integer.parseInt(p.getProperty("encoder.innerDiameter")) &&
+                 outerDiameter == Integer.parseInt(p.getProperty("encoder.outerDiameter"))
+                 ) && (
+                    // Absolute or Standard attributes have to match
+                    (type == ABSOLUTE &&
+                     numbering == Integer.parseInt(p.getProperty("encoder.numbering"))
+                     ) ||
+                    (type == STANDARD &&
+                     indexTrack == Boolean.parseBoolean(p.getProperty("encoder.indexTrack")) &&
+                     quadratureTrack == Boolean.parseBoolean(p.getProperty("encoder.quadratureTrack"))
+                     )
+                 )
+             );
         } catch (Exception e) {
             // If p == null or any of the properties are blank, then the encoder
             // hasn't been saved yet
+            //System.out.println("WheelEncoder.isChanged() -- " + e.getMessage());
             outcome = true;
         }
 
