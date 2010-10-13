@@ -9,13 +9,15 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpinnerModel;
+import javax.swing.JOptionPane;
 import java.awt.event.*;
 import java.awt.print.*;
 import java.awt.*;
+import java.io.*;
 
 /**
  * The application's main frame.
@@ -23,6 +25,8 @@ import java.awt.*;
 public class WheelEncoderGeneratorView extends FrameView {
 
     private WheelEncoder encoder;
+    private File encoderFile; // TODO: encapsulate in encoder?
+    private JFileFilter wegFileFilter = new JFileFilter();
     public static boolean MAC_OS_X = (System.getProperty("os.name").toLowerCase().startsWith("mac os x"));
     public static int MENU_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
@@ -30,6 +34,9 @@ public class WheelEncoderGeneratorView extends FrameView {
         super(app);
 
         initComponents();
+
+        wegFileFilter.setDescription("Wheel Encoder Generator files");
+        wegFileFilter.addType(".weg");
 
         // Mac OS X vs Windows specific stuff
         //
@@ -57,14 +64,12 @@ public class WheelEncoderGeneratorView extends FrameView {
            });
         }
 */
-        encoder = new WheelEncoder();
-
-        encoderPanel.setWheelEncoder(encoder);
-
-        // Simulate "preview" click to generate initial image
-        showPreview();
-
+        // Initial "load" of new encoder
+        newEncoder();
     }
+
+    // TODO: Error indicator for odd, or use input validator
+    // new -> fails to select tab
 
     @Action
     public void showAboutBox() {
@@ -107,10 +112,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         binaryCodeRadioButton = new javax.swing.JRadioButton();
         resolutionLabel2 = new javax.swing.JLabel();
         absoluteResolutionComboBox = new javax.swing.JComboBox();
-        buttonPanel = new javax.swing.JPanel();
-        printButton = new javax.swing.JButton();
-        saveButton = new javax.swing.JButton();
-        exportButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenuItem = new javax.swing.JMenuItem();
@@ -126,7 +127,17 @@ public class WheelEncoderGeneratorView extends FrameView {
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
+        toolBar0 = new javax.swing.JToolBar();
+        newButton = new javax.swing.JButton();
+        openButton = new javax.swing.JButton();
+        toolBar1 = new javax.swing.JToolBar();
+        saveButton = new javax.swing.JButton();
+        saveAsButton = new javax.swing.JButton();
+        exportButton = new javax.swing.JButton();
+        toolBar2 = new javax.swing.JToolBar();
+        printButton = new javax.swing.JButton();
 
+        mainPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -151,17 +162,18 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 501, Short.MAX_VALUE)
+            .addGap(0, 430, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 453, Short.MAX_VALUE)
+            .addGap(0, 428, Short.MAX_VALUE)
         );
 
+        controlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("controlPanel.border.title"))); // NOI18N
         controlPanel.setName("controlPanel"); // NOI18N
-        controlPanel.setLayout(new java.awt.BorderLayout(0, 8));
+        controlPanel.setLayout(new java.awt.BorderLayout());
 
-        diameterPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        diameterPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("diameterPanel.border.title"))); // NOI18N
         diameterPanel.setName("diameterPanel"); // NOI18N
         diameterPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -393,68 +405,14 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         controlPanel.add(encoderTabbedPane, java.awt.BorderLayout.PAGE_START);
 
-        buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        buttonPanel.setName("buttonPanel"); // NOI18N
-
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getActionMap(WheelEncoderGeneratorView.class, this);
-        printButton.setAction(actionMap.get("printEncoder")); // NOI18N
-        printButton.setText(resourceMap.getString("printButton.text")); // NOI18N
-        printButton.setToolTipText(resourceMap.getString("printButton.toolTipText")); // NOI18N
-        printButton.setMinimumSize(null);
-        printButton.setName("printButton"); // NOI18N
-        printButton.setPreferredSize(null);
-        printButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                printButtonMouseClicked(evt);
-            }
-        });
-
-        saveButton.setText(resourceMap.getString("saveButton.text")); // NOI18N
-        saveButton.setEnabled(false);
-        saveButton.setMinimumSize(null);
-        saveButton.setName("saveButton"); // NOI18N
-        saveButton.setPreferredSize(null);
-
-        exportButton.setText(resourceMap.getString("exportButton.text")); // NOI18N
-        exportButton.setEnabled(false);
-        exportButton.setMinimumSize(null);
-        exportButton.setName("exportButton"); // NOI18N
-        exportButton.setPreferredSize(null);
-
-        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
-        buttonPanel.setLayout(buttonPanelLayout);
-        buttonPanelLayout.setHorizontalGroup(
-            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(printButton, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        buttonPanelLayout.setVerticalGroup(
-            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        controlPanel.add(buttonPanel, java.awt.BorderLayout.PAGE_END);
-
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -463,40 +421,45 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
                     .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         menuBar.setName("menuBar"); // NOI18N
-        int keyModifier = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
         menuBar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 menuBarMouseClicked(evt);
             }
         });
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getActionMap(WheelEncoderGeneratorView.class, this);
+        fileMenu.setAction(actionMap.get("newEncoder")); // NOI18N
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
+        newMenuItem.setAction(actionMap.get("newEncoder")); // NOI18N
         newMenuItem.setText(resourceMap.getString("newMenuItem.text")); // NOI18N
         newMenuItem.setName("newMenuItem"); // NOI18N
         fileMenu.add(newMenuItem);
-        newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,keyModifier));
+        newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,MENU_MASK));
 
+        openMenuItem.setAction(actionMap.get("openEncoder")); // NOI18N
         openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
         openMenuItem.setName("openMenuItem"); // NOI18N
         fileMenu.add(openMenuItem);
-        openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,keyModifier));
+        openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,MENU_MASK));
 
         jSeparator3.setName("jSeparator3"); // NOI18N
         fileMenu.add(jSeparator3);
 
+        saveMenuItem.setAction(actionMap.get("saveEncoder")); // NOI18N
         saveMenuItem.setText(resourceMap.getString("saveMenuItem.text")); // NOI18N
         saveMenuItem.setName("saveMenuItem"); // NOI18N
         fileMenu.add(saveMenuItem);
-        saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,keyModifier));
+        saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,MENU_MASK));
 
+        saveAsMenuItem.setAction(actionMap.get("saveEncoderAs")); // NOI18N
         saveAsMenuItem.setText(resourceMap.getString("saveAsMenuItem.text")); // NOI18N
         saveAsMenuItem.setName("saveAsMenuItem"); // NOI18N
         fileMenu.add(saveAsMenuItem);
@@ -508,7 +471,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         printMenuItem.setText(resourceMap.getString("printMenuItem.text")); // NOI18N
         printMenuItem.setName("printMenuItem"); // NOI18N
         fileMenu.add(printMenuItem);
-        printMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,keyModifier));
+        printMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,MENU_MASK));
 
         jSeparator2.setName("jSeparator2"); // NOI18N
         if (!MAC_OS_X) {
@@ -537,8 +500,81 @@ public class WheelEncoderGeneratorView extends FrameView {
             menuBar.add(helpMenu);
         }
 
+        toolBar0.setRollover(true);
+        toolBar0.setName("toolBar0"); // NOI18N
+
+        newButton.setAction(actionMap.get("newEncoder")); // NOI18N
+        newButton.setIcon(resourceMap.getIcon("newButton.icon")); // NOI18N
+        newButton.setText(resourceMap.getString("newButton.text")); // NOI18N
+        newButton.setToolTipText(resourceMap.getString("newButton.toolTipText")); // NOI18N
+        newButton.setFocusable(false);
+        newButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        newButton.setName("newButton"); // NOI18N
+        newButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar0.add(newButton);
+
+        openButton.setAction(actionMap.get("openEncoder")); // NOI18N
+        openButton.setIcon(resourceMap.getIcon("openButton.icon")); // NOI18N
+        openButton.setText(resourceMap.getString("openButton.text")); // NOI18N
+        openButton.setToolTipText(resourceMap.getString("openButton.toolTipText")); // NOI18N
+        openButton.setFocusable(false);
+        openButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openButton.setName("openButton"); // NOI18N
+        openButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar0.add(openButton);
+
+        toolBar1.setRollover(true);
+        toolBar1.setName("toolBar1"); // NOI18N
+
+        saveButton.setAction(actionMap.get("saveEncoder")); // NOI18N
+        saveButton.setIcon(resourceMap.getIcon("saveButton.icon")); // NOI18N
+        saveButton.setText(resourceMap.getString("saveButton.text")); // NOI18N
+        saveButton.setToolTipText(resourceMap.getString("saveButton.toolTipText")); // NOI18N
+        saveButton.setFocusable(false);
+        saveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveButton.setName("saveButton"); // NOI18N
+        saveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar1.add(saveButton);
+
+        saveAsButton.setAction(actionMap.get("saveEncoderAs")); // NOI18N
+        saveAsButton.setIcon(resourceMap.getIcon("saveAsButton.icon")); // NOI18N
+        saveAsButton.setText(resourceMap.getString("saveAsButton.text")); // NOI18N
+        saveAsButton.setToolTipText(resourceMap.getString("saveAsButton.toolTipText")); // NOI18N
+        saveAsButton.setFocusable(false);
+        saveAsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveAsButton.setName("saveAsButton"); // NOI18N
+        saveAsButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar1.add(saveAsButton);
+
+        exportButton.setIcon(resourceMap.getIcon("exportButton.icon")); // NOI18N
+        exportButton.setText(resourceMap.getString("exportButton.text")); // NOI18N
+        exportButton.setToolTipText(resourceMap.getString("exportButton.toolTipText")); // NOI18N
+        exportButton.setFocusable(false);
+        exportButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        exportButton.setName("exportButton"); // NOI18N
+        exportButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar1.add(exportButton);
+
+        toolBar0.add(toolBar1);
+
+        toolBar2.setRollover(true);
+        toolBar2.setName("toolBar2"); // NOI18N
+
+        printButton.setAction(actionMap.get("printEncoder")); // NOI18N
+        printButton.setIcon(resourceMap.getIcon("printButton.icon")); // NOI18N
+        printButton.setText(resourceMap.getString("printButton.text")); // NOI18N
+        printButton.setToolTipText(resourceMap.getString("printButton.toolTipText")); // NOI18N
+        printButton.setFocusable(false);
+        printButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        printButton.setName("printButton"); // NOI18N
+        printButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar2.add(printButton);
+
+        toolBar0.add(toolBar2);
+
         setComponent(mainPanel);
         setMenuBar(menuBar);
+        setToolBar(toolBar0);
     }// </editor-fold>//GEN-END:initComponents
 
     private void quadratureCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_quadratureCheckBoxItemStateChanged
@@ -571,10 +607,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         showPreview();
     }//GEN-LAST:event_menuBarMouseClicked
 
-    private void printButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printButtonMouseClicked
-        showPreview();
-    }//GEN-LAST:event_printButtonMouseClicked
-
     private void resolutionSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_resolutionSpinnerStateChanged
         showPreview();
     }//GEN-LAST:event_resolutionSpinnerStateChanged
@@ -596,9 +628,42 @@ public class WheelEncoderGeneratorView extends FrameView {
     }//GEN-LAST:event_encoderTabbedPaneMouseClicked
 
     private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
-        //if(promptTheUser())
+        if(promptSaveFirst()) {
             System.exit(0);
+        }
     }//GEN-LAST:event_quitMenuItemActionPerformed
+
+    /* setWheelEncoder
+     *
+     * Set up the GUI to reflect the settings in the WheelEncoder object
+     * Used for loading or opening new encoder.
+     */
+    private void setWheelEncoder(WheelEncoder e)
+    {
+        encoder = e;
+        // Setup all the interface stuff based on contents of the
+        // encoder object
+        innerDiameter.setText(Integer.toString(encoder.getInnerDiameter()));
+        outerDiameter.setText(Integer.toString(encoder.getOuterDiameter()));
+        if (encoder.getType() == WheelEncoder.STANDARD) {
+            resolutionSpinner.getModel().setValue(encoder.getResolution());
+            quadratureCheckBox.setSelected(encoder.hasQuadratureTrack());
+            indexCheckBox.setSelected(encoder.hasIndexTrack());
+            encoderTabbedPane.setSelectedIndex(encoderTabbedPane.indexOfTab("Standard"));
+        }
+        else if (encoder.getType() == WheelEncoder.ABSOLUTE) {
+            encoderTabbedPane.setSelectedIndex(encoderTabbedPane.indexOfTab("Absolute"));
+            if (encoder.getNumbering() == WheelEncoder.GRAY) {
+                grayCodeRadioButton.setSelected(true);
+            }
+            else if (encoder.getNumbering() == WheelEncoder.BINARY) {
+                binaryCodeRadioButton.setSelected(true);
+            }
+            absoluteResolutionComboBox.setSelectedIndex(encoder.getResolution()-1);
+        }
+    }
+
+    // TODO: disable save if saved
 
     // TODO: Deal with improperly formatted numbers
     private boolean errorCheck()
@@ -622,6 +687,8 @@ public class WheelEncoderGeneratorView extends FrameView {
         else {
             resolutionLabel2.setForeground(Color.black);
         }
+        // Disable functionality (print, etc) if something is jacked up
+        printMenuItem.setEnabled(result);
         printButton.setEnabled(result);
         return result;
     }
@@ -634,23 +701,25 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         // Absolute Encoder
         if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Absolute")) {
-            encoder.setType(encoder.ABSOLUTE);
+            encoder.setType(WheelEncoder.ABSOLUTE);
             if (grayCodeRadioButton.isSelected() == true)
-                encoder.setNumbering(encoder.GRAY);
+                encoder.setNumbering(WheelEncoder.GRAY);
             else if (binaryCodeRadioButton.isSelected() == true)
-                encoder.setNumbering(encoder.BINARY);
+                encoder.setNumbering(WheelEncoder.BINARY);
 
             // ComboBox menu is set up so that # of tracks corresponds to selected index + 1
             encoder.setResolution(absoluteResolutionComboBox.getSelectedIndex()+1);
-            System.out.println("Track count: " + Integer.toString(encoder.getResolution()) + "\n");
+            //System.out.println("Track count: " + Integer.toString(encoder.getResolution()) + "\n");
         }
         else if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Standard")) {
-            encoder.setType(encoder.STANDARD);
+            encoder.setType(WheelEncoder.STANDARD);
             encoder.setResolution(Integer.parseInt(resolutionSpinner.getModel().getValue().toString()));
         }
         if (errorCheck())
             encoderPanel.repaint();
     }
+
+   
 
     // TODO: make sure there are no errors before printing
     @Action
@@ -668,14 +737,161 @@ public class WheelEncoderGeneratorView extends FrameView {
         
     }
 
+     /* checkSaveFirst
+     *
+     * Check to see if encoder has been saved. If not, save it.
+     * If cancel, not only don't save it, but return false.
+     * If don't save, then return true and don't save
+     */
+    private boolean promptSaveFirst()
+    {
+        boolean result=true;
 
+        if (encoder != null) { // null if first time through
+            if (encoder.isChanged()) {
+                int response = JOptionPane.showConfirmDialog(getFrame(),
+                    "This encoder has changed. Save?", "Save?",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE );
+                if (response == JOptionPane.YES_OPTION) {
+                    result = doSave();
+                } else if (response == JOptionPane.CANCEL_OPTION) {
+                    result = false;
+                } else if (response == JOptionPane.NO_OPTION) {
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    @Action
+    public void newEncoder() {
+        if (promptSaveFirst()) {
+            setWheelEncoder(new WheelEncoder());
+            encoderPanel.setWheelEncoder(encoder);
+            showPreview();
+            // TODO: encapsulate encoderFile setting and title bar in one method
+            encoderFile = null;
+            getFrame().setTitle("Untitled - " + appTitle);
+        }
+    }
+
+    private File promptFileSave()
+    {
+        File file = null;
+
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(wegFileFilter);
+        int option = fc.showSaveDialog(getFrame());
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File f = fc.getSelectedFile();
+            if (f.exists()) {
+                int response = JOptionPane.showConfirmDialog(getFrame(),
+                    "Replace existing file?", "Replace?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE );
+                if (response == JOptionPane.YES_OPTION) {
+                    file = f;
+                }
+            } else {
+                file = f;
+            }
+        }
+
+        return file;
+    }
+
+
+    private boolean doSave()
+    {
+        boolean outcome = true;
+
+        if (encoderFile == null) {
+            File file = promptFileSave();
+            if (file != null) {
+                encoderFile = file;
+                outcome = true;
+            } else {
+                outcome = false;
+            }
+        }
+
+        // if all's well so far, outcome == true
+        // if save file prompt cancelled, outcome == false
+        if (outcome) {
+            try {
+                encoder.save(encoderFile);
+                getFrame().setTitle(encoderFile.getName() + " - " + appTitle);
+                outcome = true;
+            }
+            catch (IOException e) {
+                outcome = false;
+                JOptionPane.showMessageDialog(getFrame(),
+                    "Error saving file", "File Save Error",
+                    JOptionPane.ERROR_MESSAGE );
+            }
+        }
+        
+        return outcome;
+    }
+
+    private boolean doOpen()
+    {
+        boolean outcome = false;
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(wegFileFilter);
+        int option = fc.showOpenDialog(getFrame());
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+                WheelEncoder enc = new WheelEncoder(file);
+                encoderFile = file;
+                setWheelEncoder(enc);
+                encoderPanel.setWheelEncoder(encoder);
+                getFrame().setTitle(encoderFile.getName() + " - " + appTitle);
+                showPreview();
+                outcome = true;
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(getFrame(),
+                    "Error reading file", "File Read Error",
+                    JOptionPane.ERROR_MESSAGE );
+                outcome = false;
+            }
+        } else {
+            outcome = false;
+        }
+        return outcome;
+    }
+
+    @Action
+    public void saveEncoder() {
+        doSave();
+    }
+
+    @Action
+    public void saveEncoderAs() {
+        File temp = encoderFile; // store old file in case of failure
+        encoderFile = null; // fake out doSave() to force prompt
+
+        if (doSave() == false)
+            encoderFile = temp; // restore old file
+    }
+
+    @Action
+    public void openEncoder() {
+        if (promptSaveFirst()) {
+            doOpen();
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel absolutePanel;
     private javax.swing.JComboBox absoluteResolutionComboBox;
     private javax.swing.JRadioButton binaryCodeRadioButton;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JPanel buttonPanel;
     private javax.swing.JPanel controlPanel;
     private javax.swing.JPanel diameterPanel;
     private wheelencodergenerator.EncoderPanel encoderPanel;
@@ -693,7 +909,9 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JRadioButton mmButton;
+    private javax.swing.JButton newButton;
     private javax.swing.JMenuItem newMenuItem;
+    private javax.swing.JButton openButton;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JTextField outerDiameter;
     private javax.swing.JLabel outerDiameterLabel;
@@ -704,13 +922,18 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JLabel resolutionLabel1;
     private javax.swing.JLabel resolutionLabel2;
     private javax.swing.JSpinner resolutionSpinner;
+    private javax.swing.JButton saveAsButton;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JButton saveButton;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JPanel standardPanel;
+    private javax.swing.JToolBar toolBar0;
+    private javax.swing.JToolBar toolBar1;
+    private javax.swing.JToolBar toolBar2;
     // End of variables declaration//GEN-END:variables
 
     private SpinnerNumberModel resolutionSpinnerModel = new SpinnerNumberModel(16, 4, 36000, 2);
     private SpinnerNumberModel absoluteSpinnerModel = new SpinnerNumberModel(4, 2, 8, 1);
+    private String appTitle = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getResourceMap(WheelEncoderGeneratorApp.class).getString("Application.title");
     private JDialog aboutBox;
 }
