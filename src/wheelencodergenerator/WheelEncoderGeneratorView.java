@@ -147,11 +147,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGap(0, 368, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 428, Short.MAX_VALUE)
+            .addGap(0, 412, Short.MAX_VALUE)
         );
 
         controlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("controlPanel.border.title"))); // NOI18N
@@ -399,7 +399,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -409,7 +409,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
                     .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -452,7 +452,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveAsMenuItem.setName("saveAsMenuItem"); // NOI18N
         fileMenu.add(saveAsMenuItem);
 
-        exportMenuItem.setText(resourceMap.getString("exportMenuItem.text")); // NOI18N
         exportMenuItem.setName("exportMenuItem"); // NOI18N
         fileMenu.add(exportMenuItem);
 
@@ -493,15 +492,22 @@ public class WheelEncoderGeneratorView extends FrameView {
         }
 
         toolBar0.setRollover(true);
+        toolBar0.setMaximumSize(new java.awt.Dimension(240, 58));
+        toolBar0.setMinimumSize(new java.awt.Dimension(230, 58));
         toolBar0.setName("toolBar0"); // NOI18N
 
         newButton.setAction(actionMap.get("newEncoder")); // NOI18N
         newButton.setIcon(resourceMap.getIcon("newButton.icon")); // NOI18N
         newButton.setText(resourceMap.getString("newButton.text")); // NOI18N
         newButton.setToolTipText(resourceMap.getString("newButton.toolTipText")); // NOI18N
+        newButton.setBorder(null);
+        newButton.setBorderPainted(false);
         newButton.setFocusable(false);
         newButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        newButton.setMaximumSize(new java.awt.Dimension(50, 50));
+        newButton.setMinimumSize(new java.awt.Dimension(32, 50));
         newButton.setName("newButton"); // NOI18N
+        newButton.setPreferredSize(new java.awt.Dimension(32, 50));
         newButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar0.add(newButton);
 
@@ -509,22 +515,33 @@ public class WheelEncoderGeneratorView extends FrameView {
         openButton.setIcon(resourceMap.getIcon("openButton.icon")); // NOI18N
         openButton.setText(resourceMap.getString("openButton.text")); // NOI18N
         openButton.setToolTipText(resourceMap.getString("openButton.toolTipText")); // NOI18N
+        openButton.setBorder(null);
+        openButton.setBorderPainted(false);
         openButton.setFocusable(false);
         openButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openButton.setMaximumSize(new java.awt.Dimension(50, 50));
+        openButton.setMinimumSize(new java.awt.Dimension(32, 50));
         openButton.setName("openButton"); // NOI18N
+        openButton.setPreferredSize(new java.awt.Dimension(32, 50));
         openButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar0.add(openButton);
 
         toolBar1.setRollover(true);
+        toolBar1.setMaximumSize(new java.awt.Dimension(160, 54));
         toolBar1.setName("toolBar1"); // NOI18N
 
         saveButton.setAction(actionMap.get("saveEncoder")); // NOI18N
         saveButton.setIcon(resourceMap.getIcon("saveButton.icon")); // NOI18N
         saveButton.setText(resourceMap.getString("saveButton.text")); // NOI18N
         saveButton.setToolTipText(resourceMap.getString("saveButton.toolTipText")); // NOI18N
+        saveButton.setBorder(null);
+        saveButton.setBorderPainted(false);
         saveButton.setFocusable(false);
         saveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveButton.setMaximumSize(new java.awt.Dimension(50, 50));
+        saveButton.setMinimumSize(new java.awt.Dimension(32, 50));
         saveButton.setName("saveButton"); // NOI18N
+        saveButton.setPreferredSize(new java.awt.Dimension(32, 50));
         saveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar1.add(saveButton);
 
@@ -532,18 +549,28 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveAsButton.setIcon(resourceMap.getIcon("saveAsButton.icon")); // NOI18N
         saveAsButton.setText(resourceMap.getString("saveAsButton.text")); // NOI18N
         saveAsButton.setToolTipText(resourceMap.getString("saveAsButton.toolTipText")); // NOI18N
+        saveAsButton.setBorder(null);
+        saveAsButton.setBorderPainted(false);
         saveAsButton.setFocusable(false);
         saveAsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveAsButton.setMaximumSize(new java.awt.Dimension(50, 50));
+        saveAsButton.setMinimumSize(new java.awt.Dimension(32, 50));
         saveAsButton.setName("saveAsButton"); // NOI18N
+        saveAsButton.setPreferredSize(new java.awt.Dimension(32, 50));
         saveAsButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar1.add(saveAsButton);
 
         exportButton.setIcon(resourceMap.getIcon("exportButton.icon")); // NOI18N
         exportButton.setText(resourceMap.getString("exportButton.text")); // NOI18N
         exportButton.setToolTipText(resourceMap.getString("exportButton.toolTipText")); // NOI18N
+        exportButton.setBorder(null);
+        exportButton.setBorderPainted(false);
         exportButton.setFocusable(false);
         exportButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        exportButton.setMaximumSize(new java.awt.Dimension(50, 50));
+        exportButton.setMinimumSize(new java.awt.Dimension(32, 50));
         exportButton.setName("exportButton"); // NOI18N
+        exportButton.setPreferredSize(new java.awt.Dimension(32, 50));
         exportButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar1.add(exportButton);
 
@@ -556,9 +583,14 @@ public class WheelEncoderGeneratorView extends FrameView {
         printButton.setIcon(resourceMap.getIcon("printButton.icon")); // NOI18N
         printButton.setText(resourceMap.getString("printButton.text")); // NOI18N
         printButton.setToolTipText(resourceMap.getString("printButton.toolTipText")); // NOI18N
+        printButton.setBorder(null);
+        printButton.setBorderPainted(false);
         printButton.setFocusable(false);
         printButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        printButton.setMaximumSize(new java.awt.Dimension(50, 50));
+        printButton.setMinimumSize(new java.awt.Dimension(32, 50));
         printButton.setName("printButton"); // NOI18N
+        printButton.setPreferredSize(new java.awt.Dimension(32, 50));
         printButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar2.add(printButton);
 

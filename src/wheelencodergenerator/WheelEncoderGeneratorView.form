@@ -20,7 +20,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="encoderPanel" pref="434" max="32767" attributes="0"/>
+                  <Component id="encoderPanel" pref="372" max="32767" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="controlPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -32,7 +32,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="encoderPanel" alignment="0" pref="432" max="32767" attributes="1"/>
+                      <Component id="encoderPanel" alignment="0" pref="416" max="32767" attributes="1"/>
                       <Component id="controlPanel" alignment="0" min="-2" max="-2" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -67,12 +67,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="430" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="368" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="428" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="412" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -504,7 +504,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="exportMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="exportMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
@@ -582,6 +581,12 @@
     <Container class="javax.swing.JToolBar" name="toolBar0">
       <Properties>
         <Property name="rollover" type="boolean" value="true"/>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[240, 58]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[230, 58]"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="toolBar0" noResource="true"/>
       </Properties>
 
@@ -595,9 +600,22 @@
             <Property name="icon" type="javax.swing.Icon" resourceKey="newButton.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="newButton.text"/>
             <Property name="toolTipText" type="java.lang.String" resourceKey="newButton.toolTipText"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+            <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[50, 50]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[32, 50]"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="newButton" noResource="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[32, 50]"/>
+            </Property>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
@@ -609,15 +627,31 @@
             <Property name="icon" type="javax.swing.Icon" resourceKey="openButton.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="openButton.text"/>
             <Property name="toolTipText" type="java.lang.String" resourceKey="openButton.toolTipText"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+            <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[50, 50]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[32, 50]"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="openButton" noResource="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[32, 50]"/>
+            </Property>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JToolBar" name="toolBar1">
           <Properties>
             <Property name="rollover" type="boolean" value="true"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[160, 54]"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="toolBar1" noResource="true"/>
           </Properties>
 
@@ -631,9 +665,22 @@
                 <Property name="icon" type="javax.swing.Icon" resourceKey="saveButton.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="saveButton.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="saveButton.toolTipText"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[50, 50]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32, 50]"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="saveButton" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32, 50]"/>
+                </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
             </Component>
@@ -645,9 +692,22 @@
                 <Property name="icon" type="javax.swing.Icon" resourceKey="saveAsButton.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="saveAsButton.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="saveAsButton.toolTipText"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[50, 50]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32, 50]"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="saveAsButton" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32, 50]"/>
+                </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
             </Component>
@@ -656,9 +716,22 @@
                 <Property name="icon" type="javax.swing.Icon" resourceKey="exportButton.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="exportButton.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="exportButton.toolTipText"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[50, 50]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32, 50]"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="exportButton" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32, 50]"/>
+                </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
             </Component>
@@ -680,9 +753,22 @@
                 <Property name="icon" type="javax.swing.Icon" resourceKey="printButton.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="printButton.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="printButton.toolTipText"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[50, 50]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32, 50]"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="printButton" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32, 50]"/>
+                </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
             </Component>
