@@ -18,10 +18,16 @@ import javax.swing.InputVerifier;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
-import java.awt.event.*;
-import java.awt.print.*;
-import java.awt.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import com.apple.OSXAdapter;
+
 
 /**
  * The application's main frame.
@@ -45,6 +51,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         System.out.println("Initializing components...");
         initComponents();
+        registerForMacOSXEvents();
 
         wegFileFilter.setDescription("Wheel Encoder Generator files (*.weg)");
         wegFileFilter.addType(".weg");
@@ -56,6 +63,25 @@ public class WheelEncoderGeneratorView extends FrameView {
         // Initial "load" of new encoder
         newEncoder();
         System.out.println("Done with View initialization...");
+    }
+
+    // Generic registration with the Mac OS X application menu
+    // Checks the platform, then attempts to register with the Apple EAWT
+    // See OSXAdapter.java to see how this is done without directly referencing any Apple APIs
+    public void registerForMacOSXEvents() {
+        if (MAC_OS_X) {
+            try {
+                // Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
+                // use as delegates for various com.apple.eawt.ApplicationListener methods
+                OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("quit", (Class[])null));
+                OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("about", (Class[])null));
+                OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("preferences", (Class[])null));
+                OSXAdapter.setFileHandler(this, getClass().getDeclaredMethod("loadImageFile", new Class[] { String.class }));
+            } catch (Exception e) {
+                System.err.println("Error while loading the OSXAdapter:");
+                e.printStackTrace();
+            }
+        }
     }
 
     @Action
