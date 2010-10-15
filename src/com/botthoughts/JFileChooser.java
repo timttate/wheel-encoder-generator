@@ -39,10 +39,15 @@ public class JFileChooser extends javax.swing.JFileChooser
                 "Replace existing file " + this.getSelectedFile().getName() + "?", "Replace?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE );
-            if (response == JOptionPane.NO_OPTION) {
+            if (response == JOptionPane.YES_OPTION) {
+                super.approveSelection();
+            } else if (response == JOptionPane.NO_OPTION) {
                 this.setSelectedFile(null);
-                this.fireActionPerformed(CANCEL_SELECTION);
+//              this.fireActionPerformed(CANCEL_SELECTION);
+                super.cancelSelection();
             }
+        } else {
+            super.approveSelection();
         }
     }
 

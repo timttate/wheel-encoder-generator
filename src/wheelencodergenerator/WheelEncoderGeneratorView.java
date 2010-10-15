@@ -31,6 +31,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     private WheelEncoder encoder;
     private File encoderFile; // TODO: Med: encapsulate in encoder?
     private JFileFilter wegFileFilter = new JFileFilter();
+    private JFileFilter pngFileFilter = new JFileFilter();
     private DiameterInputVerifier numVerifier = new DiameterInputVerifier();
     public static boolean MAC_OS_X = (System.getProperty("os.name").toLowerCase().startsWith("mac os x"));
     public static int MENU_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
@@ -44,8 +45,10 @@ public class WheelEncoderGeneratorView extends FrameView {
         System.out.println("Initializing components...");
         initComponents();
 
-        wegFileFilter.setDescription("Wheel Encoder Generator files");
+        wegFileFilter.setDescription("Wheel Encoder Generator files (*.weg)");
         wegFileFilter.addType(".weg");
+        pngFileFilter.setDescription("PNG Images (*.png)");
+        pngFileFilter.addType(".png");
 
         // Mac OS X vs Windows specific stuff here
 
@@ -918,25 +921,20 @@ public class WheelEncoderGeneratorView extends FrameView {
         }
     }
 
-    private File promptFileSave()
-    {
-        return promptFileSave(null);
-    }
-
     /* promptFileSave()
      * 
      * prompts to save a file using defaultFile as the initially selected file
      * which is nice because it suggests a correct file extension, hopefully, 
      * at least in the case of an untitled document.
      */
-    private File promptFileSave(File defaultFile)
+    private File promptFileSave(File defaultFile, JFileFilter ff)
     {
         File file = null;
         int option;
 
         JFileChooser fc = new JFileChooser();
 
-        fc.setFileFilter(wegFileFilter);
+        fc.setFileFilter(ff);
         if (defaultFile != null)
             fc.setSelectedFile(defaultFile);
         option = fc.showSaveDialog(getFrame());
@@ -947,17 +945,18 @@ public class WheelEncoderGeneratorView extends FrameView {
             // Auto append extension, but only on Windows
             // on Mac, just prompt user if file extension is wrong
             //
-            if (wegFileFilter.accept(f) == false) {
+            if (ff.accept(f) == false) {
                 if (MAC_OS_X) {
                     int response = JOptionPane.showConfirmDialog(getFrame(),
-                        "File " + f.getName() + " is not a recognized WEG file type.  Ok to proceed?", "Unrecognized file type",
+                        "File " + f.getName() + " is not of type: " + ff.getDescription() +
+                            ".  Ok to proceed?", "Unrecognized file type",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE );
                     if (response == JOptionPane.NO_OPTION) {
                         file = null;
                     }
                 } else {
-                    file = new File(f.getParent(), f.getName() + wegFileFilter.getExtension());
+                    file = new File(f.getParent(), f.getName() + ff.getExtension());
                     System.out.println("Auto append extension, now: "+ file.getName());
                 }
             }
@@ -1027,7 +1026,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
     @Action
     public void saveEncoderAs() {
-        File newFile = promptFileSave(encoderFile);
+        File newFile = promptFileSave(encoderFile, wegFileFilter);
         if (newFile != null) {
             if (doSave(newFile)) {
                 setEncoderFile(newFile);
@@ -1043,7 +1042,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
     @Action
     public void exportEncoder() {
-        File image = promptFileSave(new File("Untitled.png"));
+        File image = promptFileSave(new File("Untitled.png"), pngFileFilter);
         if (image != null) {
             try {
                 encoderPanel.export(image, "png");
