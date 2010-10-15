@@ -90,7 +90,8 @@ public class JFileChooser extends javax.swing.JFileChooser
         } else {
             result = super.showOpenDialog(frame);
         }
-        return 0;
+
+        return result;
     }
 
     
@@ -116,6 +117,7 @@ public class JFileChooser extends javax.swing.JFileChooser
         } else {
             result = super.showSaveDialog(frame);
         }
+        
         return result;
     }
 
