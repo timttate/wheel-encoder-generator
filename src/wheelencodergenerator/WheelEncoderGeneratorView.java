@@ -10,7 +10,7 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JFileChooser;
+import com.botthoughts.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpinnerModel;
@@ -863,9 +863,19 @@ public class WheelEncoderGeneratorView extends FrameView {
         
     }
 
+    /* setFile()
+     * 
+     * Sets the encoderFile attribute and the titlebar
+     */
+    private void setEncoderFile(File file)
+    {
+        encoderFile = file;
+        getFrame().setTitle(encoderFile.getName() + " - " + appTitle);
+    }
+
     private String getFilename()
     {
-        String filename= new String("Untitled");
+        String filename = "Untitled";
         if (encoderFile != null) {
             filename = encoderFile.getName();
         }
@@ -889,7 +899,7 @@ public class WheelEncoderGeneratorView extends FrameView {
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE );
                 if (response == JOptionPane.YES_OPTION) {
-                    result = doSave();
+                    result = doSave(encoderFile);
                 } else if (response == JOptionPane.CANCEL_OPTION) {
                     result = false;
                 } else if (response == JOptionPane.NO_OPTION) {
@@ -902,41 +912,57 @@ public class WheelEncoderGeneratorView extends FrameView {
 
 
     @Action
-    public void newEncoder() {
+    private void newEncoder() {
         if (promptSaveFirst()) {
             setWheelEncoder(new WheelEncoder());
             encoderPanel.setWheelEncoder(encoder);
             showPreview();
-            // TODO: Low: Encapsulate encoderFile setting and title bar in one method
-            encoderFile = null;
-            getFrame().setTitle("Untitled - " + appTitle);
+            setEncoderFile(new File("Untitled.weg"));
         }
     }
 
     private File promptFileSave()
     {
+        return promptFileSave(null);
+    }
+
+    /* promptFileSave()
+     * 
+     * prompts to save a file using defaultFile as the initially selected file
+     * which is nice because it suggests a correct file extension, hopefully, 
+     * at least in the case of an untitled document.
+     */
+    private File promptFileSave(File defaultFile)
+    {
         File file = null;
+        int option;
 
         JFileChooser fc = new JFileChooser();
+
         fc.setFileFilter(wegFileFilter);
-        int option = fc.showSaveDialog(getFrame());
+        if (defaultFile != null)
+            fc.setSelectedFile(defaultFile);
+        option = fc.showSaveDialog(getFrame());
+        File f = fc.getSelectedFile();
+
         if (option == JFileChooser.APPROVE_OPTION) {
-            File f = fc.getSelectedFile();
-            // Auto append extension
+            file = f;
+            // Auto append extension, but only on Windows
+            // on Mac, just prompt user if file extension is wrong
+            //
             if (wegFileFilter.accept(f) == false) {
-                f = new File(f.getParent(), f.getName() + wegFileFilter.getExtension());
-                System.out.println("Auto append extension, now: "+ f.getName());
-            }
-            if (f.exists()) {
-                int response = JOptionPane.showConfirmDialog(getFrame(),
-                    "Replace existing file " + f.getName() + "?", "Replace?",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE );
-                if (response == JOptionPane.YES_OPTION) {
-                    file = f;
+                if (MAC_OS_X) {
+                    int response = JOptionPane.showConfirmDialog(getFrame(),
+                        "File " + f.getName() + " is not a recognized WEG file type.  Ok to proceed?", "Unrecognized file type",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE );
+                    if (response == JOptionPane.NO_OPTION) {
+                        file = null;
+                    }
+                } else {
+                    file = new File(f.getParent(), f.getName() + wegFileFilter.getExtension());
+                    System.out.println("Auto append extension, now: "+ file.getName());
                 }
-            } else {
-                file = f;
             }
         }
 
@@ -944,34 +970,26 @@ public class WheelEncoderGeneratorView extends FrameView {
     }
 
 
-    private boolean doSave()
+    /* doSave()
+     *
+     * Saves the encoder to the specified file
+     * Wraps catches encoder.save() exception and displays dialog
+     * If by some chance the file is null, hopefully encoder.save()
+     * will throw an exception
+     */
+    private boolean doSave(File file)
     {
         boolean outcome = true;
 
-        if (encoderFile == null) {
-            File file = promptFileSave();
-            if (file != null) {
-                encoderFile = file;
-                outcome = true;
-            } else {
-                outcome = false;
-            }
+        try {
+            encoder.save(file);
+            showPreview();
         }
-
-        // if all's well so far, outcome == true
-        // if save file prompt cancelled, outcome == false
-        if (outcome) {
-            try {
-                encoder.save(encoderFile);
-                getFrame().setTitle(encoderFile.getName() + " - " + appTitle);
-                outcome = true;
-            }
-            catch (IOException e) {
-                outcome = false;
-                JOptionPane.showMessageDialog(getFrame(),
-                    "Error saving file", "File Save Error",
-                    JOptionPane.ERROR_MESSAGE );
-            }
+        catch (IOException e) {
+            outcome = false;
+            JOptionPane.showMessageDialog(getFrame(),
+                "Error saving file", "File Save Error",
+                JOptionPane.ERROR_MESSAGE );
         }
         
         return outcome;
@@ -987,7 +1005,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             File file = fc.getSelectedFile();
             try {
                 WheelEncoder enc = new WheelEncoder(file);
-                encoderFile = file;
+                setEncoderFile(file);
                 setWheelEncoder(enc);
                 encoderPanel.setWheelEncoder(encoder);
                 getFrame().setTitle(encoderFile.getName() + " - " + appTitle);
@@ -1007,23 +1025,23 @@ public class WheelEncoderGeneratorView extends FrameView {
 
     @Action
     public void saveEncoder() {
-        doSave();
+        doSave(encoderFile);
     }
 
     @Action
     public void saveEncoderAs() {
-        File temp = encoderFile; // store old file in case of failure
-        encoderFile = null; // fake out doSave() to force prompt
-
-        if (doSave() == false)
-            encoderFile = temp; // restore old file
+        File newFile = promptFileSave(encoderFile);
+        if (newFile != null) {
+            if (doSave(newFile)) {
+                setEncoderFile(newFile);
+            }
+        }
     }
 
     @Action
     public void openEncoder() {
-        if (promptSaveFirst()) {
+        if (promptSaveFirst())
             doOpen();
-        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
