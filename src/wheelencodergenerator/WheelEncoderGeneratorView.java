@@ -870,8 +870,15 @@ public class WheelEncoderGeneratorView extends FrameView {
      */
     private void setEncoderFile(File file)
     {
+        String theTitle;
         encoderFile = file;
-        getFrame().setTitle(encoderFile.getName() + " - " + appTitle);
+        if (file == null || file.getName().equals(NEW_FILE))
+            theTitle = "Untitled.weg";
+        else
+            theTitle = file.getName();
+        if (!MAC_OS_X)
+            theTitle += " - " + appTitle;
+        getFrame().setTitle(theTitle);
     }
 
 

@@ -8,7 +8,8 @@ package com.botthoughts;
 import java.awt.FileDialog;
 import java.awt.Component;
 import java.io.File;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 
 /**
  *
@@ -16,7 +17,6 @@ import javax.swing.*;
  */
 public class JFileChooser extends javax.swing.JFileChooser
 {
-    private FileDialog fd;
     private static boolean MAC_OS_X = (System.getProperty("os.name").toLowerCase().startsWith("mac os x"));
     private JFileFilter ff = null;
     private String directory = null;
@@ -51,9 +51,10 @@ public class JFileChooser extends javax.swing.JFileChooser
         }
     }
 
-    public void setFileFilter(com.botthoughts.JFileFilter ff)
+    public void setFileFilter(JFileFilter ff)
     {
         if (MAC_OS_X) {
+            System.out.println("JFileChooser.setFileFilter() -- got JFileFilter");
             this.ff = ff;
         } else {
             super.setFileFilter(ff);
@@ -77,10 +78,11 @@ public class JFileChooser extends javax.swing.JFileChooser
         int result = CANCEL_OPTION;
 
         if (MAC_OS_X) {
-            fd = new FileDialog((JFrame) frame, "Open", FileDialog.LOAD);
-            fd.setFilenameFilter(this.ff);
+            System.out.println("JFileChooser.showOpenDialog() -- OSX enter");
+            FileDialog fd = new FileDialog((JFrame) frame, "Open", FileDialog.LOAD);
             fd.setDirectory(this.directory);
             fd.setFile(this.file);
+            fd.setFilenameFilter(this.ff);
             fd.setVisible(true);
             if (fd.getFile() != null) {
                 result = APPROVE_OPTION;
@@ -104,7 +106,7 @@ public class JFileChooser extends javax.swing.JFileChooser
         int result = CANCEL_OPTION;
 
         if (MAC_OS_X) {
-            fd = new FileDialog((JFrame) frame, "Save", FileDialog.SAVE);
+            FileDialog fd = new FileDialog((JFrame) frame, "Save", FileDialog.SAVE);
             fd.setFilenameFilter(this.ff);
             fd.setDirectory(this.directory);
             fd.setFile(this.file);
