@@ -35,7 +35,8 @@ public class WheelEncoderGeneratorView extends FrameView {
     private DiameterInputVerifier numVerifier = new DiameterInputVerifier();
     public static boolean MAC_OS_X = (System.getProperty("os.name").toLowerCase().startsWith("mac os x"));
     public static int MENU_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-
+    public static String NEW_FILE = "";
+    
     // TODO: Low: implement mm/inch functionality
     // TODO: Med: implement image export
 
@@ -873,6 +874,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         getFrame().setTitle(encoderFile.getName() + " - " + appTitle);
     }
 
+
     private String getFilename()
     {
         String filename = "Untitled";
@@ -911,13 +913,16 @@ public class WheelEncoderGeneratorView extends FrameView {
     }
 
 
+    /*
+     * Set file to NEW_FILE to indicate to other routines that it is new
+     */
     @Action
     public void newEncoder() {
         if (promptSaveFirst()) {
             setWheelEncoder(new WheelEncoder());
             encoderPanel.setWheelEncoder(encoder);
             showPreview();
-            setEncoderFile(new File("Untitled.weg"));
+            setEncoderFile(new File(NEW_FILE));
         }
     }
 
@@ -935,8 +940,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         JFileChooser fc = new JFileChooser();
 
         fc.setFileFilter(ff);
-        if (defaultFile != null)
+        if (defaultFile == null || defaultFile.getName().equals(NEW_FILE)) {
+            fc.setSelectedFile(new File("Untitled.weg"));
+        } else {
             fc.setSelectedFile(defaultFile);
+        }
         option = fc.showSaveDialog(getFrame());
         File f = fc.getSelectedFile();
 
@@ -1021,7 +1029,13 @@ public class WheelEncoderGeneratorView extends FrameView {
 
     @Action
     public void saveEncoder() {
-        doSave(encoderFile);
+        if (encoderFile.getName().equals(NEW_FILE)) {
+            File newFile = promptFileSave(encoderFile, wegFileFilter);
+            if (newFile != null && doSave(newFile))
+                setEncoderFile(newFile);
+        } else {
+            doSave(encoderFile);
+        }
     }
 
     @Action
