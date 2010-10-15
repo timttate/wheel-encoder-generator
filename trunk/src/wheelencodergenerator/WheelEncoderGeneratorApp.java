@@ -43,6 +43,8 @@ public class WheelEncoderGeneratorApp extends SingleFrameApplication {
         System.setProperty("apple.laf.useScreenMenuBar","true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "WheelEncoderGenerator");
         System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
+        // TODO: OSX Dock Icon and other Mac goodies?
+        System.out.println("launching app...");
         launch(WheelEncoderGeneratorApp.class, args);
     }
 }
