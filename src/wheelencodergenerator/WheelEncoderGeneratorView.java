@@ -909,7 +909,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
 
     @Action
-    private void newEncoder() {
+    public void newEncoder() {
         if (promptSaveFirst()) {
             setWheelEncoder(new WheelEncoder());
             encoderPanel.setWheelEncoder(encoder);
