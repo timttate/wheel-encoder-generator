@@ -41,6 +41,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     public WheelEncoderGeneratorView(SingleFrameApplication app) {
         super(app);
 
+        System.out.println("Initializing components...");
         initComponents();
 
         wegFileFilter.setDescription("Wheel Encoder Generator files");
@@ -50,6 +51,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         // Initial "load" of new encoder
         newEncoder();
+        System.out.println("Done with View initialization...");
     }
 
     @Action
@@ -501,7 +503,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         newButton.setIcon(resourceMap.getIcon("newButton.icon")); // NOI18N
         newButton.setText(resourceMap.getString("newButton.text")); // NOI18N
         newButton.setToolTipText(resourceMap.getString("newButton.toolTipText")); // NOI18N
-        newButton.setBorder(null);
         newButton.setBorderPainted(false);
         newButton.setFocusable(false);
         newButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -516,7 +517,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         openButton.setIcon(resourceMap.getIcon("openButton.icon")); // NOI18N
         openButton.setText(resourceMap.getString("openButton.text")); // NOI18N
         openButton.setToolTipText(resourceMap.getString("openButton.toolTipText")); // NOI18N
-        openButton.setBorder(null);
         openButton.setBorderPainted(false);
         openButton.setFocusable(false);
         openButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -535,7 +535,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveButton.setIcon(resourceMap.getIcon("saveButton.icon")); // NOI18N
         saveButton.setText(resourceMap.getString("saveButton.text")); // NOI18N
         saveButton.setToolTipText(resourceMap.getString("saveButton.toolTipText")); // NOI18N
-        saveButton.setBorder(null);
         saveButton.setBorderPainted(false);
         saveButton.setFocusable(false);
         saveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -550,7 +549,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveAsButton.setIcon(resourceMap.getIcon("saveAsButton.icon")); // NOI18N
         saveAsButton.setText(resourceMap.getString("saveAsButton.text")); // NOI18N
         saveAsButton.setToolTipText(resourceMap.getString("saveAsButton.toolTipText")); // NOI18N
-        saveAsButton.setBorder(null);
         saveAsButton.setBorderPainted(false);
         saveAsButton.setFocusable(false);
         saveAsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -561,10 +559,10 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveAsButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar1.add(saveAsButton);
 
+        exportButton.setAction(actionMap.get("exportEncoder")); // NOI18N
         exportButton.setIcon(resourceMap.getIcon("exportButton.icon")); // NOI18N
         exportButton.setText(resourceMap.getString("exportButton.text")); // NOI18N
         exportButton.setToolTipText(resourceMap.getString("exportButton.toolTipText")); // NOI18N
-        exportButton.setBorder(null);
         exportButton.setBorderPainted(false);
         exportButton.setFocusable(false);
         exportButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -584,7 +582,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         printButton.setIcon(resourceMap.getIcon("printButton.icon")); // NOI18N
         printButton.setText(resourceMap.getString("printButton.text")); // NOI18N
         printButton.setToolTipText(resourceMap.getString("printButton.toolTipText")); // NOI18N
-        printButton.setBorder(null);
         printButton.setBorderPainted(false);
         printButton.setFocusable(false);
         printButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1042,6 +1039,20 @@ public class WheelEncoderGeneratorView extends FrameView {
     public void openEncoder() {
         if (promptSaveFirst())
             doOpen();
+    }
+
+    @Action
+    public void exportEncoder() {
+        File image = promptFileSave(new File("Untitled.png"));
+        if (image != null) {
+            try {
+                encoderPanel.export(image, "png");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(getFrame(),
+                    "Error exporting image file", "File Export Error",
+                    JOptionPane.ERROR_MESSAGE );
+            }
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

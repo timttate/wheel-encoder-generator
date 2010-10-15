@@ -22,8 +22,6 @@ public class JFileChooser extends javax.swing.JFileChooser
     private String directory = null;
     private String file = null;
 
-    // TODO: automatically append file extension if not supplied?
-
     /* approveSelection() 
      * 
      * The native JFileChooser doesn't prompt if the file exists, but whoever
