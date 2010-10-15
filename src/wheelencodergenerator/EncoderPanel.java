@@ -11,9 +11,17 @@
 
 package wheelencodergenerator;
 
-import java.awt.*;
-import java.awt.geom.*;
 import java.awt.print.*;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.geom.*;
+import java.awt.print.Printable;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 /**
  *
@@ -34,6 +42,25 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
         e = encoder;
     }
 
+    /* export()
+     *
+     * Exports this graphic to the specified image file in the specified
+     * image format.
+     * formatName - a String containg the informal name of the format.
+     */
+    public void export(File file, String formatName) throws IOException
+    {
+        int width = 600; int height = 600; // TODO: need some way to specify w/h of image
+        // Create a buffered image in which to draw
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        // Create a graphics contents on the buffered image
+        Graphics2D g2d = bufferedImage.createGraphics();
+        //g2d.translate(width, height);
+        //g2d.setBackground(Color.white);
+        paint(g2d);
+        ImageIO.write(bufferedImage, formatName, file);
+    }
+
     public int print(Graphics g, PageFormat pf, int pi)
                        throws PrinterException {
         if (pi >= 1) {
@@ -43,8 +70,6 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
         Graphics2D g2 = (Graphics2D) g;
         g2.translate(pf.getImageableX(),
                      pf.getImageableY());
-        Font  f = new Font("Monospaced", Font.PLAIN,12);
-        g2.setFont (f);
         Dimension size = getSize();
         double d = (double) Math.min(size.width, size.height); // diameter
         // Outer diameter is in mm. Convert to inches then to dots based on 72dpi
@@ -55,6 +80,7 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
         return Printable.PAGE_EXISTS;
     }
 
+    @Override
     public void paint(Graphics g) {
         // Dynamically calculate size information
         // (the canvas may have been resized externally...)
@@ -74,15 +100,15 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
             
             maxTrack = e.getTrackCount();
 
-            if (e.getType() == e.ABSOLUTE) {
+            if (e.getType() == WheelEncoder.ABSOLUTE) {
 
                 for (int track = 0; track < maxTrack; track++) {
                     //System.out.println("Absolute: Track " + Integer.toString(track) + " of " + Integer.toString(maxTrack));
                     double degree = e.getDegree(track);
                     // gray code = degree/2, binary = 0
-                    if (e.getNumbering() == e.GRAY)
+                    if (e.getNumbering() == WheelEncoder.GRAY)
                         offset = degree/2;
-                    else if (e.getNumbering() == e.BINARY)
+                    else if (e.getNumbering() == WheelEncoder.BINARY)
                         offset = 0;
 
                     double dA = id + (maxTrack-track) * (d - id) / maxTrack;
@@ -101,7 +127,7 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
                 }
 
             }
-            else if (e.getType() == e.STANDARD) {
+            else if (e.getType() == WheelEncoder.STANDARD) {
 
                 for (int track = 0; track < maxTrack; track++) {
 

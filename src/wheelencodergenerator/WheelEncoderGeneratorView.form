@@ -603,9 +603,6 @@
             <Property name="icon" type="javax.swing.Icon" resourceKey="newButton.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="newButton.text"/>
             <Property name="toolTipText" type="java.lang.String" resourceKey="newButton.toolTipText"/>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -630,9 +627,6 @@
             <Property name="icon" type="javax.swing.Icon" resourceKey="openButton.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="openButton.text"/>
             <Property name="toolTipText" type="java.lang.String" resourceKey="openButton.toolTipText"/>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -668,9 +662,6 @@
                 <Property name="icon" type="javax.swing.Icon" resourceKey="saveButton.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="saveButton.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="saveButton.toolTipText"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="null"/>
-                </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -695,9 +686,6 @@
                 <Property name="icon" type="javax.swing.Icon" resourceKey="saveAsButton.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="saveAsButton.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="saveAsButton.toolTipText"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="null"/>
-                </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -716,12 +704,12 @@
             </Component>
             <Component class="javax.swing.JButton" name="exportButton">
               <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="exportEncoder" methodName="exportEncoder"/>
+                </Property>
                 <Property name="icon" type="javax.swing.Icon" resourceKey="exportButton.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="exportButton.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="exportButton.toolTipText"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="null"/>
-                </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -756,9 +744,6 @@
                 <Property name="icon" type="javax.swing.Icon" resourceKey="printButton.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="printButton.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="printButton.toolTipText"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="null"/>
-                </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
