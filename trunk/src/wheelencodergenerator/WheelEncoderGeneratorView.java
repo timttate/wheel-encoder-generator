@@ -75,8 +75,8 @@ public class WheelEncoderGeneratorView extends FrameView {
                 // use as delegates for various com.apple.eawt.ApplicationListener methods
                 OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("quit", (Class[])null));
                 OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("about", (Class[])null));
-                OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("preferences", (Class[])null));
-                OSXAdapter.setFileHandler(this, getClass().getDeclaredMethod("loadImageFile", new Class[] { String.class }));
+                //OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("preferences", (Class[])null));
+                //OSXAdapter.setFileHandler(this, getClass().getDeclaredMethod("loadImageFile", new Class[] { String.class }));
             } catch (Exception e) {
                 System.err.println("Error while loading the OSXAdapter:");
                 e.printStackTrace();
@@ -85,7 +85,12 @@ public class WheelEncoderGeneratorView extends FrameView {
     }
 
     @Action
-    public void showAboutBox() {
+    public void preferences() {
+
+    }
+
+    @Action
+    public void about() {
         if (aboutBox == null) {
             JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
             aboutBox = new WheelEncoderGeneratorAboutBox(mainFrame);
@@ -180,11 +185,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 480, Short.MAX_VALUE)
+            .addGap(0, 418, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 356, Short.MAX_VALUE)
+            .addGap(0, 333, Short.MAX_VALUE)
         );
 
         controlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("controlPanel.border.title"))); // NOI18N
@@ -432,7 +437,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -442,7 +447,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
                     .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -485,6 +490,8 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveAsMenuItem.setName("saveAsMenuItem"); // NOI18N
         fileMenu.add(saveAsMenuItem);
 
+        exportMenuItem.setAction(actionMap.get("exportEncoder")); // NOI18N
+        exportMenuItem.setText(resourceMap.getString("exportMenuItem.text")); // NOI18N
         exportMenuItem.setName("exportMenuItem"); // NOI18N
         fileMenu.add(exportMenuItem);
 
@@ -719,9 +726,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     }//GEN-LAST:event_encoderTabbedPaneMouseClicked
 
     private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
-        if(promptSaveFirst()) {
-            System.exit(0);
-        }
+        quit();
     }//GEN-LAST:event_quitMenuItemActionPerformed
 
     private class DiameterInputVerifier extends InputVerifier {
@@ -1100,7 +1105,14 @@ public class WheelEncoderGeneratorView extends FrameView {
             }
         }
     }
-    
+
+    @Action
+    public void quit() {
+        if(promptSaveFirst()) {
+            System.exit(0);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel absolutePanel;
     private javax.swing.JComboBox absoluteResolutionComboBox;
