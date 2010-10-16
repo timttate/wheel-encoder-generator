@@ -34,17 +34,27 @@ public class JFileChooser extends javax.swing.JFileChooser
         System.out.println("approveSelection() -- "+this.getSelectedFile());
         // This probably will only be called on non-OSX since we're not
         // calling super.showDialog() etc on that platform
-        if (this.getSelectedFile().exists() && this.getDialogType() == SAVE_DIALOG) {
-            int response = JOptionPane.showConfirmDialog(this.getRootPane(),
-                "Replace existing file " + this.getSelectedFile().getName() + "?", "Replace?",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE );
-            if (response == JOptionPane.YES_OPTION) {
+        if (this.getDialogType() == SAVE_DIALOG) {
+            // Do we have the wrong file extension? If so, fix right now
+            File sf = this.getSelectedFile();
+            JFileFilter ff = (JFileFilter) this.getFileFilter();
+            if (ff.accept(sf) == false) {
+                this.setSelectedFile(new File(sf.getAbsoluteFile()+ff.getExtension()));
+            }
+        
+            if (this.getSelectedFile().exists()) {
+                int response = JOptionPane.showConfirmDialog(this.getRootPane(),
+                    "Replace existing file " + this.getSelectedFile().getName() + "?", "Replace?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE );
+                if (response == JOptionPane.YES_OPTION) {
+                    super.approveSelection();
+                } else if (response == JOptionPane.NO_OPTION) {
+                    this.setSelectedFile(null);
+                    //super.cancelSelection();
+                }
+            } else {
                 super.approveSelection();
-            } else if (response == JOptionPane.NO_OPTION) {
-                this.setSelectedFile(null);
-//              this.fireActionPerformed(CANCEL_SELECTION);
-                super.cancelSelection();
             }
         } else {
             super.approveSelection();
