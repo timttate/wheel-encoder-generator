@@ -51,14 +51,12 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         System.out.println("Initializing components...");
         initComponents();
-        registerForMacOSXEvents();
+        registerForMacOSXEvents(); // OSX-specific setup
 
         wegFileFilter.setDescription("Wheel Encoder Generator files (*.weg)");
         wegFileFilter.addType(".weg");
         pngFileFilter.setDescription("PNG Images (*.png)");
         pngFileFilter.addType(".png");
-
-        // Mac OS X vs Windows specific stuff here
 
         // Initial "load" of new encoder
         newEncoder();
@@ -1097,7 +1095,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         File image = promptFileSave(new File("Untitled.png"), pngFileFilter);
         if (image != null) {
             try {
-                encoderPanel.export(image, "png");
+                encoderPanel.export(image, "png", 600);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(getFrame(),
                     "Error exporting image file", "File Export Error",
