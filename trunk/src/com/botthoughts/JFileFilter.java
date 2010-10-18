@@ -55,6 +55,7 @@ public class JFileFilter extends javax.swing.filechooser.FileFilter implements j
 
   protected ArrayList exts = new ArrayList();
 
+  @SuppressWarnings("unchecked")
   public void addType(String s) {
     exts.add(s);
   }
