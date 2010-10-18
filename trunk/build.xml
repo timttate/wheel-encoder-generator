@@ -44,6 +44,8 @@
         <copy file="${resources_macosx}/Info.plist" toFile="${dist.dir}/${ant.project.name}.app/Contents/Info.plist">
                 <filterset>
                         <filter token="PROJECTNAMEASIDENTIFIER" value="${ant.project.name}"/>
+                        <filter token="PROJECTMAINCLASS" value="${main.class}"/>
+                        <filter token="CLASSPATH" value="${jar.classpath}"/>
                 </filterset>
         </copy>
         <!-- copy the icon -->
