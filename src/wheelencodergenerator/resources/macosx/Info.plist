@@ -45,12 +45,20 @@
 		<key>JVMVersion</key>
 		<string>1.6+</string>
 		<key>MainClass</key>
-		<string>wheelencodergenerator.WheelEncoderGeneratorApp</string>
+		<string>@PROJECTMAINCLASS@</string>
 		<key>Properties</key>
 		<dict>
 			<key>apple.laf.useScreenMenuBar</key>
 			<string>true</string>
+			<key>com.apple.macos.useScreenMenuBar</key>
+			<string>true</string>
+			<key>com.apple.mrj.application.apple.menu.about.name</key>
+			<string>@PROJECTNAMEASIDENTIFIER@</string>
+			<key>com.apple.mrj.application.growbox.intrudes</key>
+			<string>false</string>
 		</dict>
+		<key>VMOptions</key>
+		<string>-Xms50m -Xint</string>
 	</dict>
 </dict>
 </plist>
