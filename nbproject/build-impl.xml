@@ -913,4 +913,51 @@ is divided into following sections:
             </propertyset>
         </ant>
     </target>
+    <!--
+                ==================
+                OS PACKAGE SECTION
+                ==================
+            -->
+
+    <target name="osxapp" depends="jar" description="Make a double-clickable Mac OS X application">
+       <!--
+        <property name="dist.dir" location="dist" />
+        <property name="src.dir" location="src/wheelencodergenerator" /> -->
+        <property name="dist.lib.dir" location="${dist.dir}/lib" />
+        <property name="resources_macosx" location="${src.dir}/resources/macosx" />
+        <property name="apple.appstub" location="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"/>
+        <property name="application.macos" location="${dist.dir}/${ant.project.name}.app/Contents/MacOS"/>
+        <property name="application.macos.stub" location="${application.macos}/${ant.project.name}"/>
+        <property name="application.resources" location="${dist.dir}/${ant.project.name}.app/Contents/Resources"/>
+        <property name="application.resources.java" location="${dist.dir}/${ant.project.name}.app/Contents/Resources/Java"/>
+
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${application.resources.java}"/>
+        <mkdir dir="${application.macos}"/>
+        <!-- copy jars -->
+        <copy toDir="${application.resources.java}">
+                <fileset dir="${dist.jar.dir}">
+                        <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${dist.lib.dir}">
+                        <include name="*.jar"/>
+                </fileset>
+        </copy>
+        <!-- copy application stub -->
+        <copy file="${apple.appstub}" toFile="${application.macos}/${ant.project.name}"/>
+        <!-- fix stub permissions -->
+        <exec executable="/bin/chmod">
+                <arg line="755 '${application.macos.stub}'"/>
+        </exec>
+        <!-- copy and configure Info.plist -->
+        <copy file="${resources_macosx}/Info.plist" toFile="${dist.dir}/${ant.project.name}.app/Contents/Info.plist">
+                <filterset>
+                        <filter token="PROJECTNAMEASIDENTIFIER" value="${ant.project.name}"/>
+                        <filter token="PROJECTMAINCLASS" value="${main.class}"/>
+                        <filter token="CLASSPATH" value="${jar.classpath}"/>
+                </filterset>
+        </copy>
+        <!-- copy the icon -->
+        <copy file="${resources_macosx}/${ant.project.name}.icns" toDir="${application.resources}"/>
+    </target>
 </project>
