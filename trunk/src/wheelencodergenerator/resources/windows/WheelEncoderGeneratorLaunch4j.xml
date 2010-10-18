@@ -2,7 +2,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>C:\Documents and Settings\Michael Shimniok\My Documents\NetBeansProjects\WheelEncoderGenerator\dist\WheelEncoderGenerator.jar</jar>
-  <outfile>C:\Documents and Settings\Michael Shimniok\My Documents\NetBeansProjects\WheelEncoderGenerator\dist\WheelEncoderGenerator.exe</outfile>
+  <outfile>C:\Documents and Settings\Michael Shimniok\My Documents\NetBeansProjects\WheelEncoderGenerator\dist\WheelEncoderGenerator\WheelEncoderGenerator.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
