@@ -918,6 +918,19 @@ is divided into following sections:
                 OS PACKAGE SECTION
                 ==================
             -->
+    <target name="winapp" depends="jar" description="Make a Windows app folder and zip">
+        <property name="dist.lib.dir" location="${dist.dir}/lib" />
+        <property name="dist.zip.dir" location="${dist.dir}/${ant.project.name}" />
+        <property name="dist.zip.lib.dir" location="${dist.zip.dir}/lib" />
+        <mkdir dir="${dist.zip}"/>
+        <mkdir dir="${dist.zip.dir}"/>
+        <mkdir dir="${dist.zip.lib.dir}"/>
+        <copy toDir="${dist.zip.lib.dir}">
+            <fileset dir="${dist.lib.dir}">
+                        <include name="*.jar"/>
+            </fileset>
+        </copy>
+    </target>
 
     <target name="osxapp" depends="jar" description="Make a double-clickable Mac OS X application">
        <!--
