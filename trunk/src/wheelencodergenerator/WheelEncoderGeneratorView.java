@@ -139,7 +139,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         printMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        quitMenuItem = new javax.swing.JMenuItem();
+        exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         buttonGroup1 = new javax.swing.ButtonGroup();
@@ -173,6 +173,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setMinimumSize(new java.awt.Dimension(200, 200));
         encoderPanel.setName("encoderPanel"); // NOI18N
         encoderPanel.setPreferredSize(new java.awt.Dimension(400, 400));
+        encoderPanel.setWheelEncoder(null);
         encoderPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 encoderPanelMouseClicked(evt);
@@ -506,14 +507,14 @@ public class WheelEncoderGeneratorView extends FrameView {
         if (!MAC_OS_X) {
             fileMenu.add(jSeparator2);
 
-            quitMenuItem.setText(resourceMap.getString("quitMenuItem.text")); // NOI18N
-            quitMenuItem.setName("quitMenuItem"); // NOI18N
-            quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            exitMenuItem.setText(resourceMap.getString("exitMenuItem.text")); // NOI18N
+            exitMenuItem.setName("exitMenuItem"); // NOI18N
+            exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    quitMenuItemActionPerformed(evt);
+                    exitMenuItemActionPerformed(evt);
                 }
             });
-            fileMenu.add(quitMenuItem);
+            fileMenu.add(exitMenuItem);
         }
 
         menuBar.add(fileMenu);
@@ -563,7 +564,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         toolBar0.add(openButton);
 
         toolBar1.setRollover(true);
-        toolBar1.setMaximumSize(new java.awt.Dimension(160, 54));
+        toolBar1.setMaximumSize(new java.awt.Dimension(170, 54));
         toolBar1.setName("toolBar1"); // NOI18N
 
         saveButton.setAction(actionMap.get("saveEncoder")); // NOI18N
@@ -587,7 +588,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         saveAsButton.setBorderPainted(false);
         saveAsButton.setFocusable(false);
         saveAsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        saveAsButton.setMaximumSize(new java.awt.Dimension(50, 50));
+        saveAsButton.setMaximumSize(new java.awt.Dimension(55, 50));
         saveAsButton.setMinimumSize(new java.awt.Dimension(32, 50));
         saveAsButton.setName("saveAsButton"); // NOI18N
         saveAsButton.setPreferredSize(new java.awt.Dimension(32, 50));
@@ -723,9 +724,12 @@ public class WheelEncoderGeneratorView extends FrameView {
         showPreview();
     }//GEN-LAST:event_encoderTabbedPaneMouseClicked
 
-    private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
-        quit();
-    }//GEN-LAST:event_quitMenuItemActionPerformed
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        // This action handler is only called by non-Mac Exit menu item
+        if (promptSaveFirst())
+            System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
+
 
     private class DiameterInputVerifier extends InputVerifier {
         public boolean verify(JComponent input) {
@@ -920,11 +924,14 @@ public class WheelEncoderGeneratorView extends FrameView {
         return filename;
     }
 
-     /* checkSaveFirst
+    /* checkSaveFirst
      *
-     * Check to see if encoder has been saved. If not, save it.
-     * If cancel, not only don't save it, but return false.
-     * If don't save, then return true and don't save
+     * if file isn't changed:
+     *   -> true
+     * If file changed, prompt to save, discard, or cancel
+     *   Save -> result of doSave()
+     *   Discard -> true
+     *   No -> false
      */
     private boolean promptSaveFirst()
     {
@@ -936,7 +943,16 @@ public class WheelEncoderGeneratorView extends FrameView {
                     "The encoder " + getFilename() + " has changed. Save the changes?", "Save?",
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE );
-                if (response == JOptionPane.YES_OPTION) {
+                if (response == JOptionPane.YES_OPTION) {                    
+                    if (encoderFile.getName().equals(NEW_FILE)) {
+                        File newFile = promptFileSave(encoderFile, wegFileFilter);
+                        if (newFile != null)
+                            setEncoderFile(newFile);
+                    }
+                    // By now we should have encoderFile set to something useful
+                    // so the result of this operation should set the result for quit()
+                    // so that if save succeeds, then we quit, but if save fails, then
+                    // we don't quit.
                     result = doSave(encoderFile);
                 } else if (response == JOptionPane.CANCEL_OPTION) {
                     result = false;
@@ -945,6 +961,7 @@ public class WheelEncoderGeneratorView extends FrameView {
                 }
             }
         }
+        System.out.println("promptSaveFirst() -- return "+Boolean.toString(result));
         return result;
     }
 
@@ -1028,7 +1045,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         catch (IOException e) {
             outcome = false;
             JOptionPane.showMessageDialog(getFrame(),
-                "Error saving file", "File Save Error",
+                "Error saving file", "File Save Error: "+e.getMessage(),
                 JOptionPane.ERROR_MESSAGE );
         }
         
@@ -1104,11 +1121,20 @@ public class WheelEncoderGeneratorView extends FrameView {
         }
     }
 
-    @Action
-    public void quit() {
-        if(promptSaveFirst()) {
-            System.exit(0);
-        }
+    /* OSX-specific quit for handling quit menu
+     *
+     * Returns:
+     * true if ok to proceed quitting
+     * false if cancelling quit
+     *
+     * Calls promptSaveFirst() to check if file needs saving,
+     * returns boolean true if ok to proceed; false otherwise
+     */
+    public boolean quit()
+    {
+        boolean result = promptSaveFirst();
+        System.out.println("quit() -- return "+Boolean.toString(result));
+        return result;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1121,6 +1147,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JPanel diameterPanel;
     private wheelencodergenerator.EncoderPanel encoderPanel;
     private javax.swing.JTabbedPane encoderTabbedPane;
+    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JButton exportButton;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
@@ -1144,7 +1171,6 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JButton printButton;
     private javax.swing.JMenuItem printMenuItem;
     private javax.swing.JCheckBox quadratureCheckBox;
-    private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JLabel resolutionLabel1;
     private javax.swing.JLabel resolutionLabel2;
     private javax.swing.JSpinner resolutionSpinner;
