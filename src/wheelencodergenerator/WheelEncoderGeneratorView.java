@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
@@ -52,6 +54,10 @@ public class WheelEncoderGeneratorView extends FrameView {
         System.out.println("Initializing components...");
         initComponents();
         registerForMacOSXEvents(); // OSX-specific setup
+
+        // Handle window close event
+        this.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.getFrame().addWindowListener(new CloseListener());
 
         wegFileFilter.setDescription("Wheel Encoder Generator files (*.weg)");
         wegFileFilter.addType(".weg");
@@ -718,6 +724,13 @@ public class WheelEncoderGeneratorView extends FrameView {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
 
+    private class CloseListener extends WindowAdapter {
+        public void windowClosing(WindowEvent event) {
+            if (promptSaveFirst())
+                System.exit(0);
+        }
+    }
+            
     private class DiameterInputVerifier extends InputVerifier {
         public boolean verify(JComponent input) {
             boolean outcome = false;
