@@ -63,15 +63,23 @@ public class WheelEncoder {
      */
     public void save(File file) throws IOException
     {
+        System.out.println("save() -- enter");
         storeProperties();
+        System.out.println("save() -- done storing properties");
         try {
+            System.out.println("save() -- enter try block");
             p.store(new FileOutputStream(file), "Wheel Encoder Settings");
+            System.out.println("save() -- called store");
             this.file = file;
-        } catch (Exception e) {
+            System.out.println("save() -- end of try block");
+        } catch (IOException e) {
             p = new Properties(); // Mark as unsaved
+            System.out.println("WheelEncoder.save() IOException: '"+e.getMessage()+"'");
             throw new IOException(e.getMessage());
         }
     }
+
+    //TODO: debug output for all catch blocks
 
     public void setType(int t)
     {
