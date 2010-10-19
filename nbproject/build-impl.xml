@@ -919,17 +919,30 @@ is divided into following sections:
                 ==================
             -->
     <target name="winapp" depends="jar" description="Make a Windows app folder and zip">
+        <!-- uses 7-Zip -->
+        <property name="zip.exe" location="C:/Program Files/7-Zip/7z" />
+        <property name="zip.args" value="a -r -tzip" />
         <property name="dist.lib.dir" location="${dist.dir}/lib" />
         <property name="dist.zip.dir" location="${dist.dir}/${ant.project.name}" />
-        <property name="dist.zip.lib.dir" location="${dist.zip.dir}/lib" />
-        <mkdir dir="${dist.zip}"/>
+
+        <echo message="Creating zip directories..."/>
         <mkdir dir="${dist.zip.dir}"/>
-        <mkdir dir="${dist.zip.lib.dir}"/>
-        <copy toDir="${dist.zip.lib.dir}">
+        <mkdir dir="${dist.zip.dir}/lib"/>
+
+        <echo message="Copying jar files to zip dir..."/>
+        <copy toDir="${dist.zip.dir}/lib">
             <fileset dir="${dist.lib.dir}">
                         <include name="*.jar"/>
             </fileset>
         </copy>
+
+        <echo message="Deleting zip file..."/>
+        <delete file="${dist.dir}/${ant.project.name}.zip" verbose="true" />
+        <echo message="Adding to archive..."/>
+        <exec executable="${zip.exe}" dir="${dist.dir}">
+                <arg line="${zip.args} ${ant.project.name}.zip ${ant.project.name}"/>
+        </exec>
+        <echo message="Done zipping" />
     </target>
 
     <target name="osxapp" depends="jar" description="Make a double-clickable Mac OS X application">
