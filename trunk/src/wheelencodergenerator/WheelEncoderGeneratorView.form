@@ -454,11 +454,14 @@
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
               <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="newEncoder" methodName="newEncoder"/>
             </Property>
+            <Property name="mnemonic" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="KeyEvent.VK_F" type="code"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="fileMenu.text"/>
             <Property name="name" type="java.lang.String" value="fileMenu" noResource="true"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="// OSX doesn&apos;t use menu icons&#xa;if (MAC_OS_X) {&#xa;    newMenuItem.setIcon(null);&#xa;    openMenuItem.setIcon(null);&#xa;    saveMenuItem.setIcon(null);&#xa;    saveAsMenuItem.setIcon(null);&#xa;    exportMenuItem.setIcon(null);&#xa;    printMenuItem.setIcon(null);&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="// OSX doesn&apos;t use menu icons or mnemonics&#xa;// This is kind of klugey but unset icons and&#xa;// set mnemonics here&#xa;if (MAC_OS_X) {&#xa;    newMenuItem.setIcon(null);&#xa;    openMenuItem.setIcon(null);&#xa;    saveMenuItem.setIcon(null);&#xa;    saveAsMenuItem.setIcon(null);&#xa;    exportMenuItem.setIcon(null);&#xa;    printMenuItem.setIcon(null);&#xa;} else {&#xa;    fileMenu.setMnemonic(KeyEvent.VK_F);&#xa;    newMenuItem.setMnemonic(KeyEvent.VK_N);&#xa;    openMenuItem.setMnemonic(KeyEvent.VK_O);&#xa;    saveMenuItem.setMnemonic(KeyEvent.VK_S);&#xa;    saveAsMenuItem.setMnemonic(KeyEvent.VK_A);&#xa;    exportMenuItem.setMnemonic(KeyEvent.VK_E);&#xa;    printMenuItem.setMnemonic(KeyEvent.VK_P);&#xa;    exitMenuItem.setMnemonic(KeyEvent.VK_X);&#xa;}"/>
             <AuxValue name="generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
           </AuxValues>
           <SubComponents>
@@ -577,12 +580,15 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
           <Properties>
+            <Property name="mnemonic" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="KeyEvent.VK_H" type="code"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="helpMenu.text"/>
             <Property name="name" type="java.lang.String" value="helpMenu" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="}"/>
-            <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="if(!MAC_OS_X) {"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="if(!MAC_OS_X) {&#xd;&#xa;  helpMenu.setMnemonic(KeyEvent.VK_H);&#xd;&#xa;  aboutMenuItem.setMnemonic(KeyEvent.VK_A);"/>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
           </AuxValues>
@@ -592,6 +598,10 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="showAboutBox" methodName="showAboutBox"/>
                 </Property>
+                <Property name="mnemonic" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="KeyEvent.VK_A" type="code"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="aboutMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>

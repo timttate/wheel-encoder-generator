@@ -450,6 +450,7 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getActionMap(WheelEncoderGeneratorView.class, this);
         fileMenu.setAction(actionMap.get("newEncoder")); // NOI18N
+        fileMenu.setMnemonic(KeyEvent.VK_F);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
@@ -513,7 +514,9 @@ public class WheelEncoderGeneratorView extends FrameView {
             fileMenu.add(exitMenuItem);
         }
 
-        // OSX doesn't use menu icons
+        // OSX doesn't use menu icons or mnemonics
+        // This is kind of klugey but unset icons and
+        // set mnemonics here
         if (MAC_OS_X) {
             newMenuItem.setIcon(null);
             openMenuItem.setIcon(null);
@@ -521,17 +524,31 @@ public class WheelEncoderGeneratorView extends FrameView {
             saveAsMenuItem.setIcon(null);
             exportMenuItem.setIcon(null);
             printMenuItem.setIcon(null);
+        } else {
+            fileMenu.setMnemonic(KeyEvent.VK_F);
+            newMenuItem.setMnemonic(KeyEvent.VK_N);
+            openMenuItem.setMnemonic(KeyEvent.VK_O);
+            saveMenuItem.setMnemonic(KeyEvent.VK_S);
+            saveAsMenuItem.setMnemonic(KeyEvent.VK_A);
+            exportMenuItem.setMnemonic(KeyEvent.VK_E);
+            printMenuItem.setMnemonic(KeyEvent.VK_P);
+            exitMenuItem.setMnemonic(KeyEvent.VK_X);
         }
         menuBar.add(fileMenu);
 
+        helpMenu.setMnemonic(KeyEvent.VK_H);
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setMnemonic(KeyEvent.VK_A);
+        aboutMenuItem.setText(resourceMap.getString("aboutMenuItem.text")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
         if(!MAC_OS_X) {
+            helpMenu.setMnemonic(KeyEvent.VK_H);
+            aboutMenuItem.setMnemonic(KeyEvent.VK_A);
             menuBar.add(helpMenu);
         }
 
@@ -1078,7 +1095,7 @@ public class WheelEncoderGeneratorView extends FrameView {
      * Set file to NEW_FILE to indicate to other routines that it is new
      */
     @Action
-    private void newEncoder() {
+    public void newEncoder() {
         if (promptSaveFirst()) {
             setWheelEncoder(new WheelEncoder());
             encoderPanel.setWheelEncoder(encoder);
