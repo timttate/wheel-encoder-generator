@@ -454,12 +454,14 @@ public class WheelEncoderGeneratorView extends FrameView {
         fileMenu.setName("fileMenu"); // NOI18N
 
         newMenuItem.setAction(actionMap.get("newEncoder")); // NOI18N
+        newMenuItem.setIcon(resourceMap.getIcon("newMenuItem.icon")); // NOI18N
         newMenuItem.setText(resourceMap.getString("newMenuItem.text")); // NOI18N
         newMenuItem.setName("newMenuItem"); // NOI18N
         fileMenu.add(newMenuItem);
         newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,MENU_MASK));
 
         openMenuItem.setAction(actionMap.get("openEncoder")); // NOI18N
+        openMenuItem.setIcon(resourceMap.getIcon("openMenuItem.icon")); // NOI18N
         openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
         openMenuItem.setName("openMenuItem"); // NOI18N
         fileMenu.add(openMenuItem);
@@ -469,17 +471,20 @@ public class WheelEncoderGeneratorView extends FrameView {
         fileMenu.add(jSeparator3);
 
         saveMenuItem.setAction(actionMap.get("saveEncoder")); // NOI18N
+        saveMenuItem.setIcon(resourceMap.getIcon("saveMenuItem.icon")); // NOI18N
         saveMenuItem.setText(resourceMap.getString("saveMenuItem.text")); // NOI18N
         saveMenuItem.setName("saveMenuItem"); // NOI18N
         fileMenu.add(saveMenuItem);
         saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,MENU_MASK));
 
         saveAsMenuItem.setAction(actionMap.get("saveEncoderAs")); // NOI18N
+        saveAsMenuItem.setIcon(resourceMap.getIcon("saveAsMenuItem.icon")); // NOI18N
         saveAsMenuItem.setText(resourceMap.getString("saveAsMenuItem.text")); // NOI18N
         saveAsMenuItem.setName("saveAsMenuItem"); // NOI18N
         fileMenu.add(saveAsMenuItem);
 
         exportMenuItem.setAction(actionMap.get("exportEncoder")); // NOI18N
+        exportMenuItem.setIcon(resourceMap.getIcon("exportMenuItem.icon")); // NOI18N
         exportMenuItem.setText(resourceMap.getString("exportMenuItem.text")); // NOI18N
         exportMenuItem.setName("exportMenuItem"); // NOI18N
         fileMenu.add(exportMenuItem);
@@ -488,6 +493,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         fileMenu.add(jSeparator1);
 
         printMenuItem.setAction(actionMap.get("printEncoder")); // NOI18N
+        printMenuItem.setIcon(resourceMap.getIcon("printMenuItem.icon")); // NOI18N
         printMenuItem.setText(resourceMap.getString("printMenuItem.text")); // NOI18N
         printMenuItem.setName("printMenuItem"); // NOI18N
         fileMenu.add(printMenuItem);
@@ -507,6 +513,15 @@ public class WheelEncoderGeneratorView extends FrameView {
             fileMenu.add(exitMenuItem);
         }
 
+        // OSX doesn't use menu icons
+        if (MAC_OS_X) {
+            newMenuItem.setIcon(null);
+            openMenuItem.setIcon(null);
+            saveMenuItem.setIcon(null);
+            saveAsMenuItem.setIcon(null);
+            exportMenuItem.setIcon(null);
+            printMenuItem.setIcon(null);
+        }
         menuBar.add(fileMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
