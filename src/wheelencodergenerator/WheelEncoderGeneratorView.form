@@ -23,7 +23,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="encoderPanel" pref="422" max="32767" attributes="0"/>
+                  <Component id="encoderPanel" pref="484" max="32767" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="controlPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -35,7 +35,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="encoderPanel" alignment="0" pref="337" max="32767" attributes="1"/>
+                      <Component id="encoderPanel" alignment="0" pref="358" max="32767" attributes="1"/>
                       <Component id="controlPanel" alignment="0" min="-2" max="-2" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -73,12 +73,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="418" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="480" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="333" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="354" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -457,17 +457,23 @@
             <Property name="text" type="java.lang.String" resourceKey="fileMenu.text"/>
             <Property name="name" type="java.lang.String" value="fileMenu" noResource="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="// OSX doesn&apos;t use menu icons&#xa;if (MAC_OS_X) {&#xa;    newMenuItem.setIcon(null);&#xa;    openMenuItem.setIcon(null);&#xa;    saveMenuItem.setIcon(null);&#xa;    saveAsMenuItem.setIcon(null);&#xa;    exportMenuItem.setIcon(null);&#xa;    printMenuItem.setIcon(null);&#xa;}"/>
+            <AuxValue name="generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+          </AuxValues>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="newMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="newEncoder" methodName="newEncoder"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="newMenuItem.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="newMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="newMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,MENU_MASK));"/>
+                <AuxValue name="generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
               </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="openMenuItem">
@@ -475,11 +481,13 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="openEncoder" methodName="openEncoder"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="openMenuItem.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="openMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="openMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,MENU_MASK));"/>
+                <AuxValue name="generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
               </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
@@ -492,11 +500,13 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="saveEncoder" methodName="saveEncoder"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="saveMenuItem.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="saveMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="saveMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,MENU_MASK));"/>
+                <AuxValue name="generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
               </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveAsMenuItem">
@@ -504,18 +514,26 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="saveEncoderAs" methodName="saveEncoderAs"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="saveAsMenuItem.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="saveAsMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="saveAsMenuItem" noResource="true"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="exportEncoder" methodName="exportEncoder"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="exportMenuItem.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="exportMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="exportMenuItem" noResource="true"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
               <Properties>
@@ -527,6 +545,7 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="wheelencodergenerator.WheelEncoderGeneratorView" id="printEncoder" methodName="printEncoder"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="printMenuItem.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="printMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="printMenuItem" noResource="true"/>
               </Properties>
