@@ -56,8 +56,8 @@ public class WheelEncoderGeneratorView extends FrameView {
         registerForMacOSXEvents(); // OSX-specific setup
 
         // Handle window close event
-        this.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.getFrame().addWindowListener(new CloseListener());
+        this.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         wegFileFilter.setDescription("Wheel Encoder Generator files (*.weg)");
         wegFileFilter.addType(".weg");
@@ -72,7 +72,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     // Generic registration with the Mac OS X application menu
     // Checks the platform, then attempts to register with the Apple EAWT
     // See OSXAdapter.java to see how this is done without directly referencing any Apple APIs
-    public void registerForMacOSXEvents() {
+    private void registerForMacOSXEvents() {
         if (MAC_OS_X) {
             try {
                 // Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
@@ -82,8 +82,7 @@ public class WheelEncoderGeneratorView extends FrameView {
                 //OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("preferences", (Class[])null));
                 //OSXAdapter.setFileHandler(this, getClass().getDeclaredMethod("loadImageFile", new Class[] { String.class }));
             } catch (Exception e) {
-                System.err.println("Error while loading the OSXAdapter:");
-                e.printStackTrace();
+                System.err.println("Error while loading the OSXAdapter: " + e.getMessage());
             }
         }
     }
@@ -725,9 +724,14 @@ public class WheelEncoderGeneratorView extends FrameView {
 
 
     private class CloseListener extends WindowAdapter {
-        public void windowClosing(WindowEvent event) {
-            if (promptSaveFirst())
+        @Override
+        public void windowClosing(WindowEvent event)
+        {
+            //System.out.println("defaultCloseOperation: " + Integer.toString(mainFrame.getDefaultCloseOperation()) + " =?= " +
+              //                 Integer.toString(JFrame.DO_NOTHING_ON_CLOSE));
+            if (promptSaveFirst() == true) {
                 System.exit(0);
+            }
         }
     }
             
@@ -1056,7 +1060,7 @@ public class WheelEncoderGeneratorView extends FrameView {
      * Set file to NEW_FILE to indicate to other routines that it is new
      */
     @Action
-    public void newEncoder() {
+    private void newEncoder() {
         if (promptSaveFirst()) {
             setWheelEncoder(new WheelEncoder());
             encoderPanel.setWheelEncoder(encoder);
@@ -1128,7 +1132,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     @Action
     public void about() {
         if (aboutBox == null) {
-            JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
+            //JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
             aboutBox = new WheelEncoderGeneratorAboutBox(mainFrame);
             aboutBox.setLocationRelativeTo(mainFrame);
         }
@@ -1202,4 +1206,6 @@ public class WheelEncoderGeneratorView extends FrameView {
     private SpinnerNumberModel resolutionSpinnerModel = new SpinnerNumberModel(16, 4, 36000, 2);
     private String appTitle = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getResourceMap(WheelEncoderGeneratorApp.class).getString("Application.title");
     private JDialog aboutBox;
+    private JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
+    //private JFrame mainFrame = this.getFrame();
 }
