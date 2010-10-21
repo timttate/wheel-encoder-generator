@@ -725,13 +725,16 @@ public class WheelEncoderGeneratorView extends FrameView {
 
     private class CloseListener extends WindowAdapter {
         @Override
-        public void windowClosing(WindowEvent event)
-        {
-            //System.out.println("defaultCloseOperation: " + Integer.toString(mainFrame.getDefaultCloseOperation()) + " =?= " +
-              //                 Integer.toString(JFrame.DO_NOTHING_ON_CLOSE));
-            if (promptSaveFirst() == true) {
-                System.exit(0);
+        public void windowClosing(WindowEvent event) {
+            System.out.println("windowClosing() -- enter");
+            if (promptSaveFirst()) {
+                System.out.println("windowClosing() -- disposing of window");
+                getFrame().dispose();
+            } else {
+                System.out.println("windowClosing() -- cancelling close");
             }
+            System.out.println("windowClosing() -- default operation: "+getFrame().getDefaultCloseOperation());
+            System.out.println("windowClosing() -- exit");
         }
     }
             
@@ -1132,7 +1135,6 @@ public class WheelEncoderGeneratorView extends FrameView {
     @Action
     public void about() {
         if (aboutBox == null) {
-            //JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
             aboutBox = new WheelEncoderGeneratorAboutBox(mainFrame);
             aboutBox.setLocationRelativeTo(mainFrame);
         }
@@ -1207,5 +1209,4 @@ public class WheelEncoderGeneratorView extends FrameView {
     private String appTitle = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getResourceMap(WheelEncoderGeneratorApp.class).getString("Application.title");
     private JDialog aboutBox;
     private JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
-    //private JFrame mainFrame = this.getFrame();
 }
