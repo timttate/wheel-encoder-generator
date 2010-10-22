@@ -19,8 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
 import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+//import java.awt.event.WindowAdapter;
+//import java.awt.event.WindowEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
@@ -56,8 +56,8 @@ public class WheelEncoderGeneratorView extends FrameView {
         registerForMacOSXEvents(); // OSX-specific setup
 
         // Handle window close event
-        this.getFrame().addWindowListener(new CloseListener());
-        this.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        //this.getFrame().addWindowListener(new CloseListener());
+        //this.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         wegFileFilter.setDescription("Wheel Encoder Generator files (*.weg)");
         wegFileFilter.addType(".weg");
@@ -68,6 +68,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         newEncoder();
         System.out.println("Done with View initialization...");
     }
+
 
     // Generic registration with the Mac OS X application menu
     // Checks the platform, then attempts to register with the Apple EAWT
@@ -753,7 +754,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-
+/*
     private class CloseListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent event) {
@@ -768,7 +769,8 @@ public class WheelEncoderGeneratorView extends FrameView {
             System.out.println("windowClosing() -- exit");
         }
     }
-            
+ */
+    
     private class DiameterInputVerifier extends InputVerifier {
         public boolean verify(JComponent input) {
             boolean outcome = false;
@@ -1094,7 +1096,7 @@ public class WheelEncoderGeneratorView extends FrameView {
      * Set file to NEW_FILE to indicate to other routines that it is new
      */
     @Action
-    public void newEncoder() {
+    public final void newEncoder() {
         if (promptSaveFirst()) {
             setWheelEncoder(new WheelEncoder());
             encoderPanel.setWheelEncoder(encoder);
@@ -1167,6 +1169,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     public void about() {
         System.out.println("about() -- enter");
         if (aboutBox == null) {
+            JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
             aboutBox = new WheelEncoderGeneratorAboutBox(mainFrame);
             aboutBox.setLocationRelativeTo(mainFrame);
             aboutBox.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -1175,7 +1178,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         System.out.println("about() -- exit");
     }
 
-    /* OSX-specific quit for handling quit menu
+    /* Handles OSX quit menu as well as window close (cross platform)
      *
      * Returns:
      * true if ok to proceed quitting
@@ -1242,5 +1245,5 @@ public class WheelEncoderGeneratorView extends FrameView {
     private SpinnerNumberModel resolutionSpinnerModel = new SpinnerNumberModel(16, 4, 36000, 2);
     private String appTitle = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getResourceMap(WheelEncoderGeneratorApp.class).getString("Application.title");
     private JDialog aboutBox;
-    private JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
+    //private JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
 }

@@ -10,15 +10,27 @@ import org.jdesktop.application.SingleFrameApplication;
 /**
  * The main class of the application.
  */
-public class WheelEncoderGeneratorApp extends SingleFrameApplication {
+public class WheelEncoderGeneratorApp extends SingleFrameApplication implements Application.ExitListener
+{
+    protected WheelEncoderGeneratorView view;
 
     /**
      * At startup create and show the main frame of the application.
      */
     @Override protected void startup() {
-        show(new WheelEncoderGeneratorView(this));
+        addExitListener(this);
+        show(view = new WheelEncoderGeneratorView(this));
     }
 
+    @Override public boolean canExit(java.util.EventObject e) {
+        System.out.println("WheelEncoderGeneratorApp.canExit(): calling appView.quit()");
+        return view.quit();
+    }
+
+    @Override public void willExit(java.util.EventObject e) {
+    }
+ 
+    
     /**
      * This method is to initialize the specified window by injecting resources.
      * Windows shown in our application come fully initialized from the GUI
