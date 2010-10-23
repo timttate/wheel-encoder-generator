@@ -46,7 +46,6 @@ public class WheelEncoderGeneratorView extends FrameView {
     public static String NEW_FILE = "";
     
     // TODO: Low: implement mm/inch functionality
-    // TODO: Med: implement image export
 
     public WheelEncoderGeneratorView(SingleFrameApplication app) {
         super(app);
@@ -54,10 +53,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         System.out.println("Initializing components...");
         initComponents();
         registerForMacOSXEvents(); // OSX-specific setup
-
-        // Handle window close event
-        //this.getFrame().addWindowListener(new CloseListener());
-        //this.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         wegFileFilter.setDescription("Wheel Encoder Generator files (*.weg)");
         wegFileFilter.addType(".weg");
@@ -175,11 +170,11 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 480, Short.MAX_VALUE)
+            .addGap(0, 418, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 354, Short.MAX_VALUE)
+            .addGap(0, 342, Short.MAX_VALUE)
         );
 
         controlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("controlPanel.border.title"))); // NOI18N
@@ -427,7 +422,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -437,7 +432,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
                     .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -754,22 +749,6 @@ public class WheelEncoderGeneratorView extends FrameView {
             System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-/*
-    private class CloseListener extends WindowAdapter {
-        @Override
-        public void windowClosing(WindowEvent event) {
-            System.out.println("windowClosing() -- enter");
-            if (promptSaveFirst()) {
-                System.out.println("windowClosing() -- disposing of window");
-                getFrame().dispose();
-            } else {
-                System.out.println("windowClosing() -- cancelling close");
-            }
-            System.out.println("windowClosing() -- default operation: "+getFrame().getDefaultCloseOperation());
-            System.out.println("windowClosing() -- exit");
-        }
-    }
- */
     
     private class DiameterInputVerifier extends InputVerifier {
         public boolean verify(JComponent input) {
@@ -1245,5 +1224,4 @@ public class WheelEncoderGeneratorView extends FrameView {
     private SpinnerNumberModel resolutionSpinnerModel = new SpinnerNumberModel(16, 4, 36000, 2);
     private String appTitle = org.jdesktop.application.Application.getInstance(wheelencodergenerator.WheelEncoderGeneratorApp.class).getContext().getResourceMap(WheelEncoderGeneratorApp.class).getString("Application.title");
     private JDialog aboutBox;
-    //private JFrame mainFrame = WheelEncoderGeneratorApp.getApplication().getMainFrame();
 }
