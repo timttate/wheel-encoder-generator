@@ -74,7 +74,7 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
 
             // TODO: Invert 1's and 0's (ie black, white)
             // Easy enough to invert this based on UI input.
-            Color color = Color.white;
+            Color color = Color.black;
             int stripe = 0;
             for (double i=offset; i < (360.0+offset); i += degree) {
                 degree = e.getDegree(track, stripe++);

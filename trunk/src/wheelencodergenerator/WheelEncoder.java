@@ -153,11 +153,16 @@ public class WheelEncoder {
         // TODO: clockwise vs counter clockwise
         if (type == WheelEncoder.ABSOLUTE && numbering == WheelEncoder.GRAY) {
             if (whichTrack == resolution-1)
-                offset = -getDegree(whichTrack, 0); // CCW: 0, CW: -getDegree(whichTrack, 0)
+                offset = 0; //-getDegree(whichTrack, 0); // CCW: 0, CW: -getDegree(whichTrack, 0)
             else
-                offset = getDegree(whichTrack, 0)/2; // CW: - CCW: +
-        } else if (type == WheelEncoder.STANDARD && whichTrack == getQuadratureTrack()) {
-            offset = getDegree(whichTrack, 0)/2;
+                offset = -getDegree(whichTrack, 0)/2; // CW: - CCW: +
+        } else if (type == WheelEncoder.STANDARD) {
+            if (whichTrack == getQuadratureTrack()) {
+                offset = getDegree(whichTrack, 0)/2;
+            }
+            /*else if (whichTrack == getIndexTrack()) {
+                offset = -getDegree(whichTrack, 0);
+            }*/
         }
         //Debug.println("track="+whichTrack);
         //Debug.println("offset="+offset);
@@ -204,7 +209,7 @@ public class WheelEncoder {
         else if (type == STANDARD) {
             // Index track has only two stripes, one small black stripe
             // and one giant white stripe that covers the rest of the track
-            if (whichTrack == getIndexTrack() && whichStripe == 1) {
+            if (whichTrack == getIndexTrack() && whichStripe == 0) {
                 d = 360 - getDegree();
             } else {
                 d = getDegree();

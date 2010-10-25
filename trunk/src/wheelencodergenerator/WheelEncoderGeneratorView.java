@@ -880,7 +880,7 @@ public class WheelEncoderGeneratorView extends FrameView {
                 encoder.setResolution(absoluteResolutionComboBox.getSelectedIndex()+1);
                 //System.out.println("Track count: " + Integer.toString(encoder.getResolution()) + "\n");
             }
-            else if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Standard")) {
+            else if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Incremental")) {
                 encoder.setType(WheelEncoder.STANDARD);
                 encoder.setResolution(Integer.parseInt(resolutionSpinner.getModel().getValue().toString()));
             }
