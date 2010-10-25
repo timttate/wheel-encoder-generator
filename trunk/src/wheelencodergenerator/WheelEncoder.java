@@ -135,6 +135,7 @@ public class WheelEncoder {
     public double getDegree(int whichTrack)
     {
         double d=0.0;
+        int theTrack = whichTrack;
 
         if (type == ABSOLUTE) {
             // With an absolute encoder (gray or binary), the resolution
@@ -142,7 +143,20 @@ public class WheelEncoder {
             // track is dependent on the track number.  A 3 track absolute
             // encoder has 2^1 stripes on the inner track, 2^2 on the middle
             // track and 2^3 on the outer track
-            d = 360.0 / Math.pow(2, resolution - whichTrack);
+            // In Gray coding, the innermost track starts the same as binary,
+            // but the next track out is a duplicate (only one block of black)
+            // and it is offset degree/2 == 90*; the rest of the tracks are
+            // same as binary (starting with 2 black stripes), but are offset
+            // by degree/2 from the previous track.
+            System.out.println("getDegree() -- whichTrack: " + Integer.toString(whichTrack));
+            if (numbering == GRAY) {
+                if ((resolution - theTrack) > 1) {
+                    System.out.println("getDegree() -- incrementing theTrack");
+                    theTrack++;
+                }
+            }
+            d = 360.0 / Math.pow(2, resolution - theTrack);
+            System.out.println("getDegree() -- degree: " + d);
         }
         else if (type == STANDARD) {
             // TODO: Low: fix this to give degrees for index track? Quad track?

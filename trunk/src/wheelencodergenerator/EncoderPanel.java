@@ -70,15 +70,23 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
                 //System.out.println("Absolute: Track " + Integer.toString(track) + " of " + Integer.toString(maxTrack));
                 double degree = e.getDegree(track);
                 // gray code = degree/2, binary = 0
-                if (e.getNumbering() == WheelEncoder.GRAY)
-                    offset = degree/2;
-                else if (e.getNumbering() == WheelEncoder.BINARY)
+                if (e.getNumbering() == WheelEncoder.GRAY) {
+                    // TODO: reverse 1's and 0's by simply offset *= -1; or by reversing colors below
+                    // TODO: clockwise vs counter clockwise (have to do something with innermost 2 tracks?)
+                    // TODO: move offset into WheelEncoder
+                    if (track == maxTrack-1)
+                        offset = degree;
+                    else
+                        offset = degree/2;
+                } else if (e.getNumbering() == WheelEncoder.BINARY) {
                     offset = 0;
+                }
 
                 double dA = id + (maxTrack-track) * (d - id) / maxTrack;
                 double xA = x + track * trackWidth / maxTrack;
                 double yA = y + track * trackWidth / maxTrack;
                 //System.out.println("entering loop 2");
+
                 for (double i=offset; degree > 0 && i < (360.0+offset); i += 2 * degree) {
                     // always start with white (0)
                     g2D.setColor( Color.white );
