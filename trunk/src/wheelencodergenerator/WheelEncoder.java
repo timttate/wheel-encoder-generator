@@ -5,6 +5,7 @@
 
 package wheelencodergenerator;
 
+import com.botthoughts.Debug;
 import java.util.*;
 import java.io.*;
 
@@ -63,15 +64,15 @@ public class WheelEncoder {
      */
     public void save(File file) throws IOException
     {
-        System.out.println("save() -- enter");
+        Debug.println("enter");
         storeProperties();
-        System.out.println("save() -- done storing properties");
+        Debug.println("done storing properties");
         try {
-            System.out.println("save() -- enter try block");
+            Debug.println("enter try block");
             p.store(new FileOutputStream(file), "Wheel Encoder Settings");
-            System.out.println("save() -- called store");
+            Debug.println("called store");
             this.file = file;
-            System.out.println("save() -- end of try block");
+            Debug.println("end of try block");
         } catch (IOException e) {
             p = new Properties(); // Mark as unsaved
             System.out.println("WheelEncoder.save() IOException: '"+e.getMessage()+"'");
@@ -120,7 +121,46 @@ public class WheelEncoder {
         return tracks;
     }
 
-    public double getDegree()
+    /* getStripes()
+     * 
+     * Returns the number of black stripes for a given track
+     */
+    public int getStripes(int whichTrack)
+    {
+        int stripes = 0;
+
+        return stripes;
+    }
+
+    /* getOffset()
+     *
+     * Returns the offset in degrees of the current track
+     */
+    public double getOffset(int whichTrack)
+    {
+        double offset = 0.0;
+
+        // In all cases, offset is zero, except if the encoder is:
+        // 1) of type absolute and encoding is Gray Code, in which case, offset
+        // depends on which track we're talking about among other things
+        // 2) the current track is the quadrature track
+        if (type == WheelEncoder.ABSOLUTE && numbering == WheelEncoder.GRAY) {
+            // TODO: reverse 1's and 0's by simply offset *= -1; or by reversing colors below
+            // TODO: clockwise vs counter clockwise (have to do something with innermost 2 tracks?)
+            // TODO: move offset into WheelEncoder
+            if (whichTrack == resolution-1)
+                offset = getDegree(whichTrack);
+            else
+                offset = getDegree(whichTrack)/2;
+        } else if (type == WheelEncoder.STANDARD && whichTrack == getQuadratureTrack()) {
+            offset = getDegree(whichTrack)/2;
+        }
+        Debug.println("track="+whichTrack);
+        Debug.println("offset="+offset);
+        return offset;
+    }
+
+    private double getDegree()
     {
         double d=0.0;
         if (type == STANDARD) {
@@ -129,6 +169,7 @@ public class WheelEncoder {
             // directly
             d = 360.0 / resolution; 
         }
+        Debug.println("degree="+d);
         return d;
     }
 
@@ -148,15 +189,13 @@ public class WheelEncoder {
             // and it is offset degree/2 == 90*; the rest of the tracks are
             // same as binary (starting with 2 black stripes), but are offset
             // by degree/2 from the previous track.
-            System.out.println("getDegree() -- whichTrack: " + Integer.toString(whichTrack));
-            if (numbering == GRAY) {
-                if ((resolution - theTrack) > 1) {
-                    System.out.println("getDegree() -- incrementing theTrack");
-                    theTrack++;
-                }
+            Debug.println("whichTrack=" + Integer.toString(whichTrack));
+            if (numbering == GRAY && (resolution - theTrack) > 1) {
+                Debug.println("incrementing theTrack");
+                theTrack++;
             }
             d = 360.0 / Math.pow(2, resolution - theTrack);
-            System.out.println("getDegree() -- degree: " + d);
+            Debug.println("degree=" + d);
         }
         else if (type == STANDARD) {
             // TODO: Low: fix this to give degrees for index track? Quad track?
@@ -205,6 +244,10 @@ public class WheelEncoder {
         return quadratureTrack;
     }
 
+    /*
+     *
+     * If not a standard/incremental encoder, return -1
+     */
     public int getQuadratureTrack()
     {
        int track = -1;
@@ -228,6 +271,10 @@ public class WheelEncoder {
         return indexTrack;
     }
 
+    /*
+     *
+     * If not a standard/incremental encoder, return -1
+     */
     public int getIndexTrack()
     {
         int track = -1;
