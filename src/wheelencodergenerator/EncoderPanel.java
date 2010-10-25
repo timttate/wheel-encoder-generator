@@ -65,23 +65,12 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
 
         maxTrack = e.getTrackCount();
 
+        /*
         if (e.getType() == WheelEncoder.ABSOLUTE) {
             for (int track = 0; track < maxTrack; track++) {
                 //System.out.println("Absolute: Track " + Integer.toString(track) + " of " + Integer.toString(maxTrack));
                 double degree = e.getDegree(track);
-                // gray code = degree/2, binary = 0
-                if (e.getNumbering() == WheelEncoder.GRAY) {
-                    // TODO: reverse 1's and 0's by simply offset *= -1; or by reversing colors below
-                    // TODO: clockwise vs counter clockwise (have to do something with innermost 2 tracks?)
-                    // TODO: move offset into WheelEncoder
-                    if (track == maxTrack-1)
-                        offset = degree;
-                    else
-                        offset = degree/2;
-                } else if (e.getNumbering() == WheelEncoder.BINARY) {
-                    offset = 0;
-                }
-
+                offset = e.getOffset(track);
                 double dA = id + (maxTrack-track) * (d - id) / maxTrack;
                 double xA = x + track * trackWidth / maxTrack;
                 double yA = y + track * trackWidth / maxTrack;
@@ -99,22 +88,24 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
             }
         }
         else if (e.getType() == WheelEncoder.STANDARD) {
+         *
+         */
             for (int track = 0; track < maxTrack; track++) {
                 double degree = e.getDegree(track);
+                offset = e.getOffset(track);
                 double dA = id + (maxTrack-track) * (d - id) / maxTrack;
                 double xA = x + track * trackWidth / maxTrack;
                 double yA = y + track * trackWidth / maxTrack;
 
+                // TODO: change logic to spit out one stripe at a time:
+                // value and degrees and offset.  Then the drawing routine can
+                // be really stupid and still handle quadrature, index, binary and gray
                 if (track == e.getIndexTrack()) {
                     g2D.setColor( Color.black );
                     g2D.fill( new Arc2D.Double(xA, yA, dA, dA, 0, degree, Arc2D.PIE) );
                     g2D.setColor( Color.white );
                     g2D.fill( new Arc2D.Double(xA, yA, dA, dA, degree, 360-degree, Arc2D.PIE) );
                 } else {
-                    // Quadrature
-                    if (track == e.getQuadratureTrack()) {
-                        offset = degree/2;
-                    }
 
                     for (double i=offset; degree > 0 && i < (360.0+offset); i += 2 * degree) {
                         // always start with white (0)
@@ -127,7 +118,7 @@ public class EncoderPanel extends javax.swing.JPanel implements Printable {
                 g2D.setColor(Color.black);
                 g2D.drawOval((int) Math.round(xA), (int) Math.round(yA), (int) Math.round(dA), (int) Math.round(dA));
             }
-        }
+        //}
 
         // Draw inner circle
         g2D.setColor(Color.white);
