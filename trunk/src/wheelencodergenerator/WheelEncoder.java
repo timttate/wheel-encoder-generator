@@ -22,6 +22,7 @@ public class WheelEncoder {
     private int outerDiameter;
     private boolean indexTrack;
     private boolean quadratureTrack;
+    private boolean inverted;
     private File file;
 
     public static int ABSOLUTE=0;
@@ -39,6 +40,7 @@ public class WheelEncoder {
         indexTrack = false;
         quadratureTrack = false;
         p = new Properties();
+        inverted = false;
         file = null;
     }
 
@@ -303,6 +305,16 @@ public class WheelEncoder {
         return track;
     }
 
+    public void setInverted(boolean inverted) 
+    {
+        this.inverted = inverted;
+    }
+    
+    public boolean isInverted()
+    {
+        return inverted;
+    }
+
     // TODO: Low: Would be nice to do this more flexibly as Enumeration
     /* isChanged
      * 
@@ -360,6 +372,7 @@ public class WheelEncoder {
         p.setProperty("encoder.outerDiameter", Integer.toString(outerDiameter));
         p.setProperty("encoder.indexTrack", Boolean.toString(indexTrack));
         p.setProperty("encoder.quadratureTrack", Boolean.toString(quadratureTrack));
+        p.setProperty("encoder.inverted", Boolean.toString(inverted));
     }
 
     /* loadProperties()
@@ -377,5 +390,6 @@ public class WheelEncoder {
         outerDiameter = Integer.parseInt(p.getProperty("encoder.outerDiameter"));
         indexTrack = Boolean.parseBoolean(p.getProperty("encoder.indexTrack"));
         quadratureTrack = Boolean.parseBoolean(p.getProperty("encoder.quadratureTrack"));
+        inverted = Boolean.parseBoolean(p.getProperty("encoder.inverted"));
     }
 }
