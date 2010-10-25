@@ -342,7 +342,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 10, 0);
         standardPanel.add(indexCheckBox, gridBagConstraints);
 
-        encoderTabbedPane.addTab(resourceMap.getString("standardPanel.TabConstraints.tabTitle"), standardPanel); // NOI18N
+        encoderTabbedPane.addTab(resourceMap.getString("standardPanel.TabConstraints.tabTitle"), null, standardPanel, resourceMap.getString("standardPanel.TabConstraints.tabToolTip")); // NOI18N
 
         absolutePanel.setName("absolutePanel"); // NOI18N
         absolutePanel.setLayout(new java.awt.GridBagLayout());
@@ -412,7 +412,9 @@ public class WheelEncoderGeneratorView extends FrameView {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 10);
         absolutePanel.add(absoluteResolutionComboBox, gridBagConstraints);
 
-        encoderTabbedPane.addTab(resourceMap.getString("absolutePanel.TabConstraints.tabTitle"), absolutePanel); // NOI18N
+        encoderTabbedPane.addTab(resourceMap.getString("absolutePanel.TabConstraints.tabTitle"), null, absolutePanel, resourceMap.getString("absolutePanel.TabConstraints.tabToolTip")); // NOI18N
+
+        encoderTabbedPane.setSelectedComponent(standardPanel);
 
         controlPanel.add(encoderTabbedPane, java.awt.BorderLayout.PAGE_START);
 
