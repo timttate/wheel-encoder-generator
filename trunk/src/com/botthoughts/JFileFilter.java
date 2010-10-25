@@ -71,7 +71,7 @@ public class JFileFilter extends javax.swing.filechooser.FileFilter implements j
   // This is the routine that implements FilenameFilter
   public boolean accept(File dir, String name) {
       File f = new File(dir, name);
-      System.out.println("FilenameFilter accept() -- "+f.getAbsolutePath() + " " + f.getName());
+      //Debug.println("FilenameFilter accept() -- "+f.getAbsolutePath() + " " + f.getName());
       return this.accept(f);
   }
 
@@ -79,7 +79,7 @@ public class JFileFilter extends javax.swing.filechooser.FileFilter implements j
   /** Return true if the given file is accepted by this filter. */
   public boolean accept(File f)
   {
-    System.out.println("JFileFilter accept() -- "+f.getAbsolutePath() + " " + f.getName());
+    //Debug.println("JFileFilter accept() -- "+f.getAbsolutePath() + " " + f.getName());
     // Little trick: if you don't do this, only directory names
     // ending in one of the extentions appear in the window.
     if (f.isDirectory()) {
@@ -88,12 +88,12 @@ public class JFileFilter extends javax.swing.filechooser.FileFilter implements j
         Iterator it = exts.iterator();
         while (it.hasNext()) {
             if (f.getName().endsWith((String) it.next())) {
-                System.out.println("JFileFilter accept() -- true");
+                //Debug.println("JFileFilter accept() -- true");
                 return true;
             }
         }
     }
-    System.out.println("JFileFilter accept() -- false");
+    //Debug.println("JFileFilter accept() -- false");
 
     // A file that didn't match, or a weirdo (e.g. UNIX device file?).
     return false;
