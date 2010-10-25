@@ -232,6 +232,9 @@
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="encoderTabbedPane.toolTipText"/>
                 <Property name="name" type="java.lang.String" value="encoderTabbedPane" noResource="true"/>
+                <Property name="selectedComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="standardPanel"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="encoderTabbedPaneMouseClicked"/>
@@ -250,8 +253,9 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="Incremental">
+                      <JTabbedPaneConstraints tabName="Incremental" toolTip="Design an incremental encoder with this tab">
                         <Property name="tabTitle" type="java.lang.String" resourceKey="standardPanel.TabConstraints.tabTitle"/>
+                        <Property name="tabToolTip" type="java.lang.String" resourceKey="standardPanel.TabConstraints.tabToolTip"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
@@ -333,8 +337,9 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="Absolute">
+                      <JTabbedPaneConstraints tabName="Absolute" toolTip="Design an absolute encoder with this tab">
                         <Property name="tabTitle" type="java.lang.String" resourceKey="absolutePanel.TabConstraints.tabTitle"/>
+                        <Property name="tabToolTip" type="java.lang.String" resourceKey="absolutePanel.TabConstraints.tabToolTip"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
