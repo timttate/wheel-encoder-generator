@@ -29,6 +29,7 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import com.apple.OSXAdapter;
+import com.botthoughts.Debug;
 
 
 /**
@@ -58,6 +59,8 @@ public class WheelEncoderGeneratorView extends FrameView {
         wegFileFilter.addType(".weg");
         pngFileFilter.setDescription("PNG Images (*.png)");
         pngFileFilter.addType(".png");
+
+        Debug.println("selected: " + encoderTabbedPane.getSelectedComponent().getName());
 
         // Initial "load" of new encoder
         newEncoder();
@@ -96,13 +99,6 @@ public class WheelEncoderGeneratorView extends FrameView {
         mainPanel = new javax.swing.JPanel();
         encoderPanel = new wheelencodergenerator.EncoderPanel();
         controlPanel = new javax.swing.JPanel();
-        diameterPanel = new javax.swing.JPanel();
-        innerDiameterLabel = new javax.swing.JLabel();
-        innerDiameter = new javax.swing.JTextField();
-        outerDiameterLabel = new javax.swing.JLabel();
-        outerDiameter = new javax.swing.JTextField();
-        mmButton = new javax.swing.JRadioButton();
-        inchButton = new javax.swing.JRadioButton();
         encoderTabbedPane = new javax.swing.JTabbedPane();
         standardPanel = new javax.swing.JPanel();
         resolutionLabel1 = new javax.swing.JLabel();
@@ -114,6 +110,15 @@ public class WheelEncoderGeneratorView extends FrameView {
         binaryCodeRadioButton = new javax.swing.JRadioButton();
         resolutionLabel2 = new javax.swing.JLabel();
         absoluteResolutionComboBox = new javax.swing.JComboBox();
+        diameterPanel = new javax.swing.JPanel();
+        innerDiameterLabel = new javax.swing.JLabel();
+        innerDiameter = new javax.swing.JTextField();
+        outerDiameterLabel = new javax.swing.JLabel();
+        outerDiameter = new javax.swing.JTextField();
+        mmButton = new javax.swing.JRadioButton();
+        inchButton = new javax.swing.JRadioButton();
+        otherPanel = new javax.swing.JPanel();
+        invertCheckBox = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenuItem = new javax.swing.JMenuItem();
@@ -170,105 +175,16 @@ public class WheelEncoderGeneratorView extends FrameView {
         encoderPanel.setLayout(encoderPanelLayout);
         encoderPanelLayout.setHorizontalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 418, Short.MAX_VALUE)
+            .addGap(0, 434, Short.MAX_VALUE)
         );
         encoderPanelLayout.setVerticalGroup(
             encoderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 342, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
 
         controlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("controlPanel.border.title"))); // NOI18N
         controlPanel.setName("controlPanel"); // NOI18N
         controlPanel.setLayout(new java.awt.BorderLayout());
-
-        diameterPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("diameterPanel.border.title"))); // NOI18N
-        diameterPanel.setName("diameterPanel"); // NOI18N
-        diameterPanel.setLayout(new java.awt.GridBagLayout());
-
-        innerDiameterLabel.setLabelFor(innerDiameter);
-        innerDiameterLabel.setText(resourceMap.getString("innerDiameterLabel.text")); // NOI18N
-        innerDiameterLabel.setName("innerDiameterLabel"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        diameterPanel.add(innerDiameterLabel, gridBagConstraints);
-
-        innerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        innerDiameter.setText(resourceMap.getString("innerDiameter.text")); // NOI18N
-        innerDiameter.setToolTipText(resourceMap.getString("innerDiameter.toolTipText")); // NOI18N
-        innerDiameter.setInputVerifier(numVerifier);
-        innerDiameter.setMinimumSize(null);
-        innerDiameter.setName("innerDiameter"); // NOI18N
-        innerDiameter.setPreferredSize(null);
-        innerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                innerDiameterFocusLost(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        diameterPanel.add(innerDiameter, gridBagConstraints);
-
-        outerDiameterLabel.setLabelFor(outerDiameter);
-        outerDiameterLabel.setText(resourceMap.getString("outerDiameterLabel.text")); // NOI18N
-        outerDiameterLabel.setName("outerDiameterLabel"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
-        diameterPanel.add(outerDiameterLabel, gridBagConstraints);
-
-        outerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        outerDiameter.setText(resourceMap.getString("outerDiameter.text")); // NOI18N
-        outerDiameter.setToolTipText(resourceMap.getString("outerDiameter.toolTipText")); // NOI18N
-        outerDiameter.setInputVerifier(numVerifier);
-        outerDiameter.setMinimumSize(null);
-        outerDiameter.setName("outerDiameter"); // NOI18N
-        outerDiameter.setPreferredSize(null);
-        outerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                outerDiameterFocusLost(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
-        diameterPanel.add(outerDiameter, gridBagConstraints);
-
-        buttonGroup1.add(mmButton);
-        mmButton.setSelected(true);
-        mmButton.setText(resourceMap.getString("mmButton.text")); // NOI18N
-        mmButton.setToolTipText(resourceMap.getString("mmButton.toolTipText")); // NOI18N
-        mmButton.setName("mmButton"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 10, 0);
-        diameterPanel.add(mmButton, gridBagConstraints);
-
-        buttonGroup1.add(inchButton);
-        inchButton.setText(resourceMap.getString("inchButton.text")); // NOI18N
-        inchButton.setToolTipText(resourceMap.getString("inchButton.toolTipText")); // NOI18N
-        inchButton.setEnabled(false);
-        inchButton.setName("inchButton"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 10, 0);
-        diameterPanel.add(inchButton, gridBagConstraints);
-
-        controlPanel.add(diameterPanel, java.awt.BorderLayout.CENTER);
 
         encoderTabbedPane.setToolTipText(resourceMap.getString("encoderTabbedPane.toolTipText")); // NOI18N
         encoderTabbedPane.setName("encoderTabbedPane"); // NOI18N
@@ -418,13 +334,124 @@ public class WheelEncoderGeneratorView extends FrameView {
 
         controlPanel.add(encoderTabbedPane, java.awt.BorderLayout.PAGE_START);
 
+        diameterPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("diameterPanel.border.title"))); // NOI18N
+        diameterPanel.setName("diameterPanel"); // NOI18N
+        diameterPanel.setLayout(new java.awt.GridBagLayout());
+
+        innerDiameterLabel.setLabelFor(innerDiameter);
+        innerDiameterLabel.setText(resourceMap.getString("innerDiameterLabel.text")); // NOI18N
+        innerDiameterLabel.setName("innerDiameterLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        diameterPanel.add(innerDiameterLabel, gridBagConstraints);
+
+        innerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        innerDiameter.setText(resourceMap.getString("innerDiameter.text")); // NOI18N
+        innerDiameter.setToolTipText(resourceMap.getString("innerDiameter.toolTipText")); // NOI18N
+        innerDiameter.setInputVerifier(numVerifier);
+        innerDiameter.setMinimumSize(null);
+        innerDiameter.setName("innerDiameter"); // NOI18N
+        innerDiameter.setPreferredSize(null);
+        innerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                innerDiameterFocusLost(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        diameterPanel.add(innerDiameter, gridBagConstraints);
+
+        outerDiameterLabel.setLabelFor(outerDiameter);
+        outerDiameterLabel.setText(resourceMap.getString("outerDiameterLabel.text")); // NOI18N
+        outerDiameterLabel.setName("outerDiameterLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
+        diameterPanel.add(outerDiameterLabel, gridBagConstraints);
+
+        outerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        outerDiameter.setText(resourceMap.getString("outerDiameter.text")); // NOI18N
+        outerDiameter.setToolTipText(resourceMap.getString("outerDiameter.toolTipText")); // NOI18N
+        outerDiameter.setInputVerifier(numVerifier);
+        outerDiameter.setMinimumSize(null);
+        outerDiameter.setName("outerDiameter"); // NOI18N
+        outerDiameter.setPreferredSize(null);
+        outerDiameter.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                outerDiameterFocusLost(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
+        diameterPanel.add(outerDiameter, gridBagConstraints);
+
+        buttonGroup1.add(mmButton);
+        mmButton.setSelected(true);
+        mmButton.setText(resourceMap.getString("mmButton.text")); // NOI18N
+        mmButton.setToolTipText(resourceMap.getString("mmButton.toolTipText")); // NOI18N
+        mmButton.setName("mmButton"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 10, 0);
+        diameterPanel.add(mmButton, gridBagConstraints);
+
+        buttonGroup1.add(inchButton);
+        inchButton.setText(resourceMap.getString("inchButton.text")); // NOI18N
+        inchButton.setToolTipText(resourceMap.getString("inchButton.toolTipText")); // NOI18N
+        inchButton.setEnabled(false);
+        inchButton.setName("inchButton"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 10, 0);
+        diameterPanel.add(inchButton, gridBagConstraints);
+
+        controlPanel.add(diameterPanel, java.awt.BorderLayout.CENTER);
+
+        otherPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("otherPanel.border.title"))); // NOI18N
+        otherPanel.setName("otherPanel"); // NOI18N
+        otherPanel.setPreferredSize(new java.awt.Dimension(204, 80));
+        otherPanel.setLayout(new java.awt.GridBagLayout());
+
+        invertCheckBox.setText(resourceMap.getString("invertCheckBox.text")); // NOI18N
+        invertCheckBox.setActionCommand(resourceMap.getString("invertCheckBox.actionCommand")); // NOI18N
+        invertCheckBox.setName("invertCheckBox"); // NOI18N
+        invertCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                invertCheckBoxItemStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 46, 10, 47);
+        otherPanel.add(invertCheckBox, gridBagConstraints);
+
+        controlPanel.add(otherPanel, java.awt.BorderLayout.PAGE_END);
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -434,7 +461,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                    .addComponent(encoderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                     .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -751,6 +778,10 @@ public class WheelEncoderGeneratorView extends FrameView {
             System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
+    private void invertCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_invertCheckBoxItemStateChanged
+        showPreview();
+    }//GEN-LAST:event_invertCheckBoxItemStateChanged
+
     
     private class DiameterInputVerifier extends InputVerifier {
         public boolean verify(JComponent input) {
@@ -794,7 +825,7 @@ public class WheelEncoderGeneratorView extends FrameView {
             resolutionSpinner.getModel().setValue(encoder.getResolution());
             quadratureCheckBox.setSelected(encoder.hasQuadratureTrack());
             indexCheckBox.setSelected(encoder.hasIndexTrack());
-            encoderTabbedPane.setSelectedIndex(encoderTabbedPane.indexOfTab("Standard"));
+            encoderTabbedPane.setSelectedIndex(encoderTabbedPane.indexOfTab("Incremental"));
         }
         else if (encoder.getType() == WheelEncoder.ABSOLUTE) {
             encoderTabbedPane.setSelectedIndex(encoderTabbedPane.indexOfTab("Absolute"));
@@ -867,6 +898,7 @@ public class WheelEncoderGeneratorView extends FrameView {
         if (errorCheck()) {
             encoder.setInnerDiameter(Integer.parseInt(innerDiameter.getText()));
             encoder.setOuterDiameter(Integer.parseInt(outerDiameter.getText()));
+            encoder.setInverted(invertCheckBox.isSelected());
 
             // Absolute Encoder
             if (encoderTabbedPane.getSelectedIndex() == encoderTabbedPane.indexOfTab("Absolute")) {
@@ -1192,6 +1224,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JCheckBox indexCheckBox;
     private javax.swing.JTextField innerDiameter;
     private javax.swing.JLabel innerDiameterLabel;
+    private javax.swing.JCheckBox invertCheckBox;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -1202,6 +1235,7 @@ public class WheelEncoderGeneratorView extends FrameView {
     private javax.swing.JMenuItem newMenuItem;
     private javax.swing.JButton openButton;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JPanel otherPanel;
     private javax.swing.JTextField outerDiameter;
     private javax.swing.JLabel outerDiameterLabel;
     private javax.swing.JButton printButton;
