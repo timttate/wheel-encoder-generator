@@ -30,7 +30,7 @@ public class Debug extends Throwable {
             int theLine = st.getLineNumber();
             String theFile = st.getFileName();
 
-            System.out.println(theFile + ":"+ theLine + " " + theClass + "." + theMethod + ": " + message);
+            System.out.println(theFile + ":"+ theLine + " " + theClass + "." + theMethod + "(): " + message);
         }
     }
 }
