@@ -125,10 +125,16 @@ public class WheelEncoder {
      * 
      * Returns the number of black stripes for a given track
      */
-    public int getStripes(int whichTrack)
+    public int getStripeCount(int whichTrack)
     {
         int stripes = 0;
 
+        if (type == STANDARD && whichTrack == getIndexTrack())
+            stripes = 2;
+        else {
+            stripes = (int) Math.ceil( 360.0 / getDegree() );
+        }
+    
         return stripes;
     }
 
@@ -144,19 +150,17 @@ public class WheelEncoder {
         // 1) of type absolute and encoding is Gray Code, in which case, offset
         // depends on which track we're talking about among other things
         // 2) the current track is the quadrature track
+        // TODO: clockwise vs counter clockwise
         if (type == WheelEncoder.ABSOLUTE && numbering == WheelEncoder.GRAY) {
-            // TODO: reverse 1's and 0's by simply offset *= -1; or by reversing colors below
-            // TODO: clockwise vs counter clockwise (have to do something with innermost 2 tracks?)
-            // TODO: move offset into WheelEncoder
             if (whichTrack == resolution-1)
-                offset = getDegree(whichTrack);
+                offset = -getDegree(whichTrack, 0); // CCW: 0, CW: -getDegree(whichTrack, 0)
             else
-                offset = getDegree(whichTrack)/2;
+                offset = getDegree(whichTrack, 0)/2; // CW: - CCW: +
         } else if (type == WheelEncoder.STANDARD && whichTrack == getQuadratureTrack()) {
-            offset = getDegree(whichTrack)/2;
+            offset = getDegree(whichTrack, 0)/2;
         }
-        Debug.println("track="+whichTrack);
-        Debug.println("offset="+offset);
+        //Debug.println("track="+whichTrack);
+        //Debug.println("offset="+offset);
         return offset;
     }
 
@@ -169,11 +173,11 @@ public class WheelEncoder {
             // directly
             d = 360.0 / resolution; 
         }
-        Debug.println("degree="+d);
+        //Debug.println("degree="+d);
         return d;
     }
 
-    public double getDegree(int whichTrack)
+    public double getDegree(int whichTrack, int whichStripe)
     {
         double d=0.0;
         int theTrack = whichTrack;
@@ -189,17 +193,22 @@ public class WheelEncoder {
             // and it is offset degree/2 == 90*; the rest of the tracks are
             // same as binary (starting with 2 black stripes), but are offset
             // by degree/2 from the previous track.
-            Debug.println("whichTrack=" + Integer.toString(whichTrack));
+            //Debug.println("whichTrack=" + Integer.toString(whichTrack));
             if (numbering == GRAY && (resolution - theTrack) > 1) {
-                Debug.println("incrementing theTrack");
+                //Debug.println("incrementing theTrack");
                 theTrack++;
             }
             d = 360.0 / Math.pow(2, resolution - theTrack);
-            Debug.println("degree=" + d);
+            //Debug.println("degree=" + d);
         }
         else if (type == STANDARD) {
-            // TODO: Low: fix this to give degrees for index track? Quad track?
-            d = getDegree();
+            // Index track has only two stripes, one small black stripe
+            // and one giant white stripe that covers the rest of the track
+            if (whichTrack == getIndexTrack() && whichStripe == 1) {
+                d = 360 - getDegree();
+            } else {
+                d = getDegree();
+            }
         }
         return d;
     }
