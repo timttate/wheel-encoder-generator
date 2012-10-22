@@ -1,0 +1,5 @@
+#summary One-sentence summary of this page.
+
+= 0.2-beta =
+
+ * Added automatic version update check
