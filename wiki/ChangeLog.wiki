@@ -3,3 +3,5 @@
 = 0.2-beta (Scheduled for release before 1/1/13) =
 
  * Added automatic version update check
+ * Windows version now distributed with executable installer
+ * Windows version now uses Launch4j executable wrapper
